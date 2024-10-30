@@ -10,7 +10,7 @@ import java.util.List;
 
 @Table(name = "users")
 @Entity
-public class user{
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
@@ -85,5 +85,21 @@ public class user{
 
     public void setLastLogin(LocalDateTime lastLogin) {
         this.lastLogin = lastLogin;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public List<ChatSession> getChatSessions() {
+        return chatSessions;
+    }
+
+    public void setChatSessions(List<ChatSession> chatSessions) {
+        this.chatSessions = chatSessions;
     }
 }
