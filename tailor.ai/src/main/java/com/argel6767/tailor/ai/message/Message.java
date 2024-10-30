@@ -14,7 +14,7 @@ public class Message {
     private Long messageId;
     
     @Column(nullable = false)
-    private Enum<?> author; //change Enum type when Enum is made
+    private Enum<Author> author;
     
     @Column(nullable = false, columnDefinition = "text")
     private String body;
@@ -33,11 +33,11 @@ public class Message {
         return messageId;
     }
 
-    public Enum<?> getAuthor() {
+    public Enum<Author> getAuthor() {
         return author;
     }
 
-    public void setAuthor(Enum<?> author) {
+    public void setAuthor(Enum<Author> author) {
         this.author = author;
     }
 
@@ -64,5 +64,5 @@ public class Message {
     public void setChatSession(ChatSession chatSession) {
         this.chatSession = chatSession;
     }
-    
+
 }
