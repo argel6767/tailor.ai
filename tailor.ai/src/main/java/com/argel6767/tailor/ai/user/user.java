@@ -1,5 +1,6 @@
 package com.argel6767.tailor.ai.user;
 
+import com.argel6767.tailor.ai.chat_session.ChatSession;
 import jakarta.persistence.*;
 import jdk.jfr.Timestamp;
 
