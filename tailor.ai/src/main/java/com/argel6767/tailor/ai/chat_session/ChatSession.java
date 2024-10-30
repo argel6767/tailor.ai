@@ -1,11 +1,13 @@
 package com.argel6767.tailor.ai.chat_session;
 
+import com.argel6767.tailor.ai.message.Message;
 import com.argel6767.tailor.ai.user.User;
 
 import jakarta.persistence.*;
 import jdk.jfr.Timestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class ChatSession {
@@ -25,6 +27,9 @@ public class ChatSession {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "chatSession")
+    private List<Message> messages;
     
     public void setChatSessionId(Long chatSessionId) {
         this.chatSessionId = chatSessionId;
