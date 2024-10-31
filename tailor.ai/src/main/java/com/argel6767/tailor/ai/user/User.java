@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -113,9 +114,16 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (authorities == null || authorities.isEmpty()) {
+            return new ArrayList<>();
+        }
         return Arrays.stream(authorities.split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toSet());
+    }
+
+    public void setAuthorities(String authorities) {
+        this.authorities = authorities;
     }
 
     @Override

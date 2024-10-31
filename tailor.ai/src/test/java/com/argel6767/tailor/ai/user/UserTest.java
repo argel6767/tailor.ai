@@ -3,11 +3,15 @@ import com.argel6767.tailor.ai.chat_session.ChatSession;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -77,5 +81,20 @@ class UserTest {
         user.setChatSessions(chatSessions);
         assertEquals(chatSessions, user.getChatSessions(), "ChatSessions should be set and retrieved correctly.");
     }
+
+    @Test
+    void testGetAuthoritiesShouldSplitAndConvertStringToAuthorities() {
+        user.setAuthorities("ROLE_USER,ROLE_ADMIN");
+        Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
+        assertThat(authorities).hasSize(2);
+    }
+
+    @Test
+    void testGetAuthoritiesShouldReturnAnEmptyCollectionWithNoRoles() {
+        user.setAuthorities("");
+        Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
+        assertThat(authorities).isEmpty();
+    }
+
 }
 
