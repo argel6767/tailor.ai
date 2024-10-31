@@ -39,6 +39,9 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetails);
     }
 
+    /*
+     * generates JWT Token
+     */
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return buildToken(extraClaims, userDetails, expirationTime);
     }
@@ -47,11 +50,10 @@ public class JwtService {
         return expirationTime;
     }
 
-    private String buildToken(
-            Map<String, Object> extraClaims,
-            UserDetails userDetails,
-            long expiration
-    ) {
+    /*
+     * Builds the JWT token using JWT builder
+     */
+    private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
@@ -62,11 +64,17 @@ public class JwtService {
                 .compact();
     }
 
+    /*
+     * check if token is a valid token and is attached to user
+     */
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
+    /*
+     * checks if token is expired, if so then it is no longer valid
+     */
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
