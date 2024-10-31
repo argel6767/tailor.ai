@@ -3,14 +3,20 @@ package com.argel6767.tailor.ai.user;
 import com.argel6767.tailor.ai.chat_session.ChatSession;
 import jakarta.persistence.*;
 import jdk.jfr.Timestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Table(name = "users")
 @Entity
-public class User{
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
@@ -35,6 +41,8 @@ public class User{
     @Column(nullable = false)
     @Timestamp
     private LocalDateTime lastLogin;
+
+    private String authorities;
 
     @OneToMany(mappedBy="user")
     private List<ChatSession> chatSessions;
@@ -101,5 +109,22 @@ public class User{
 
     public void setChatSessions(List<ChatSession> chatSessions) {
         this.chatSessions = chatSessions;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.stream(authorities.split(","))
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public String getPassword() {
+        return passwordHash;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 }
