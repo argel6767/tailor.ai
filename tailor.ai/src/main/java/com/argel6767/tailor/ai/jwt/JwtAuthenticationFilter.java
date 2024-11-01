@@ -32,14 +32,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
 
+    /**
+     * filter requests to check if API requests are valid/contain the JWT Token
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("Authorization");
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+        //invalid request (either no auth header at all or wrong header type)
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
         }
         else {
             try {
+                //grab jwt token and user email from the request
                 final String jwt = authorizationHeader.substring(7);
                 final String userEmail = jwtService.extractUsername(jwt);
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
