@@ -1,11 +1,11 @@
 package com.argel6767.tailor.ai.auth.requests;
 
-public class VerifyUser {
+public class VerifyUserDto {
 
     private String email;
     private String verificationToken;
 
-    public VerifyUser(String email, String verificationToken) {
+    public VerifyUserDto(String email, String verificationToken) {
         this.email = email;
         this.verificationToken = verificationToken;
     }

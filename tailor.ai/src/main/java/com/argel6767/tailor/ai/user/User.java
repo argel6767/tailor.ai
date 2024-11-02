@@ -26,6 +26,12 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(name="verification_code")
+    private String verificationCode;
+
+    @Column(name = "verification_expiration")
+    private LocalDateTime codeExpiry;
+
     private Boolean isEmailVerified = false;
 
     @Column(nullable = false)
@@ -45,6 +51,10 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy="user")
     private List<ChatSession> chatSessions = new ArrayList<>();
+
+    public User() {}
+
+    public User(String email, String passwordHash) {}
 
     public void setId(Long id) {
         this.userId = id;
@@ -76,6 +86,22 @@ public class User implements UserDetails {
 
     public void setIsEmailVerified(Boolean isEmailVerified) {
         this.isEmailVerified = isEmailVerified;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public LocalDateTime getCodeExpiry() {
+        return codeExpiry;
+    }
+
+    public void setCodeExpiry(LocalDateTime codeExpiry) {
+        this.codeExpiry = codeExpiry;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -132,5 +158,10 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isEmailVerified;
     }
 }
