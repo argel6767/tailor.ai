@@ -148,4 +148,5 @@ class AuthenticationControllerTest {
         );
         verify(authenticationService).signUp(request);
     }
+
 }
