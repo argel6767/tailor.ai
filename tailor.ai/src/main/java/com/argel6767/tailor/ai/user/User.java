@@ -26,13 +26,11 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
-    private Boolean isEmailVerified;
+    private Boolean isEmailVerified = false;
 
     @Column(nullable = false)
     private String passwordHash;
 
-    @Column(nullable = false)
     private String profession;
 
     @Column(nullable = false)
@@ -46,7 +44,7 @@ public class User implements UserDetails {
     private String authorities;
 
     @OneToMany(mappedBy="user")
-    private List<ChatSession> chatSessions;
+    private List<ChatSession> chatSessions = new ArrayList<>();
 
     public void setId(Long id) {
         this.userId = id;
