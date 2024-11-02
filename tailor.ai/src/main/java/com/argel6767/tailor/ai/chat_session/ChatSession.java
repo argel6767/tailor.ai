@@ -19,6 +19,8 @@ public class ChatSession {
 
     @Column(nullable = false, columnDefinition = "varchar(100) default 'New Chat'")
     private String chatSessionName;
+
+    private String s3FileUrl;
     
     @Timestamp
     @Column(nullable = false)
@@ -45,6 +47,14 @@ public class ChatSession {
 
     public void setChatSessionName(String chatSessionName) {
         this.chatSessionName = chatSessionName;
+    }
+
+    public String getS3FileUrl() {
+        return s3FileUrl;
+    }
+
+    public void setS3FileUrl(String s3FileUrl) {
+        this.s3FileUrl = s3FileUrl;
     }
 
     public LocalDateTime getCreatedAt() {
