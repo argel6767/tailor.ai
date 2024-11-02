@@ -56,7 +56,7 @@ public class AuthenticationService {
      * authenticates user, usually when they are logging in
      * will throw an exception if the email is not tied to any user or the email has not been verified
      */
-    public User authenicateUser(AuthenticateUserDto request) {
+    public User authenticateUser(AuthenticateUserDto request) {
         User user = userRepository.findByEmail(request.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(request.getUsername()));
         if (!user.isEnabled()) {
