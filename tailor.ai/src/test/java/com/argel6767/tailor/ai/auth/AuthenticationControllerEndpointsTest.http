@@ -27,6 +27,7 @@ Content-Type: application/json
   "password": "password123"
 }
 
+
 ### POST Request for resend that should send a 400, because email is already verified
 
 POST http://localhost:8080/auth/resend

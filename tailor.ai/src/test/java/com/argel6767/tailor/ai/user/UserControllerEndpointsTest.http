@@ -1,0 +1,10 @@
+### PUT request for add users profession
+PUT http://localhost:8080/user/profession
+Content-Type: application/json
+Authorization: Bearer {{$auth.token()}}
+
+{
+  "email":"argel6767@gmail.com",
+  "profession":"Software Engineer"
+}
+###
