@@ -5,6 +5,8 @@ public class VerifyUserDto {
     private String email;
     private String verificationToken;
 
+    public VerifyUserDto() {}
+
     public VerifyUserDto(String email, String verificationToken) {
         this.email = email;
         this.verificationToken = verificationToken;

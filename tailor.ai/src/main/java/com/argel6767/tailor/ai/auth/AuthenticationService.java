@@ -38,7 +38,11 @@ public class AuthenticationService {
      * signs up user to app, will fail if the email is taken as they need to be unique
      */
     public User signUp(AuthenticateUserDto request) {
-        User user = new User(request.getUsername(), passwordEncoder.encode(request.getPassword()));
+        System.out.println("This is the email"+ request.getUsername());
+        User user = new User();
+        user.setEmail(request.getUsername());
+        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        System.out.println("this is the user's email:" + user.getEmail());
         setVerificationCodeAndSendIt(user);
         return userRepository.save(user);
     }
@@ -63,6 +67,7 @@ public class AuthenticationService {
             throw new EmailVerificationException("Email not verified");
         }
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        user.setLastLogin(LocalDateTime.now());
         return user;
     }
 
@@ -80,6 +85,7 @@ public class AuthenticationService {
         if (request.getVerificationToken().equals(user.getVerificationCode())) {
             user.setCodeExpiry(null);
             user.setIsEmailVerified(true);
+            userRepository.save(user);
         }
         else {
             throw new RuntimeException("Invalid verification token");
@@ -105,7 +111,7 @@ public class AuthenticationService {
      * formats and generates the verification email that will contain the verification code to the user
      */
     private void sendVerificationEmail(User user) {
-        String to = user.getEmail();
+        String to = user.getUsername();
         String subject = "Verification Email";
         String code = user.getVerificationCode();
         String body = String.format("""
@@ -134,7 +140,7 @@ public class AuthenticationService {
      */
     private String generateVerificationCode() {
         Random random = new Random();
-        return String.valueOf(random.nextInt(9000000) + 1000000); //guaranteed 6-digit number
+        return String.valueOf(random.nextInt(90000) + 10000); //guaranteed 6-digit number
     }
 
 }

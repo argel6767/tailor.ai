@@ -43,7 +43,7 @@ public class User implements UserDetails {
     @Timestamp
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
+    @Column(name = "last_login")
     @Timestamp
     private LocalDateTime lastLogin;
 
@@ -163,5 +163,13 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isEmailVerified;
+    }
+
+    /*
+     * automatically puts timestamp to creation of user
+     */
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
     }
 }

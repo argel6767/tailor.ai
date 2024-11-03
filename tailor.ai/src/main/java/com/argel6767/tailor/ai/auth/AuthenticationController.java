@@ -1,6 +1,7 @@
 package com.argel6767.tailor.ai.auth;
 
 import com.argel6767.tailor.ai.auth.requests.AuthenticateUserDto;
+import com.argel6767.tailor.ai.auth.requests.ResendEmailDto;
 import com.argel6767.tailor.ai.auth.requests.VerifyUserDto;
 import com.argel6767.tailor.ai.auth.responses.LoginResponse;
 import com.argel6767.tailor.ai.jwt.JwtService;
@@ -64,9 +65,9 @@ public class AuthenticationController {
      * resend verification email endpoint
      */
     @PostMapping("/resend")
-    public ResponseEntity<?> resend(@RequestBody String email) {
+    public ResponseEntity<?> resend(@RequestBody ResendEmailDto email) {
         try {
-            authenticationService.resendVerificationEmail(email);
+            authenticationService.resendVerificationEmail(email.getEmail());
             return ResponseEntity.ok("Verification code resent!");
         }
         catch (Exception e) {

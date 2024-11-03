@@ -1,6 +1,7 @@
 package com.argel6767.tailor.ai.auth;
 
 import com.argel6767.tailor.ai.auth.requests.AuthenticateUserDto;
+import com.argel6767.tailor.ai.auth.requests.ResendEmailDto;
 import com.argel6767.tailor.ai.auth.requests.VerifyUserDto;
 import com.argel6767.tailor.ai.auth.responses.LoginResponse;
 import com.argel6767.tailor.ai.jwt.JwtService;
@@ -99,9 +100,10 @@ class AuthenticationControllerTest {
     void testResendVerificationEmailSuccessful() {
         // Arrange
         String email = "test@example.com";
+        ResendEmailDto emailDto = new ResendEmailDto(email);
         doNothing().when(authenticationService).resendVerificationEmail(email);
         // Act
-        ResponseEntity<?> response = authenticationController.resend(email);
+        ResponseEntity<?> response = authenticationController.resend(emailDto);
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Verification code resent!", response.getBody());
@@ -112,10 +114,11 @@ class AuthenticationControllerTest {
     void testResendVerificationEmailFailure() {
         // Arrange
         String email = "test@example.com";
+        ResendEmailDto emailDto = new ResendEmailDto(email);
         String errorMessage = "Email already verified";
         doThrow(new RuntimeException(errorMessage)).when(authenticationService).resendVerificationEmail(email);
         // Act
-        ResponseEntity<?> response = authenticationController.resend(email);
+        ResponseEntity<?> response = authenticationController.resend(emailDto);
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals(errorMessage, response.getBody());

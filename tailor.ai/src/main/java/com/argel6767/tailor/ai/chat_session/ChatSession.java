@@ -17,8 +17,8 @@ public class ChatSession {
     @Column(nullable = false, updatable = false)
     private Long chatSessionId;
 
-    @Column(nullable = false, columnDefinition = "varchar(100) default 'New Chat'")
-    private String chatSessionName;
+    @Column(nullable = false)
+    private String chatSessionName = "New Chat";
 
     private String s3FileUrl;
     
