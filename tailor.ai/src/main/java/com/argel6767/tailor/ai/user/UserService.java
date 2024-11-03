@@ -12,7 +12,7 @@ public class UserService {
     }
 
     public User addProfession(String email, String profession) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found" + email));
         user.setProfession(profession);
         return userRepository.save(user);
     }
