@@ -14,7 +14,7 @@ import java.util.Properties;
 @Configuration
 public class EmailConfiguration {
 
-    @Value("${email.username}")
+    @Value("${support.email}")
     private String emailUsername;
 
     @Value("${email.secret.key}")
