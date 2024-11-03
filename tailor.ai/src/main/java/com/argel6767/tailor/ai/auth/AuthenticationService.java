@@ -68,7 +68,7 @@ public class AuthenticationService {
         }
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         user.setLastLogin(LocalDateTime.now());
-        return user;
+        return userRepository.save(user);
     }
 
     /*
@@ -140,7 +140,7 @@ public class AuthenticationService {
      */
     private String generateVerificationCode() {
         Random random = new Random();
-        return String.valueOf(random.nextInt(90000) + 10000); //guaranteed 6-digit number
+        return String.valueOf(random.nextInt(900000) + 100000); //guaranteed 6-digit number
     }
 
 }
