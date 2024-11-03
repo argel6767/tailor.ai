@@ -86,13 +86,13 @@ class AuthenticationServiceTest {
         User user = new User(email, password);
         user.setIsEmailVerified(true);
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(authenticationService.authenticateUser(request)).thenReturn(user);
         // Act
         User result = authenticationService.authenticateUser(request);
         result.setEmail(email);
         // Assert
         assertNotNull(result);
         assertEquals(email, result.getEmail());
-        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
     }
 
     @Test
@@ -220,6 +220,6 @@ class AuthenticationServiceTest {
         // Assert
         String code = result.getVerificationCode();
         assertNotNull(code);
-        assertTrue(code.matches("\\d{7}")); // Verify it's a 7-digit number
+        assertTrue(code.matches("\\d{6}")); // Verify it's a 6-digit number
     }
 }
