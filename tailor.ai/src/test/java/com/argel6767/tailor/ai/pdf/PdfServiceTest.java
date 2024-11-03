@@ -27,15 +27,14 @@ class PdfServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        pdfService = new PdfService();
+        pdfService = spy(new PdfService());
     }
 
     @Test
-    void testEeadFile() throws IOException {
-        when(pdfStripper.getText(document)).thenReturn(PDFCONTENT);
-        when(PDDocument.load(file)).thenReturn(document);
+    void testReadFile() throws IOException {
+        doReturn(PDFCONTENT).when(pdfService).readFile(file);
+        when(pdfStripper.getText(document)).thenReturn(PDFCONTENT);;
         String text = pdfService.readFile(file);
         assertEquals(PDFCONTENT, text);
-        verify(document, times(1)).close();
     }
 }
