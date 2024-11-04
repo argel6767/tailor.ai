@@ -2,6 +2,7 @@ package com.argel6767.tailor.ai.pdf;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -20,5 +21,9 @@ public class PdfService {
         String text = stripper.getText(document);
         document.close();
         return text;
+    }
+
+    public ResponseEntity<?> sendPDFToBucket(File file) {
+
     }
 }
