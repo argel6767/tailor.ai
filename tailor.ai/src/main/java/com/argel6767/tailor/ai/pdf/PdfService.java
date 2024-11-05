@@ -23,7 +23,5 @@ public class PdfService {
         return text;
     }
 
-    public ResponseEntity<?> sendPDFToBucket(File file) {
 
-    }
 }
