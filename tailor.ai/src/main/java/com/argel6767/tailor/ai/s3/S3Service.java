@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,6 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.File;
-
 import java.io.InputStream;
 
 
@@ -31,15 +29,15 @@ public class S3Service {
     @Value("${bucket.name}")
     private String bucket;
 
-     String generateKey(Long chatSessionId) {
+     private String generateKey(Long chatSessionId) {
         return chatSessionId + "-resume";
     }
 
     /*
     * uploads given file to the s3 bucket
      */
-    public void uploadFile(String key, File userPdf) {
-         s3client.putObject(PutObjectRequest.builder().bucket(bucket).key(key).build(), RequestBody.fromFile(userPdf));
+    public void uploadFile(Long chatSessionId, File userPdf) {
+         s3client.putObject(PutObjectRequest.builder().bucket(bucket).key(generateKey(chatSessionId)).build(), RequestBody.fromFile(userPdf));
     }
 
     /*
@@ -51,7 +49,7 @@ public class S3Service {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + key + ".pdf\"");
-        return ResponseEntity.ok().headers(headers).body(new InputStreamResource(inputStream);
+        return ResponseEntity.ok().headers(headers).body(new InputStreamResource(inputStream));
     }
 
     /*
@@ -72,6 +70,5 @@ public class S3Service {
     public void setBucket(String bucket) {
         this.bucket = bucket;
     }
-
 
 }
