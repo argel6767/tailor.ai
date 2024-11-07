@@ -1,6 +1,5 @@
 package com.argel6767.tailor.ai.chat_session;
 
-import com.argel6767.tailor.ai.message.MessageRepository;
 import com.argel6767.tailor.ai.message.MessageService;
 import com.argel6767.tailor.ai.s3.S3Service;
 import com.argel6767.tailor.ai.user.User;
@@ -57,6 +56,5 @@ public class ChatSessionService {
         user.getChatSessions().add(chatSession);
         userRepository.save(user);
     }
-
 
 }
