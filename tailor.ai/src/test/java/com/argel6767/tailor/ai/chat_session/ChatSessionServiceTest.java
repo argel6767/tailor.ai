@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ class ChatSessionServiceTest {
 
     private ChatSession chatSession;
     private User user;
-    private File mockPdfFile;
+    private MultipartFile mockPdfFile;
     private static final String TEST_EMAIL = "test@example.com";
     private static final String TEST_S3_KEY = "test-file-key";
 
@@ -56,7 +57,7 @@ class ChatSessionServiceTest {
         user.setEmail(TEST_EMAIL);
         user.setChatSessions(new ArrayList<>());
 
-        mockPdfFile = mock(File.class);
+        mockPdfFile = mock(MultipartFile.class);
     }
 
     @Test
@@ -86,7 +87,7 @@ class ChatSessionServiceTest {
 
         // Verify interactions
         verify(chatSessionRepository, times(2)).save(any(ChatSession.class));
-        verify(s3Service).uploadFile(any(), eq(mockPdfFile));
+        verify(s3Service).uploadFile(any(), any());
         verify(userService).getUserByEmail(TEST_EMAIL);
         verify(userRepository).save(user);
     }

@@ -6,8 +6,10 @@ import com.argel6767.tailor.ai.user.User;
 import com.argel6767.tailor.ai.user.UserRepository;
 import com.argel6767.tailor.ai.user.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * has service logic for dealing with ChatSession Entity
@@ -38,12 +40,28 @@ public class ChatSessionService {
      * creates new ChatSession while uploading file that is attached to the chatSession to the S3 bucket
      * the user's email is also grabbed to allow for being able to link the user in the db, handling the relationship
      */
-    public ChatSession createChatSession(File pdfFile, String email) {
+    public ChatSession createChatSession(MultipartFile pdfFileMulti, String email) {
+        File pdfFile = convertMultipartFileToFile(pdfFileMulti);
         ChatSession chatSession = new ChatSession();
         linkUserToChatSession(email, chatSession);
         String key = s3Service.uploadFile(chatSession.getChatSessionId(), pdfFile);
         chatSession.setS3FileKey(key);
         return chatSessionRepository.save(chatSession);
+    }
+
+    /*
+     * converts the file back into a regular File object
+     */
+    private File convertMultipartFileToFile(MultipartFile multipartFile)  {
+        // Create a temporary file and copy the contents of the multipart file
+        File file = null;
+        try {
+            file = File.createTempFile("uploaded-", multipartFile.getOriginalFilename());
+            multipartFile.transferTo(file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return file;
     }
 
     /*
