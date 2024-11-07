@@ -20,7 +20,7 @@ public class ChatSession {
     @Column(nullable = false)
     private String chatSessionName = "New Chat";
 
-    private String s3FileUrl;
+    private String s3FileKey;
     
     @Timestamp
     @Column(nullable = false)
@@ -49,12 +49,12 @@ public class ChatSession {
         this.chatSessionName = chatSessionName;
     }
 
-    public String getS3FileUrl() {
-        return s3FileUrl;
+    public String getS3FileKey() {
+        return s3FileKey;
     }
 
-    public void setS3FileUrl(String s3FileUrl) {
-        this.s3FileUrl = s3FileUrl;
+    public void setS3FileKey(String s3FileKey) {
+        this.s3FileKey = s3FileKey;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -71,6 +71,11 @@ public class ChatSession {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
     }
 
 }

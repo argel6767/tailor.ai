@@ -36,8 +36,10 @@ public class S3Service {
     /*
     * uploads given file to the s3 bucket
      */
-    public void uploadFile(Long chatSessionId, File userPdf) {
-         s3client.putObject(PutObjectRequest.builder().bucket(bucket).key(generateKey(chatSessionId)).build(), RequestBody.fromFile(userPdf));
+    public String uploadFile(Long chatSessionId, File userPdf) {
+        String key = generateKey(chatSessionId);
+        s3client.putObject(PutObjectRequest.builder().bucket(bucket).key(key).build(), RequestBody.fromFile(userPdf));
+        return key;
     }
 
     /*
