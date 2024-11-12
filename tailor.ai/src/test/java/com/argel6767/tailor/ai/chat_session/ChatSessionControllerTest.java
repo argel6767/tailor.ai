@@ -5,22 +5,26 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.Mockito;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 
 @ExtendWith(MockitoExtension.class)
 class ChatSessionControllerTest {
@@ -43,7 +47,7 @@ class ChatSessionControllerTest {
                 .build();
 
         mockChatSession = new ChatSession();
-        mockChatSession.setChatSessionId(1L);
+        mockChatSession.setChatSessionId(TEST_CHAT_SESSION_ID);
         mockChatSession.setS3FileKey("test-key");
     }
 
@@ -61,13 +65,11 @@ class ChatSessionControllerTest {
                 .thenReturn(mockChatSession);
 
         // Act & Assert
-        mockMvc.perform(multipart("/chatsession/session")
-                        .file(file)
-                        .content(TEST_EMAIL)
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(multipart("/chatsession/{email}", TEST_EMAIL)
+                        .file(file))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.chatSessionId").value(mockChatSession.getChatSessionId()))
-                .andExpect(jsonPath("$.s3FileKey").value(mockChatSession.getS3FileKey()));
+                .andExpect(jsonPath("$.chatSessionId").value(TEST_CHAT_SESSION_ID))
+                .andExpect(jsonPath("$.s3FileKey").value("test-key"));
 
         verify(chatSessionService).createChatSession(any(MultipartFile.class), eq(TEST_EMAIL));
     }
@@ -75,9 +77,7 @@ class ChatSessionControllerTest {
     @Test
     void testCreateChatSessionShouldHandleMissingFile() throws Exception {
         // Act & Assert
-        mockMvc.perform(multipart("/chatsession/session")
-                        .content(TEST_EMAIL)
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(multipart("/chatsession/{email}", TEST_EMAIL))
                 .andExpect(status().isBadRequest());
 
         verify(chatSessionService, never()).createChatSession(any(), any());
@@ -94,13 +94,12 @@ class ChatSessionControllerTest {
         );
 
         // Act & Assert
-        mockMvc.perform(multipart("/chatsession/session")
+        mockMvc.perform(multipart("/chatsession/")
                         .file(file))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
 
         verify(chatSessionService, never()).createChatSession(any(), any());
     }
-
 
     @Test
     void testCreateChatSessionShouldHandleLargeFile() throws Exception {
@@ -113,11 +112,12 @@ class ChatSessionControllerTest {
                 largeContent
         );
 
+        when(chatSessionService.createChatSession(any(MultipartFile.class), eq(TEST_EMAIL)))
+                .thenReturn(mockChatSession);
+
         // Act & Assert
-        mockMvc.perform(multipart("/chatsession/session")
-                        .file(largeFile)
-                        .content(TEST_EMAIL)
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(multipart("/chatsession/{email}", TEST_EMAIL)
+                        .file(largeFile))
                 .andExpect(status().isOk());
 
         verify(chatSessionService).createChatSession(any(MultipartFile.class), eq(TEST_EMAIL));
@@ -130,29 +130,36 @@ class ChatSessionControllerTest {
                 .thenReturn(ResponseEntity.ok(List.of()));
 
         // Act & Assert
-        mockMvc.perform(get("/chat/session/{email}", TEST_EMAIL)
+        mockMvc.perform(get("/chatsession/{email}", TEST_EMAIL)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$").isEmpty());
+
+        verify(chatSessionService).getAllUserChatSessions(TEST_EMAIL);
     }
 
     @Test
     void testGetChatSessionPDFReturnsSuccess() throws Exception {
         // Arrange
-        byte[] pdfContent = "Test PDF Content".getBytes();
+        byte[] pdfContentBytes = "Test PDF Content".getBytes();
+        ByteArrayInputStream pdfInputStream = new ByteArrayInputStream(pdfContentBytes);
+        InputStreamResource pdfContent = new InputStreamResource(pdfInputStream);
+
         ResponseEntity<?> responseEntity = ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(pdfContent);
 
-        when(chatSessionService.getChatSessionPDF(TEST_CHAT_SESSION_ID))
-                .thenReturn(any());
+        Mockito.<ResponseEntity<?>>when(chatSessionService.getChatSessionPDF(TEST_CHAT_SESSION_ID))
+                .thenReturn(responseEntity);
 
         // Act & Assert
-        mockMvc.perform(get("/chat/session/{id}", TEST_CHAT_SESSION_ID)
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/chatsession/pdf/{id}", TEST_CHAT_SESSION_ID))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_PDF));
+                .andExpect(content().contentType(MediaType.APPLICATION_PDF))
+                .andExpect(content().bytes(pdfContentBytes));
+
+        verify(chatSessionService).getChatSessionPDF(TEST_CHAT_SESSION_ID);
     }
 
     @Test
@@ -162,9 +169,10 @@ class ChatSessionControllerTest {
                 .thenReturn(ResponseEntity.notFound().build());
 
         // Act & Assert
-        mockMvc.perform(get("/chat/session/{id}", TEST_CHAT_SESSION_ID)
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/chatsession/pdf/{id}", TEST_CHAT_SESSION_ID))
                 .andExpect(status().isNotFound());
+
+        verify(chatSessionService).getChatSessionPDF(TEST_CHAT_SESSION_ID);
     }
 
     @Test
@@ -175,8 +183,10 @@ class ChatSessionControllerTest {
                 .thenReturn(ResponseEntity.badRequest().build());
 
         // Act & Assert
-        mockMvc.perform(get("/chat/session/{email}", invalidEmail)
+        mockMvc.perform(get("/chatsession/{email}", invalidEmail)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
+
+        verify(chatSessionService).getAllUserChatSessions(invalidEmail);
     }
 }
