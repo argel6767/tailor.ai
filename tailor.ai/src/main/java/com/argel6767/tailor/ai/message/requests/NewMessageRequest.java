@@ -12,6 +12,9 @@ public class NewMessageRequest {
         this.author = author;
     }
 
+    //empty constructor for tests
+    public NewMessageRequest() {}
+
     public String getMessage() {
         return message;
     }

@@ -72,8 +72,8 @@ public class ChatSessionService {
         return chatSessionRepository.findById(id).orElse(null);
     }
 
-    public void saveChatSession(ChatSession chatSession) {
-        chatSessionRepository.save(chatSession);
+    public ChatSession saveChatSession(ChatSession chatSession) {
+        return chatSessionRepository.save(chatSession);
     }
 
     /*
