@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
-@RequestMapping("/chatsession")
+@RequestMapping("/chat")
 public class ChatSessionController {
 
     private final ChatSessionService chatSessionService;
@@ -15,9 +15,10 @@ public class ChatSessionController {
         this.chatSessionService = chatSessionService;
     }
 
-    @PostMapping("/session")
-    public ResponseEntity<ChatSession> createChatSession(@RequestParam("file") MultipartFile file, @RequestBody String email) {
+    @PostMapping("/session/{email}")
+    public ResponseEntity<ChatSession> createChatSession(@RequestParam("file") MultipartFile file, @PathVariable String email) {
         return ResponseEntity.ok(chatSessionService.createChatSession(file, email));
     }
+
 
 }

@@ -1,0 +1,17 @@
+
+### Have to have this here to allow for use of token requiring endpoints
+
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "username": "argel6767@gmail.com",
+  "password": "password123"
+}
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+### POST to create chat session
+POST http://localhost:8080/chatsession/session
+Authorization: Bearer {{$auth.token("auth_token")}}
+###

@@ -5,6 +5,8 @@ import com.argel6767.tailor.ai.s3.S3Service;
 import com.argel6767.tailor.ai.user.User;
 import com.argel6767.tailor.ai.user.UserRepository;
 import com.argel6767.tailor.ai.user.UserService;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,6 +49,18 @@ public class ChatSessionService {
         String key = s3Service.uploadFile(chatSession.getChatSessionId(), pdfFile);
         chatSession.setS3FileKey(key);
         return chatSessionRepository.save(chatSession);
+    }
+
+    /*
+     * grabs pdf file attached to chat session given by the chatSession id
+     */
+    public ResponseEntity<?> getChatSessionPDF(Long chatSessionId) {
+        ChatSession chatSession = chatSessionRepository.findById(chatSessionId).orElse(null);
+        if (chatSession != null) {
+            String key = chatSession.getS3FileKey();
+            return s3Service.downloadFile(key);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     /*
