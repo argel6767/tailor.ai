@@ -8,7 +8,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("/chatsession")
 public class ChatSessionController {
 
     private final ChatSessionService chatSessionService;
@@ -17,17 +17,17 @@ public class ChatSessionController {
         this.chatSessionService = chatSessionService;
     }
 
-    @PostMapping("/session/{email}")
+    @PostMapping("/{email}")
     public ResponseEntity<ChatSession> createChatSession(@RequestParam("file") MultipartFile file, @PathVariable String email) {
         return ResponseEntity.ok(chatSessionService.createChatSession(file, email));
     }
 
-    @GetMapping("/session/{id}")
+    @GetMapping("/pdf/{id}")
     public ResponseEntity<?> getChatSessionPDF(@PathVariable Long id) {
         return chatSessionService.getChatSessionPDF(id);
     }
 
-    @GetMapping("/session/{email}")
+    @GetMapping("/{email}")
     public ResponseEntity<List<ChatSession>> getUserChatSessions(@PathVariable String email) {
         return chatSessionService.getAllUserChatSessions(email);
     }

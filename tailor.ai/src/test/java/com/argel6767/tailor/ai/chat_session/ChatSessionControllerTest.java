@@ -7,15 +7,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @ExtendWith(MockitoExtension.class)
 class ChatSessionControllerTest {
@@ -29,6 +34,7 @@ class ChatSessionControllerTest {
     private MockMvc mockMvc;
     private ChatSession mockChatSession;
     private static final String TEST_EMAIL = "test@example.com";
+    private static final Long TEST_CHAT_SESSION_ID = 1L;
 
     @BeforeEach
     void setUp() {
@@ -115,5 +121,62 @@ class ChatSessionControllerTest {
                 .andExpect(status().isOk());
 
         verify(chatSessionService).createChatSession(any(MultipartFile.class), eq(TEST_EMAIL));
+    }
+
+    @Test
+    void testGetUserChatSessionsWithEmptyList() throws Exception {
+        // Arrange
+        when(chatSessionService.getAllUserChatSessions(TEST_EMAIL))
+                .thenReturn(ResponseEntity.ok(List.of()));
+
+        // Act & Assert
+        mockMvc.perform(get("/chat/session/{email}", TEST_EMAIL)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isEmpty());
+    }
+
+    @Test
+    void testGetChatSessionPDFReturnsSuccess() throws Exception {
+        // Arrange
+        byte[] pdfContent = "Test PDF Content".getBytes();
+        ResponseEntity<?> responseEntity = ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdfContent);
+
+        when(chatSessionService.getChatSessionPDF(TEST_CHAT_SESSION_ID))
+                .thenReturn(any());
+
+        // Act & Assert
+        mockMvc.perform(get("/chat/session/{id}", TEST_CHAT_SESSION_ID)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_PDF));
+    }
+
+    @Test
+    void testGetChatSessionPDFReturnsNotFound() throws Exception {
+        // Arrange
+        when(chatSessionService.getChatSessionPDF(TEST_CHAT_SESSION_ID))
+                .thenReturn(ResponseEntity.notFound().build());
+
+        // Act & Assert
+        mockMvc.perform(get("/chat/session/{id}", TEST_CHAT_SESSION_ID)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testGetUserChatSessionsWithInvalidEmail() throws Exception {
+        // Arrange
+        String invalidEmail = "invalid-email";
+        when(chatSessionService.getAllUserChatSessions(invalidEmail))
+                .thenReturn(ResponseEntity.badRequest().build());
+
+        // Act & Assert
+        mockMvc.perform(get("/chat/session/{email}", invalidEmail)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 }
