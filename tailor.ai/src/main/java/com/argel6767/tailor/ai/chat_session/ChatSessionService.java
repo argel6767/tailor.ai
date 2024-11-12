@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * has service logic for dealing with ChatSession Entity
@@ -61,6 +62,14 @@ public class ChatSessionService {
             return s3Service.downloadFile(key);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    /*
+     * returns all chat sessions of a user
+     */
+    public ResponseEntity<List<ChatSession>> getAllUserChatSessions(String email) {
+        User user = userService.getUserByEmail(email);
+        return ResponseEntity.ok(user.getChatSessions());
     }
 
     /*
