@@ -1,6 +1,7 @@
 package com.argel6767.tailor.ai.message;
 
 import com.argel6767.tailor.ai.chat_session.ChatSession;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public class Message {
     
     @ManyToOne
     @JoinColumn(name = "chat_session_id")
+    @JsonBackReference
     private ChatSession chatSession;
     
     public void setMessageId(Long messageId) {

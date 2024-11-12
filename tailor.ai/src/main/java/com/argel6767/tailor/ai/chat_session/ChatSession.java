@@ -3,6 +3,8 @@ package com.argel6767.tailor.ai.chat_session;
 import com.argel6767.tailor.ai.message.Message;
 import com.argel6767.tailor.ai.user.User;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jdk.jfr.Timestamp;
 
@@ -28,9 +30,11 @@ public class ChatSession {
     
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     @OneToMany(mappedBy = "chatSession")
+    @JsonManagedReference
     private List<Message> messages;
     
     public void setChatSessionId(Long chatSessionId) {

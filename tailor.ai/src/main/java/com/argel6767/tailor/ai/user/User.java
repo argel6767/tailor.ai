@@ -1,6 +1,7 @@
 package com.argel6767.tailor.ai.user;
 
 import com.argel6767.tailor.ai.chat_session.ChatSession;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jdk.jfr.Timestamp;
 import org.springframework.security.core.GrantedAuthority;
@@ -50,6 +51,7 @@ public class User implements UserDetails {
     private String authorities;
 
     @OneToMany(mappedBy="user")
+    @JsonManagedReference
     private List<ChatSession> chatSessions = new ArrayList<>();
 
     public User() {}
