@@ -5,7 +5,6 @@ import com.argel6767.tailor.ai.s3.S3Service;
 import com.argel6767.tailor.ai.user.User;
 import com.argel6767.tailor.ai.user.UserRepository;
 import com.argel6767.tailor.ai.user.UserService;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

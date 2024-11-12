@@ -11,11 +11,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -43,6 +46,7 @@ class ChatSessionServiceTest {
     private ChatSessionService chatSessionService;
 
     private ChatSession chatSession;
+    private Long chatSessionId;
     private User user;
     private MultipartFile mockPdfFile;
     private static final String TEST_EMAIL = "test@example.com";
@@ -51,11 +55,13 @@ class ChatSessionServiceTest {
     @BeforeEach
     void setUp() {
         chatSession = new ChatSession();
-        chatSession.setChatSessionId(1L);
+        chatSession.setChatSessionId(chatSessionId);
 
         user = new User();
         user.setEmail(TEST_EMAIL);
-        user.setChatSessions(new ArrayList<>());
+        List<ChatSession> chatSessions = new ArrayList<>();
+        chatSessions.add(chatSession);
+        user.setChatSessions(chatSessions);
 
         mockPdfFile = mock(MultipartFile.class);
     }
@@ -146,5 +152,72 @@ class ChatSessionServiceTest {
                 () -> chatSessionService.createChatSession(mockPdfFile, null));
 
         verify(s3Service, never()).uploadFile(any(), any());
+    }
+
+    @Test
+    void testGetAllUserChatSessionsReturnsUserChatSessions() {
+        // Arrange
+        when(userService.getUserByEmail(TEST_EMAIL)).thenReturn(user);
+
+        // Act
+        ResponseEntity<List<ChatSession>> response = chatSessionService.getAllUserChatSessions(TEST_EMAIL);
+
+        // Assert
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+        assertNotNull(response.getBody());
+        assertEquals(1, response.getBody().size());
+        assertEquals(chatSessionId, response.getBody().get(0).getChatSessionId());
+
+        verify(userService).getUserByEmail(TEST_EMAIL);
+    }
+
+    @Test
+    void testGetAllUserChatSessionsWithEmptyChatSessions() {
+        // Arrange
+        user.setChatSessions(new ArrayList<>());
+        when(userService.getUserByEmail(TEST_EMAIL)).thenReturn(user);
+
+        // Act
+        ResponseEntity<List<ChatSession>> response = chatSessionService.getAllUserChatSessions(TEST_EMAIL);
+
+        // Assert
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().isEmpty());
+
+        verify(userService).getUserByEmail(TEST_EMAIL);
+    }
+
+    @Test
+    void testGetChatSessionPDFReturnsSuccessfulResponse() {
+        // Arrange
+        ChatSession session = new ChatSession();
+        session.setChatSessionId(chatSessionId);
+        session.setS3FileKey(TEST_S3_KEY);  // Explicitly set the S3 key
+
+        when(chatSessionRepository.findById(chatSessionId)).thenReturn(Optional.of(session));
+        when(s3Service.downloadFile(TEST_S3_KEY)).thenReturn(ResponseEntity.ok().build());
+
+        // Act
+        ResponseEntity<?> response = chatSessionService.getChatSessionPDF(chatSessionId);
+
+        // Assert
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+        verify(chatSessionRepository).findById(chatSessionId);
+        verify(s3Service).downloadFile(TEST_S3_KEY);
+    }
+
+    @Test
+    void testGetChatSessionPDFWithNonExistentSession() {
+        // Arrange
+        when(chatSessionRepository.findById(chatSessionId)).thenReturn(Optional.empty());
+
+        // Act
+        ResponseEntity<?> response = chatSessionService.getChatSessionPDF(chatSessionId);
+
+        // Assert
+        assertTrue(response.getStatusCode().is4xxClientError());
+        verify(chatSessionRepository).findById(chatSessionId);
+        verify(s3Service, never()).downloadFile(anyString());
     }
 }
