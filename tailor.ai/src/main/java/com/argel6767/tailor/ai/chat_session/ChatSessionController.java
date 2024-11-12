@@ -4,6 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/chat")
@@ -18,6 +20,16 @@ public class ChatSessionController {
     @PostMapping("/session/{email}")
     public ResponseEntity<ChatSession> createChatSession(@RequestParam("file") MultipartFile file, @PathVariable String email) {
         return ResponseEntity.ok(chatSessionService.createChatSession(file, email));
+    }
+
+    @GetMapping("/session/{id}")
+    public ResponseEntity<?> getChatSessionPDF(@PathVariable Long id) {
+        return chatSessionService.getChatSessionPDF(id);
+    }
+
+    @GetMapping("/session/{email}")
+    public ResponseEntity<List<ChatSession>> getUserChatSessions(@PathVariable String email) {
+        return chatSessionService.getAllUserChatSessions(email);
     }
 
 
