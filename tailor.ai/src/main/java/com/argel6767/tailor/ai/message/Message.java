@@ -67,4 +67,11 @@ public class Message {
         this.chatSession = chatSession;
     }
 
+    /*
+     * automatically puts timestamp to creation of message
+     */
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 }

@@ -1,6 +1,5 @@
 package com.argel6767.tailor.ai.chat_session;
 
-import com.argel6767.tailor.ai.message.MessageService;
 import com.argel6767.tailor.ai.s3.S3Service;
 import com.argel6767.tailor.ai.user.User;
 import com.argel6767.tailor.ai.user.UserRepository;
@@ -20,14 +19,12 @@ import java.util.List;
 public class ChatSessionService {
 
     private final ChatSessionRepository chatSessionRepository;
-    private final MessageService messageService;
     private final UserService userService;
     private final S3Service s3Service;
     private final UserRepository userRepository;
 
-    public ChatSessionService(ChatSessionRepository chatSessionRepository, MessageService messageService, UserService userService, S3Service s3Service, UserRepository userRepository) {
+    public ChatSessionService(ChatSessionRepository chatSessionRepository, UserService userService, S3Service s3Service, UserRepository userRepository) {
         this.chatSessionRepository = chatSessionRepository;
-        this.messageService = messageService;
         this.userService = userService;
         this.s3Service = s3Service;
         this.userRepository = userRepository;
@@ -69,6 +66,14 @@ public class ChatSessionService {
     public ResponseEntity<List<ChatSession>> getAllUserChatSessions(String email) {
         User user = userService.getUserByEmail(email);
         return ResponseEntity.ok(user.getChatSessions());
+    }
+
+    public ChatSession getChatSession(Long id) {
+        return chatSessionRepository.findById(id).orElse(null);
+    }
+
+    public void saveChatSession(ChatSession chatSession) {
+        chatSessionRepository.save(chatSession);
     }
 
     /*

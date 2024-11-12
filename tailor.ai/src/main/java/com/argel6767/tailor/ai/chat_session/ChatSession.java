@@ -77,6 +77,14 @@ public class ChatSession {
         this.user = user;
     }
 
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
