@@ -19,8 +19,8 @@ public class MessageService {
         this.chatSessionService = chatSessionService;
     }
 
-    public Message addMessage(Message message) {
-        return messageRepository.save(message);
+    public ResponseEntity<Message> addMessage(Message message) {
+        return ResponseEntity.ok(messageRepository.save(message));
     }
 
     public ResponseEntity<Message> createMessage(NewMessageRequest newMessageRequest, Long chatSessionId) {
@@ -46,6 +46,6 @@ public class MessageService {
         message.setChatSession(chatSession);
         chatSession.getMessages().add(message);
         chatSessionService.saveChatSession(chatSession);
-        return ResponseEntity.ok(message);
+        return ResponseEntity.ok(messageRepository.save(message));
     }
 }

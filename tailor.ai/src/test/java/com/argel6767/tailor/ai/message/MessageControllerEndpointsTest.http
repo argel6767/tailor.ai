@@ -1,0 +1,14 @@
+### POST for creating message with NewMessageRequest object
+POST localhost:8080/message/create/1
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+    "message": "Hello world!",
+    "author": "USER"
+}
+
+### GET Request for all messages from chatsession
+GET localhost:8080/message/1
+Authorization: Bearer {{auth_token}}
+###

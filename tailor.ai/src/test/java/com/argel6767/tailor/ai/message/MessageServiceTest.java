@@ -64,12 +64,12 @@ public class MessageServiceTest {
         when(messageRepository.save(any(Message.class))).thenReturn(testMessage);
 
         // Act
-        Message result = messageService.addMessage(testMessage);
+        ResponseEntity<Message> result = messageService.addMessage(testMessage);
 
         // Assert
         assertNotNull(result);
-        assertEquals(TEST_AUTHOR, result.getAuthor());
-        assertEquals(TEST_MESSAGE, result.getBody());
+        assertEquals(TEST_AUTHOR, result.getBody().getAuthor());
+        assertEquals(TEST_MESSAGE, result.getBody().getBody());
         verify(messageRepository).save(testMessage);
     }
 
