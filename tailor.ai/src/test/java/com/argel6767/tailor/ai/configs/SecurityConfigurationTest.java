@@ -15,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -88,7 +89,7 @@ class SecurityConfigurationTest {
     @Test
     void testCorsConfigurationAllowedMethods() {
         // Act
-        CorsConfiguration corsConfig = securityConfiguration.corsConfiguration();
+        CorsConfigurationSource corsConfig = securityConfiguration.corsConfiguration();
 
         // Assert
         assertNotNull(corsConfig.getAllowedMethods());
