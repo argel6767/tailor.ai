@@ -1,4 +1,6 @@
 import {useState} from "react";
+import registerUser from "../api/registerUser.js";
+import loginUser from "../api/loginUser.js";
 
 const AuthPage = () => {
 
@@ -10,16 +12,17 @@ const AuthPage = () => {
     }
 
     const authRequestValues = {
-        "email":null,
+        "username":null,
         "password":null,
     }
 
     const submitAuthRequestValues = () => {
         const email = document.getElementById("email-input").value;
         const password = document.getElementById("password-input").value;
-        authRequestValues.email = email;
+        authRequestValues.username = email;
         authRequestValues.password = password;
         console.log(authRequestValues);
+        hasAccount? loginUser(authRequestValues) : registerUser(authRequestValues);
     }
 
     return (

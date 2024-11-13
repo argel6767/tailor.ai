@@ -1,4 +1,5 @@
 import axios from 'axios';
+import AuthPage from "../pages/AuthPage.jsx";
 
 const loginUser = async (authRequestValues) => {
     try {
@@ -9,3 +10,5 @@ const loginUser = async (authRequestValues) => {
         console.log(error.response? error.response.data : error);
     }
 }
+
+export default loginUser;
