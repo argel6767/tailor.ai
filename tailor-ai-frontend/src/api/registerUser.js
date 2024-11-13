@@ -9,3 +9,5 @@ const registerUser = async (authRequestValues) => {
         console.log(error.response? error.response.data : error);
     }
 }
+
+export default registerUser;
