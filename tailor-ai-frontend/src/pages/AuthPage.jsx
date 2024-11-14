@@ -11,7 +11,6 @@ const AuthPage = () => {
 
     const handleAccountChange = () => {
         setHasAccount(!hasAccount);
-        console.log(hasAccount);
     }
 
     const authRequestValues = {
