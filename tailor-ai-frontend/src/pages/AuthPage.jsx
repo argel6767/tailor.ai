@@ -61,7 +61,10 @@ const AuthPage = () => {
                 <button className="btn btn-active btn-primary" onClick={submitAuthRequestValues}>
                     {hasAccount ? "Sign in" : "Sign up"}
                 </button>
-                <p>Not have an account? <button className="underline" onClick={handleAccountChange}>Sign Up</button></p>
+                {hasAccount ?
+                    <p>Not have an account? <button id={"switchToSignUp"} className="underline" onClick={handleAccountChange}>Sign Up</button></p> :
+                    <p>Already have an account? <button id={"switchToSignIn"} className="underline" onClick={handleAccountChange}>Sign In</button></p>
+                }
             </div>
         </div>
     )
