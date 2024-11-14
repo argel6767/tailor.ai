@@ -25,8 +25,8 @@ const AuthPage = () => {
         authRequestValues.username = email;
         authRequestValues.password = password;
         console.log(authRequestValues);
-        hasAccount? loginUser(authRequestValues).then(() => {navigate("/verify")}) :
-            registerUser(authRequestValues);
+        hasAccount? loginUser(authRequestValues):
+            registerUser(authRequestValues).then(() => {navigate("/verify")});
     }
 
     return (

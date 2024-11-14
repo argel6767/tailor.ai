@@ -1,3 +1,4 @@
+import verifyUser from "../api/verifyUser.js";
 
 const VerifyPage = () => {
 
@@ -11,6 +12,8 @@ const VerifyPage = () => {
         const verificationToken = document.getElementById("verify-input").value;
         verifyRequest.email = email;
         verifyRequest.verificationToken = verificationToken;
+        console.log(verifyRequest);
+        verifyUser(verifyRequest)
     }
 
     return (<div className="flex justify-center items-center pt-20">
