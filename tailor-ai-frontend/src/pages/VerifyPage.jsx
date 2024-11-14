@@ -1,6 +1,6 @@
 import verifyUser from "../api/verifyUser.js";
 import resendVerificationEmail from "../api/resendVerificationEmail.js";
-import {useNavigate} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import {useState} from "react";
 
 const VerifyPage = () => {
@@ -11,36 +11,29 @@ const VerifyPage = () => {
         setSentToken(!sentToken);
     }
 
-    const navigate = useNavigate();
-
     const verifyRequest = {
         "email":localStorage.getItem("email"),
         "verificationToken":null,
     }
 
     const submitVerificationRequest = async () => {
-        const email = document.getElementById("email-input").value;
         const verificationToken = document.getElementById("verify-input").value;
-        verifyRequest.email = email;
         verifyRequest.verificationToken = verificationToken;
         console.log(verifyRequest);
-        const response = await verifyUser(verifyRequest).then(() => {
-            localStorage.clear()
-            if (response) {
-                navigate("/auth/");
-            }
-        })
+        await verifyUser(verifyRequest)
+        localStorage.clear()
+        window.location.href = "/auth";
     }
 
-    const handleResendTokenRequest = () => {
+    const handleResendTokenRequest = async () => {
         handleSentToken();
-        resendVerificationEmail(verifyRequest.email).then(() => {
-            setTimeout(() => {
-                handleSentToken()
-            }, 2000);
-        });
-
+        await resendVerificationEmail(verifyRequest.email);
+        await sleep(2000)
+        handleSentToken()
     }
+
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 
     return (<div className="flex justify-center items-center pt-20">
         <div className="flex flex-col  justify-center items-center p-2 space-y-7 w-2/5  ">
@@ -60,7 +53,7 @@ const VerifyPage = () => {
             </label>
             <button className="btn btn-active btn-primary" onClick={submitVerificationRequest}>Verify Account</button>
             <p className="pt-2.5">Need another verification code? <button className="underline" onClick={handleResendTokenRequest}>Request Another</button></p>
-            <p className={`pt-2.5 ${sentToken ? 'block' : 'hidden'}`}>Verification code resent! Check your email.</p>
+            <p className={`pt-2.5 ${sentToken ? 'visible' : 'invisible'}`}>Verification code resent! Check your email.</p>
         </div>
     </div>)
 }

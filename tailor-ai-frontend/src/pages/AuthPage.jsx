@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import registerUser from "../api/registerUser.js";
 import loginUser from "../api/loginUser.js";
 
@@ -7,7 +7,6 @@ const AuthPage = () => {
 
     const [hasAccount, setHasAccount] = useState(true);
 
-    const navigate = useNavigate();
 
     const handleAccountChange = () => {
         setHasAccount(!hasAccount);
@@ -25,8 +24,17 @@ const AuthPage = () => {
         authRequestValues.password = password;
         localStorage.setItem("email", email);
         console.log(authRequestValues);
-        hasAccount? loginUser(authRequestValues):
-            registerUser(authRequestValues).then(() => {navigate("/verify")});
+        hasAccount?  login(authRequestValues) : register(authRequestValues);
+    }
+
+    const login = async (authRequestValues) => {
+        await loginUser(authRequestValues);
+        window.location.href = "/home";
+    }
+
+    const register = async (authRequestValues) => {
+        await registerUser(authRequestValues);
+        window.location.href = "/verify";
     }
 
     return (

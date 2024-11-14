@@ -13,6 +13,7 @@ vi.mock('../src/api/registerUser', () => ({
     default: vi.fn()
 }));
 
+
 describe('AuthPage', () => {
     it('renders login form by default', () => {
         render(<AuthPage />);
@@ -44,7 +45,11 @@ describe('AuthPage', () => {
         });
     });
 
-    it('calls registerUser with correct data on registration form submission', () => {
+    it('calls registerUser with correct data on registration form submission', async () => {
+        // Mock window.location
+        delete window.location;
+        window.location = { href: "" };
+
         render(<AuthPage />);
 
         // Switch to registration form
@@ -60,10 +65,14 @@ describe('AuthPage', () => {
         fireEvent.change(passwordInput, { target: { value: 'newpassword' } });
         fireEvent.click(signUpButton);
 
+        // Wait for the function to complete
+        await new Promise(process.nextTick);
+
         expect(registerUser).toHaveBeenCalledWith({
             username: 'newuser@example.com',
             password: 'newpassword'
         });
+        expect(window.location.href).toBe("/verify");
     });
 
     it('toggles between login and register forms', () => {
