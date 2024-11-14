@@ -23,6 +23,7 @@ const AuthPage = () => {
         const password = document.getElementById("password-input").value;
         authRequestValues.username = email;
         authRequestValues.password = password;
+        localStorage.setItem("email", email);
         console.log(authRequestValues);
         hasAccount? loginUser(authRequestValues):
             registerUser(authRequestValues).then(() => {navigate("/verify")});
