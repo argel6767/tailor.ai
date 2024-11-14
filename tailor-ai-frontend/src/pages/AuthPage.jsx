@@ -1,10 +1,13 @@
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 import registerUser from "../api/registerUser.js";
 import loginUser from "../api/loginUser.js";
 
 const AuthPage = () => {
 
     const [hasAccount, setHasAccount] = useState(true);
+
+    const navigate = useNavigate();
 
     const handleAccountChange = () => {
         setHasAccount(!hasAccount);
@@ -22,7 +25,8 @@ const AuthPage = () => {
         authRequestValues.username = email;
         authRequestValues.password = password;
         console.log(authRequestValues);
-        hasAccount? loginUser(authRequestValues) : registerUser(authRequestValues);
+        hasAccount? loginUser(authRequestValues).then(() => {navigate("/verify")}) :
+            registerUser(authRequestValues);
     }
 
     return (
