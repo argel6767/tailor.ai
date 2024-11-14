@@ -5,6 +5,7 @@ import AddingProfessionPage from "./pages/AddingProfessionPage.jsx";
 import ChatPage from "./pages/ChatPage.jsx";
 import AuthPage from "./pages/AuthPage.jsx";
 import Navbar from "./components/Navbar.jsx";
+import VerifyPage from "./pages/VerifyPage.jsx";
 
 function App() {
 
