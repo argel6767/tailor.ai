@@ -16,6 +16,10 @@ const VerifyPage = () => {
         verifyUser(verifyRequest)
     }
 
+    const handleResendTokenRequest = () => {
+
+    }
+
     return (<div className="flex justify-center items-center pt-20">
         <div className="flex flex-col  justify-center items-center p-2 space-y-5 w-2/5  ">
             <h1 className="text-3xl font-bold">Enter your email and verification code below.</h1>
