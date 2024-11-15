@@ -9,6 +9,9 @@ export default {
         accent: '#A8A8A8', // Muted Gray
         background: '#1C1C1C', // Dark Background
       },
+      fontFamily: {
+        sans: ['Arial', 'sans-serif'],
+      },
     },
   },
   daisyui: {

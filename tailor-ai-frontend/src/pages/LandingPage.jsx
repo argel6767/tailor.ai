@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 const LandingPage = () => {
 
     return (
-        <body className="h-screen pt-4 px-4">
+        <div className="h-screen pt-4 px-4">
             <div className="hero bg-primary h-2/3 rounded-lg">
                 <div className="hero-content text-center">
                     <div className="max-w-md">
@@ -26,10 +26,10 @@ const LandingPage = () => {
                 </div>
                 <div className="bg-secondary rounded-xl">
                     <h3 className="text-xl font-bold pt-1">Effortless Process</h3>
-                    <p className="py-6">Upload, customize, and download your resume in just a few clicks.r</p>
+                    <p className="py-6">Upload, customize, and download your resume in just a few clicks.</p>
                 </div>
             </span>
-        </body>
+        </div>
     )
 }
 
