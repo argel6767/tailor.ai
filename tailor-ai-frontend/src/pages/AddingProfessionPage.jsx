@@ -1,7 +1,20 @@
+
+import image from "../assets/pexels-jopwell-2422293.jpg"
+import {Link} from "react-router-dom";
+
 const AddingProfessionPage = () => {
     return (
-        <div>
-            This will be the page where a user puts their desired profession page.
+        <div className="flex p-8">
+            <section className="flex items-center justify-center flex-1 w-1/3 ">
+                <div className="flex flex-col w-2/4 gap-6">
+                    <h1 className="text-5xl">Enter your desired profession.</h1>
+                    <input type="text" placeholder="Profession" className="input input-bordered w-full max-w-xs"/>
+                    <button className="btn bg-primary">Submit</button>
+                </div>
+            </section>
+            <section className="flex-1 w-2/3">
+                <img src={image} alt={"Workers"}/>
+            </section>
         </div>
     )
 }

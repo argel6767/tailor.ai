@@ -11,17 +11,19 @@ import Footer from "./components/Footer.jsx";
 function App() {
 
   return (
-      <>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<LandingPage/>}/>
-          <Route path="/auth" element={<AuthPage/>}/>
-            <Route path="/verify" element={<VerifyPage/>}/>
-          <Route path="/profession" element={<AddingProfessionPage/>}/>
-          <Route path="/chats" element={<ChatPage/>}/>
-        </Routes>
+      <div className="flex flex-col h-screen">
+          <Navbar />
+          <main className="flex-1">
+              <Routes>
+                  <Route path="/" element={<LandingPage/>}/>
+                  <Route path="/auth" element={<AuthPage/>}/>
+                  <Route path="/verify" element={<VerifyPage/>}/>
+                  <Route path="/profession" element={<AddingProfessionPage/>}/>
+                  <Route path="/chats" element={<ChatPage/>}/>
+              </Routes>
+          </main>
           <Footer/>
-      </>
+      </div>
   )
 }
 
