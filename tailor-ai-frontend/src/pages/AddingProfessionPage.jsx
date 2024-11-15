@@ -8,11 +8,12 @@ const AddingProfessionPage = () => {
         "profession": null
     }
 
-    const handleProfessionRequest = () => {
+    const handleProfessionRequest = async () => {
         const profession = document.getElementById("profession-input").value;
         addProfessionRequest["profession"] = profession;
         console.log(addProfessionRequest);
-        addUserProfession(addProfessionRequest);
+        await addUserProfession(addProfessionRequest);
+        window.location.href = "/chats"
     }
 
     return (

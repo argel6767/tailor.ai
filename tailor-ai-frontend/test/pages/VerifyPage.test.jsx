@@ -5,11 +5,11 @@ import verifyUser from "../../src/api/verifyUser.js";
 import resendVerificationEmail from "../../src/api/resendVerificationEmail.js";
 
 //Mock verify function
-vi.mock('../src/api/verifyUser.js', () => ({
+vi.mock('../../src/api/verifyUser.js', () => ({
     default: vi.fn()
 }));
 
-vi.mock('../src/api/resendVerificationEmail.js', () => ({
+vi.mock('../../src/api/resendVerificationEmail.js', () => ({
     default: vi.fn()
 }));
 
@@ -27,11 +27,10 @@ describe ('VerifyPage', () => {
 
         // Mock localStorage.setItem
         vi.spyOn(window.localStorage.__proto__, 'setItem').mockImplementation((key, value) => {
-            // You can track or assert on this if needed
         });
         render(<VerifyPage />);
 
-        const verificationInput = screen.getByPlaceholderText('Verification Code')
+        const verificationInput = screen.getByPlaceholderText('Verification Code');
         const verifyAccount = screen.getByText('Verify Account');
         fireEvent.change(verificationInput, { target: { value: '565656' } });
         fireEvent.click(verifyAccount);
