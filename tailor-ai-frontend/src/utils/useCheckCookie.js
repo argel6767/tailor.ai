@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import {useNavigate} from "react-router-dom";
-import {isCookieExpired} from "../config/cookeConfig.js";
+import {isCookieExpired} from "../config/cookieConfig.js";
 
 
 const useCheckCookie = () => {
@@ -9,7 +9,7 @@ const useCheckCookie = () => {
     useEffect(() => {
         const checkJwtCookie = () => {
             if (isCookieExpired()) {
-                navigate("/login");
+                navigate("/auth");
             }
         }
         checkJwtCookie();
