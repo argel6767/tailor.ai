@@ -1,9 +1,9 @@
-
-const accessToken = "babsabkbdkabdkjasdb" //placeholder
+import {getJwtToken} from "./cookieConfig.js";
+const accessToken = getJwtToken()
 
 const config = {
     headers: {
-        'Authorization': `Bearer ${accessToken}` //TODO will change to actually cookie logic when implemented
+        'Authorization': `Bearer ${accessToken}`
     }
 };
 

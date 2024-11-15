@@ -33,7 +33,7 @@ describe("useCheckCookie", () => {
         });
 
         // Ensure navigation happens to /auth
-        expect(navigate).toHaveBeenCalledWith("/auth");
+        expect(navigate).toHaveBeenCalledWith("/");
     });
 
     it("should not navigate if the cookie exists", () => {

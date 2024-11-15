@@ -9,7 +9,7 @@ const useCheckCookie = () => {
     useEffect(() => {
         const checkJwtCookie = () => {
             if (isCookieExpired()) {
-                navigate("/auth");
+                navigate("/");
             }
         }
         checkJwtCookie();
