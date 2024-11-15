@@ -1,15 +1,17 @@
+import {Link} from "react-router-dom";
 
 const LandingPage = () => {
+
     return (
         <body className="h-screen pt-4 px-4">
-            <div className="hero bg-primary h-2/3">
+            <div className="hero bg-primary h-2/3 rounded-lg">
                 <div className="hero-content text-center">
                     <div className="max-w-md">
                         <h1 className="text-5xl font-bold py-1.5">Welcome to Tailor.ai</h1>
                         <p className="py-6 text-xl">
                             AI-powered solutions to tailor your resume for any profession.
                         </p>
-                        <button className="btn btn-secondary">Get Started</button>
+                        <button className="btn btn-secondary"><Link to="/auth">Get Started</Link></button>
                     </div>
                 </div>
             </div>
