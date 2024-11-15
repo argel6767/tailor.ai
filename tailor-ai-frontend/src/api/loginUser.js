@@ -4,7 +4,7 @@ import {setCookie} from "../config/cookieConfig.js";
 const loginUser = async (authRequestValues) => {
     try {
         const response = await axios.post('http://localhost:8080/auth/login', authRequestValues);
-        setCookie("token", response.data.token);
+        setCookie(response.data.token);
     }
     catch (error) {
         console.log(error.response? error.response.data : error);

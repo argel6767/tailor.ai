@@ -1,9 +1,18 @@
 import {useState} from "react";
-import {Navigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import registerUser from "../api/registerUser.js";
 import loginUser from "../api/loginUser.js";
+import LandingPage from "./LandingPage.jsx";
 
 const AuthPage = () => {
+
+    const navigate = useNavigate();
+    const goHome = () => {
+        navigate("/");
+    }
+    const goToVerify = () => {
+        navigate('/verify');
+    }
 
     const [hasAccount, setHasAccount] = useState(true);
 
@@ -17,24 +26,24 @@ const AuthPage = () => {
         "password":null,
     }
 
-    const submitAuthRequestValues = () => {
+    const submitAuthRequestValues = async () => {
         const email = document.getElementById("email-input").value;
         const password = document.getElementById("password-input").value;
         authRequestValues.username = email;
         authRequestValues.password = password;
         localStorage.setItem("email", email);
         console.log(authRequestValues);
-        hasAccount?  login(authRequestValues) : register(authRequestValues);
+        hasAccount?  await login(authRequestValues) : await register(authRequestValues);
     }
 
     const login = async (authRequestValues) => {
         await loginUser(authRequestValues);
-        window.location.href = "/home";
+        goHome()
     }
 
     const register = async (authRequestValues) => {
         await registerUser(authRequestValues);
-        window.location.href = "/verify";
+        goToVerify();
     }
 
     return (
