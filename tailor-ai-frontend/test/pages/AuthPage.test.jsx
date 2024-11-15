@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import AuthPage from '../src/pages/AuthPage.jsx';
-import loginUser from '../src/api/loginUser';
-import registerUser from '../src/api/registerUser';
+import AuthPage from '../../src/pages/AuthPage.jsx';
+import loginUser from '../../src/api/loginUser.js';
+import registerUser from '../../src/api/registerUser.js';
 
 // Mock the auth functions
 vi.mock('../src/api/loginUser', () => ({

@@ -1,8 +1,8 @@
 import {describe, it, expect, vi} from 'vitest';
 import {render, screen, fireEvent} from '@testing-library/react';
-import VerifyPage from '../src/pages/VerifyPage.jsx';
-import verifyUser from "../src/api/verifyUser.js";
-import resendVerificationEmail from "../src/api/resendVerificationEmail.js";
+import VerifyPage from '../../src/pages/VerifyPage.jsx';
+import verifyUser from "../../src/api/verifyUser.js";
+import resendVerificationEmail from "../../src/api/resendVerificationEmail.js";
 
 //Mock verify function
 vi.mock('../src/api/verifyUser.js', () => ({
