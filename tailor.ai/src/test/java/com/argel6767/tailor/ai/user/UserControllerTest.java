@@ -1,6 +1,7 @@
 package com.argel6767.tailor.ai.user;
 
 import com.argel6767.tailor.ai.user.requests.AddProfessionRequest;
+import com.argel6767.tailor.ai.user.requests.EmailObjectRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -18,6 +19,7 @@ class UserControllerTest {
     private final String EMAIL = "test@test.com";
     private final String PROFESSION = "Software Engineer";
     private final AddProfessionRequest addProfessionRequest = new AddProfessionRequest(EMAIL, PROFESSION);
+    private final EmailObjectRequest emailObjectRequest = new EmailObjectRequest(EMAIL);
     private User user = new User();
 
     @BeforeEach
@@ -38,7 +40,7 @@ class UserControllerTest {
     @Test
     void testGetProfessionStatus() {
         when(userService.hasSetProfession(EMAIL)).thenReturn(true);
-        ResponseEntity<Boolean> response = userController.getProfessionStatus(EMAIL);
+        ResponseEntity<Boolean> response = userController.getProfessionStatus(emailObjectRequest);
         assertNotNull(response);
         assertTrue(response.getBody());
     }
