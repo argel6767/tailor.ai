@@ -1,6 +1,5 @@
 import verifyUser from "../api/verifyUser.js";
 import resendVerificationEmail from "../api/resendVerificationEmail.js";
-import {Navigate} from "react-router-dom";
 import {useState} from "react";
 
 const VerifyPage = () => {
