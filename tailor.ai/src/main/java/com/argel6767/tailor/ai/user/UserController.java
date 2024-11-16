@@ -1,6 +1,7 @@
 package com.argel6767.tailor.ai.user;
 
 import com.argel6767.tailor.ai.user.requests.AddProfessionRequest;
+import com.argel6767.tailor.ai.user.requests.EmailObjectRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +22,8 @@ public class UserController {
     }
 
     @GetMapping("/profession/status")
-    public ResponseEntity<Boolean> getProfessionStatus(@RequestBody String email) {
-        Boolean status = userService.hasSetProfession(email);
+    public ResponseEntity<Boolean> getProfessionStatus(@RequestBody EmailObjectRequest request) {
+        Boolean status = userService.hasSetProfession(request.getEmail());
         return ResponseEntity.ok(status);
     }
 }
