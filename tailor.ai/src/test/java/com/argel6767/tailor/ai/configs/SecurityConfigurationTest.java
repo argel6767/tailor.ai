@@ -1,11 +1,13 @@
 package com.argel6767.tailor.ai.configs;
 
 import com.argel6767.tailor.ai.jwt.JwtAuthenticationFilter;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -32,6 +34,8 @@ class SecurityConfigurationTest {
     private HttpSecurity httpSecurity;
 
     private SecurityConfiguration securityConfiguration;
+
+    HttpServletRequest request = new MockHttpServletRequest("GET", "/**");
 
     @BeforeEach
     void setUp() {
@@ -77,22 +81,23 @@ class SecurityConfigurationTest {
     @Test
     void testCorsConfiguration() {
         // Act
-        CorsConfiguration corsConfiguration = securityConfiguration.corsConfiguration();
+        CorsConfiguration corsConfiguration = securityConfiguration.corsConfigurationSource().getCorsConfiguration(request);
 
         // Assert
         assertNotNull(corsConfiguration);
-        assertTrue(corsConfiguration.getAllowedOrigins().contains("http://localhost:*"));
+        assertTrue(corsConfiguration.getAllowedOrigins().contains("http://localhost:5173"));
         assertTrue(corsConfiguration.getAllowedHeaders().contains("*"));
         assertTrue(corsConfiguration.getAllowedMethods().contains("*"));
+        assertTrue(corsConfiguration.getAllowCredentials());
     }
 
     @Test
     void testCorsConfigurationAllowedMethods() {
         // Act
-        CorsConfigurationSource corsConfig = securityConfiguration.corsConfiguration();
+        CorsConfiguration corsConfig = securityConfiguration.corsConfigurationSource().getCorsConfiguration(request);
 
         // Assert
-        assertNotNull(corsConfig.getAllowedMethods());
+        assertNotNull(corsConfig);
         assertEquals(1, corsConfig.getAllowedMethods().size());
         assertTrue(corsConfig.getAllowedMethods().contains("*"));
     }
@@ -100,11 +105,12 @@ class SecurityConfigurationTest {
     @Test
     void testCorsConfigurationAllowedHeaders() {
         // Act
-        CorsConfiguration corsConfig = securityConfiguration.corsConfiguration();
+        CorsConfiguration corsConfig = securityConfiguration.corsConfigurationSource().getCorsConfiguration(request);
 
         // Assert
         assertNotNull(corsConfig.getAllowedHeaders());
         assertEquals(1, corsConfig.getAllowedHeaders().size());
         assertTrue(corsConfig.getAllowedHeaders().contains("*"));
     }
+
 }

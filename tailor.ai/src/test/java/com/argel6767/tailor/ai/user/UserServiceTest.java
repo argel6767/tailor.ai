@@ -42,4 +42,23 @@ class UserServiceTest {
         verify(userRepository, times(1)).save(user);
         verifyNoMoreInteractions(userRepository);
     }
+
+    @Test
+    void testProfessionHasNotBeenSet() {
+        user.setProfession(null);
+        when(userRepository.findByEmail(EMAIL)).thenReturn(Optional.of(user));
+        when(userRepository.save(any())).thenReturn(user);
+        Boolean status = userService.hasSetProfession(EMAIL);
+        assertFalse(status);
+    }
+
+    @Test
+    void testProfessionHasBeenSet() {
+        user.setProfession("Software Engineer");
+        when(userRepository.findByEmail(EMAIL)).thenReturn(Optional.of(user));
+        when(userRepository.save(any())).thenReturn(user);
+        Boolean status = userService.hasSetProfession(EMAIL);
+        assertTrue(status);
+    }
+
 }
