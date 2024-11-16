@@ -33,6 +33,13 @@ class UserControllerTest {
         when(userService.addProfession(EMAIL, PROFESSION)).thenReturn(user);
         ResponseEntity<User> response = userController.updateProfession(addProfessionRequest);
         assertNotNull(response);
+    }
 
+    @Test
+    void testGetProfessionStatus() {
+        when(userService.hasSetProfession(EMAIL)).thenReturn(true);
+        ResponseEntity<Boolean> response = userController.getProfessionStatus(EMAIL);
+        assertNotNull(response);
+        assertTrue(response.getBody());
     }
 }
