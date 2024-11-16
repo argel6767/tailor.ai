@@ -1,6 +1,10 @@
 import axios from 'axios';
 import {setCookie} from "../config/cookieConfig.js";
 
+/**
+ * logs in user then saves the jwt token response in cookie to allow for security and to use across
+ * site for secured endpoints
+ */
 const loginUser = async (authRequestValues) => {
     try {
         const response = await axios.post('http://localhost:8080/auth/login', authRequestValues);

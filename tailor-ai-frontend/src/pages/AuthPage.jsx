@@ -48,10 +48,9 @@ const AuthPage = () => {
 
     return (
         <div className="flex justify-center items-center pt-20">
-            <div className="flex flex-col  justify-center items-center p-2 space-y-5 w-2/5  ">
-                <h1 className="text-3xl font-bold">
+            <div className="flex flex-col  justify-center items-center p-2 space-y-6 w-2/5  ">
+                <h1 className="text-3xl font-bold text-center pb-1">
                     {hasAccount ? "Welcome back, sign in to your account." : "Welcome to Tailor.ai, sign up here."}
-
                 </h1>
                 <label className="input input-bordered flex items-center gap-2 bg-primary">
                     <svg

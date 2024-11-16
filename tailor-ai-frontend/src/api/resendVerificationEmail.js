@@ -1,5 +1,8 @@
 import axios from "axios";
 
+/**
+ * used if the user needs the verification email to be resent for whatever reason
+ */
 const resendVerificationEmail = async (resendEmailRequest) => {
     try {
         const response = await axios.post('http://localhost:8080/auth/verify', resendEmailRequest);
