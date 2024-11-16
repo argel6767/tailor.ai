@@ -2,14 +2,12 @@ import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import registerUser from "../api/registerUser.js";
 import loginUser from "../api/loginUser.js";
-import LandingPage from "./LandingPage.jsx";
+import {handleLoginNavigation} from "../utils/handleLoginNavigation.js";
 
 const AuthPage = () => {
 
     const navigate = useNavigate();
-    const goHome = () => {
-        navigate("/");
-    }
+
     const goToVerify = () => {
         navigate('/verify');
     }
@@ -38,7 +36,7 @@ const AuthPage = () => {
 
     const login = async (authRequestValues) => {
         await loginUser(authRequestValues);
-        goHome()
+        await handleLoginNavigation();
     }
 
     const register = async (authRequestValues) => {
