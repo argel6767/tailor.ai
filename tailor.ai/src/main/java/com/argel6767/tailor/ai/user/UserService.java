@@ -17,6 +17,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public Boolean getProfessionStatus(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found" + email));
+        String profession = user.getProfession();
+        return user.getProfession() != null;
+    }
+
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found" + email));
     }
