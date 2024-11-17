@@ -4,6 +4,10 @@ import registerUser from "../api/registerUser.js";
 import loginUser from "../api/loginUser.js";
 import {handleLoginNavigation} from "../utils/handleLoginNavigation.js";
 
+/**
+ * The AuthPage (login or sign up)
+ * uses useState to handle whether or user has to log in or sign up
+ */
 const AuthPage = () => {
 
     const navigate = useNavigate();
@@ -24,6 +28,10 @@ const AuthPage = () => {
         "password":null,
     }
 
+    /**
+     * submits the values given by user to the endpoint for logging in or signing up
+     * then routes user to appropriate page based on status
+     */
     const submitAuthRequestValues = async () => {
         const email = document.getElementById("email-input").value;
         const password = document.getElementById("password-input").value;
@@ -36,7 +44,7 @@ const AuthPage = () => {
 
     const login = async (authRequestValues) => {
         await loginUser(authRequestValues);
-        await handleLoginNavigation();
+        await handleLoginNavigation(navigate);
     }
 
     const register = async (authRequestValues) => {
