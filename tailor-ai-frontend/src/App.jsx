@@ -6,6 +6,7 @@ import AuthPage from "./pages/AuthPage.jsx";
 import Navbar from "./components/Navbar.jsx";
 import VerifyPage from "./pages/VerifyPage.jsx";
 import ChatDashboardPage from "./pages/ChatDashboardPage.jsx";
+import ChatSession from "./pages/ChatSession.jsx";
 import Footer from "./components/Footer.jsx";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
                   <Route path="/verify" element={<VerifyPage/>}/>
                   <Route path="/profession" element={<AddingProfessionPage/>}/>
                   <Route path="/chats" element={<ChatDashboardPage/>}/>
+                  <Route path="/chats/:id" element={<ChatSession />} />
               </Routes>
           </main>
           <Footer/>

@@ -7,6 +7,7 @@ const Navbar = () => {
             <button className="btn bg-primary"> <Link to="/auth">Login</Link></button>
             <Link to="/verify">Verify Page</Link> {/* for testing and view page for now */}
             <Link to="/profession">Profession Page</Link> {/* for testing and view page for now */}
+            <Link to="/chats">Chats</Link> {/* for testing and view page for now */}
             <button className="btn bg-primary"> <a href={"https://github.com/argel6767/tailor.ai"}>Source Code</a></button>
         </nav>
     )
