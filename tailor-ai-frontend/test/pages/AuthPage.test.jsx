@@ -3,6 +3,8 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import AuthPage from '../../src/pages/AuthPage.jsx';
 import loginUser from '../../src/api/loginUser.js';
 import registerUser from '../../src/api/registerUser.js';
+import * as apiModule from "../../src/api/getHasSetProfession.js";
+import {handleLoginNavigation} from "../../src/utils/handleLoginNavigation.js";
 
 // Mock the auth functions
 vi.mock('../src/api/loginUser', () => ({
@@ -13,8 +15,23 @@ vi.mock('../src/api/registerUser', () => ({
     default: vi.fn()
 }));
 
+vi.mock('../src/api/getHasSetProfession', () => ({
+    default: vi.fn()
+}))
+
 
 describe('AuthPage', () => {
+    let mockNavigate;
+    let mockRequest;
+
+    beforeEach(() => {
+        mockNavigate = vi.fn();
+        mockRequest = { email: 'test@example.com' }; // Adjust based on your request structure
+
+        // Reset all mocks before each test
+        vi.resetAllMocks();
+    });
+
     it('renders login form by default', () => {
         render(<AuthPage />);
         expect(screen.getByText(/Welcome back, sign in to your account./i)).toBeInTheDocument();
@@ -89,4 +106,29 @@ describe('AuthPage', () => {
         fireEvent.click(screen.getByText('Sign In'));
         expect(screen.getByText(/Welcome back, sign in to your account./i)).toBeInTheDocument();
     });
+
+    it('should navigate to /chats when getHasSetProfession returns true', async () => {
+        // Arrange: Mock getHasSetProfession to return true
+        vi.spyOn(apiModule, 'default').mockResolvedValue(true);
+
+        // Act
+        await handleLoginNavigation(mockNavigate, mockRequest);
+
+        // Assert
+        expect(apiModule.default).toHaveBeenCalledWith(mockRequest);
+        expect(mockNavigate).toHaveBeenCalledWith('/chats');
+    });
+
+    it('should navigate to /profession when getHasSetProfession returns false', async () => {
+        // Arrange: Mock getHasSetProfession to return false
+        vi.spyOn(apiModule, 'default').mockResolvedValue(false);
+
+        // Act
+        await handleLoginNavigation(mockNavigate, mockRequest);
+
+        // Assert
+        expect(apiModule.default).toHaveBeenCalledWith(mockRequest);
+        expect(mockNavigate).toHaveBeenCalledWith('/profession');
+    });
+
 });

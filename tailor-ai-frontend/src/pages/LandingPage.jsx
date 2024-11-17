@@ -1,5 +1,8 @@
 import {Link} from "react-router-dom";
 
+/**
+ * Landing Page for Tailor.ai
+ */
 const LandingPage = () => {
 
     return (
@@ -18,15 +21,15 @@ const LandingPage = () => {
             <span className="grid grid-cols-3 gap-7 w-full text-center p-9 text-background px-3">
                 <div className="bg-secondary rounded-xl hover:scale-105 transition-transform duration-300">
                     <h3 className="text-xl font-bold pt-3">Personalized Resumes</h3>
-                    <p className="py-6">Leverage AI to craft resumes tailored to your desired career path.</p>
+                    <p className="py-6 px-1">Leverage AI to craft resumes tailored to your desired career path.</p>
                 </div>
                 <div className="bg-secondary rounded-xl hover:scale-105 transition-transform duration-300">
                     <h3 className="text-xl font-bold pt-3">Industry Insights</h3>
-                    <p className="py-6">Optimize your resume with the latest trends and requirements.</p>
+                    <p className="py-6 px-1">Optimize your resume with the latest trends and requirements.</p>
                 </div>
                 <div className="bg-secondary rounded-xl hover:scale-105 transition-transform duration-300">
                     <h3 className="text-xl font-bold pt-3">Effortless Process</h3>
-                    <p className="py-6">Upload, and have your resume reviewed and fixed in just a few clicks.</p>
+                    <p className="py-6 px-1">Upload, and have your resume reviewed and fixed in just a few clicks.</p>
                 </div>
             </span>
         </div>

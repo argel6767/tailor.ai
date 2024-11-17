@@ -1,12 +1,12 @@
 import axios from "axios";
-import jwtToken from "../config/jwtToken.js";
+import config from "../config/jwtToken.js";
 
 /**
  * returns an object that holds a boolean value, whether a user has already set their profession
  */
-const getHasSetProfession = async () => {
+const getHasSetProfession = async (request) => {
     try {
-        const response = await axios.get("https://localhost:8080/profession", jwtToken);
+        const response = await axios.get("http://localhost:8080/profession", request, config);
         return response.data;
     }
     catch (error) {

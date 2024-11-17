@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import registerUser from "../api/registerUser.js";
 import loginUser from "../api/loginUser.js";
 import {handleLoginNavigation} from "../utils/handleLoginNavigation.js";
+import {emailObjectRequest} from "../api/requests/emailObjectRequest.js";
 
 /**
  * The AuthPage (login or sign up)
@@ -11,6 +12,7 @@ import {handleLoginNavigation} from "../utils/handleLoginNavigation.js";
 const AuthPage = () => {
 
     const navigate = useNavigate();
+    const loginNavigationRequest = emailObjectRequest;
 
     const goToVerify = () => {
         navigate('/verify');
@@ -37,6 +39,7 @@ const AuthPage = () => {
         const password = document.getElementById("password-input").value;
         authRequestValues.username = email;
         authRequestValues.password = password;
+        loginNavigationRequest.email = email;
         localStorage.setItem("email", email);
         console.log(authRequestValues);
         hasAccount?  await login(authRequestValues) : await register(authRequestValues);
@@ -44,7 +47,7 @@ const AuthPage = () => {
 
     const login = async (authRequestValues) => {
         await loginUser(authRequestValues);
-        await handleLoginNavigation(navigate);
+        await handleLoginNavigation(navigate, loginNavigationRequest);
     }
 
     const register = async (authRequestValues) => {
