@@ -10,7 +10,7 @@ const Sidebar = () => {
 
     useEffect( () => {
         const getChats = async () => {
-            const grabbedChatSessions  = await getUserChatSessions();
+            const grabbedChatSessions  = await getUserChatSessions(localStorage.getItem("email"));
             if (grabbedChatSessions) {
                 setChats((userChats) => [...userChats, ...grabbedChatSessions]);
                 setLoading(false);
@@ -31,7 +31,7 @@ const Sidebar = () => {
                 </label>
             </div>
             <div className="drawer-side bg-base-300 pl-2">
-                <h1 className="text-2xl text-center pt-1 px-2">View previous chats below.</h1>
+                <h1 className="text-2xl text-center pt-1 px-3">View previous chats below.</h1>
                 <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
                     {/*TODO dynamically make list of chat sessions gotten by the api request*/}
                     {/*TODO also make a loading placeholder for them until they load up eventually*/}
