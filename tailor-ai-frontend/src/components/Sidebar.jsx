@@ -9,11 +9,13 @@ const Sidebar = () => {
                     Open drawer
                 </label>
             </div>
-            <div className="drawer-side bg-base-300">
+            <div className="drawer-side bg-base-300 pl-2">
+                <h1 className="text-2xl text-center pt-1">View previous chats below.</h1>
                 <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
                 <ul className="menu bg-base-300 text-base-content min-h-full w-80 p-4">
-                    {/* Sidebar content here */}
-                    <li><a>Sidebar Item 1</a></li>
+                    {/*TODO dynamically make list of chat sessions gotten by the api request*/}
+                    {/*TODO also make a loading placeholder for them until they load up eventually*/}
+                    <li><a>Sidebar Item 1</a></li> {/* name will be either the name set or just the default name*/}
                     <li><a>Sidebar Item 2</a></li>
                 </ul>
             </div>

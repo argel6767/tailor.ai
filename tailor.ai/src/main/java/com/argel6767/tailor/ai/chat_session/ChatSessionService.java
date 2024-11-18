@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * has service logic for dealing with ChatSession Entity
+ * has service logic for dealing with ChatSessionPage Entity
  */
 @Service
 public class ChatSessionService {
@@ -31,17 +31,17 @@ public class ChatSessionService {
     }
 
 
-    public ChatSession addChatSession(ChatSession chatSession) {
+    public ChatSessionPage addChatSession(ChatSessionPage chatSession) {
         return chatSessionRepository.save(chatSession);
     }
 
     /*
-     * creates new ChatSession while uploading file that is attached to the chatSession to the S3 bucket
+     * creates new ChatSessionPage while uploading file that is attached to the chatSession to the S3 bucket
      * the user's email is also grabbed to allow for being able to link the user in the db, handling the relationship
      */
-    public ChatSession createChatSession(MultipartFile pdfFileMulti, String email) {
+    public ChatSessionPage createChatSession(MultipartFile pdfFileMulti, String email) {
         File pdfFile = convertMultipartFileToFile(pdfFileMulti);
-        ChatSession chatSession = new ChatSession();
+        ChatSessionPage chatSession = new ChatSessionPage();
         linkUserToChatSession(email, chatSession);
         String key = s3Service.uploadFile(chatSession.getChatSessionId(), pdfFile);
         chatSession.setS3FileKey(key);
@@ -52,7 +52,7 @@ public class ChatSessionService {
      * grabs pdf file attached to chat session given by the chatSession id
      */
     public ResponseEntity<?> getChatSessionPDF(Long chatSessionId) {
-        ChatSession chatSession = chatSessionRepository.findById(chatSessionId).orElse(null);
+        ChatSessionPage chatSession = chatSessionRepository.findById(chatSessionId).orElse(null);
         if (chatSession != null) {
             String key = chatSession.getS3FileKey();
             return s3Service.downloadFile(key);
@@ -63,16 +63,16 @@ public class ChatSessionService {
     /*
      * returns all chat sessions of a user
      */
-    public ResponseEntity<List<ChatSession>> getAllUserChatSessions(String email) {
+    public ResponseEntity<List<ChatSessionPage>> getAllUserChatSessions(String email) {
         User user = userService.getUserByEmail(email);
         return ResponseEntity.ok(user.getChatSessions());
     }
 
-    public ChatSession getChatSession(Long id) {
+    public ChatSessionPage getChatSession(Long id) {
         return chatSessionRepository.findById(id).orElse(null);
     }
 
-    public ChatSession saveChatSession(ChatSession chatSession) {
+    public ChatSessionPage saveChatSession(ChatSessionPage chatSession) {
         return chatSessionRepository.save(chatSession);
     }
 
@@ -94,7 +94,7 @@ public class ChatSessionService {
     /*
      * links the chatSession to the User that made the session
      */
-    private void linkUserToChatSession(String email, ChatSession chatSession) {
+    private void linkUserToChatSession(String email, ChatSessionPage chatSession) {
         chatSessionRepository.save(chatSession);
         User user = userService.getUserByEmail(email);
         chatSession.setUser(user);

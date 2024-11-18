@@ -36,7 +36,7 @@ const ChatDashboardPage = () => {
 
     /**
      * creates the chat session via the api call, then routes user to a new page for their chat session
-     * that uses the returned ChatSession object from the api call to make a new route
+     * that uses the returned ChatSessionPage object from the api call to make a new route
      */
     const makeChatSession = async () => {
         const file = document.getElementById("file-input").value;
@@ -54,7 +54,7 @@ const ChatDashboardPage = () => {
                 <h1 className="text-6xl">Welcome, begin a new chat by uploading your resume.</h1>
                 <div className="flex gap-8 justify-center">
                     <input type="file" onChange={handleFileSubmission}
-                           className="file-input file-input-bordered w-full max-w-xs" id="file-input"/>
+                           className="file-input file-input-bordered w-full max-w-xs" id='file-input' data-testid="file-input" />
                     <button className={`btn ${hasSubmitted ? 'btn-primary' : 'btn-disable'}`}
                             disabled={!hasSubmitted} onClick={makeChatSession}>Begin chat
                     </button>

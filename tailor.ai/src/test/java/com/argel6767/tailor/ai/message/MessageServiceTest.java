@@ -1,6 +1,6 @@
 package com.argel6767.tailor.ai.message;
 
-import com.argel6767.tailor.ai.chat_session.ChatSession;
+import com.argel6767.tailor.ai.chat_session.ChatSessionPage;
 import com.argel6767.tailor.ai.chat_session.ChatSessionService;
 import com.argel6767.tailor.ai.message.requests.NewMessageRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,14 +35,14 @@ public class MessageServiceTest {
     @InjectMocks
     private MessageService messageService;
 
-    private ChatSession testChatSession;
+    private ChatSessionPage testChatSession;
     private Message testMessage;
     private NewMessageRequest testNewMessageRequest;
 
     @BeforeEach
     void setUp() {
-        // Set up ChatSession
-        testChatSession = new ChatSession();
+        // Set up ChatSessionPage
+        testChatSession = new ChatSessionPage();
         testChatSession.setChatSessionId(CHAT_SESSION_ID);
         testChatSession.setMessages(new ArrayList<>());
 
@@ -77,7 +77,7 @@ public class MessageServiceTest {
     void testCreateMessageSuccessful() {
         // Arrange
         when(chatSessionService.getChatSession(CHAT_SESSION_ID)).thenReturn(testChatSession);
-        when(chatSessionService.saveChatSession(any(ChatSession.class))).thenReturn(testChatSession);
+        when(chatSessionService.saveChatSession(any(ChatSessionPage.class))).thenReturn(testChatSession);
 
         // Act
         ResponseEntity<Message> response = messageService.createMessage(testNewMessageRequest, CHAT_SESSION_ID);

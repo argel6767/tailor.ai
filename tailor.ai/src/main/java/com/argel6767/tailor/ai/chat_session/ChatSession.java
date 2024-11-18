@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-public class ChatSession {
+public class ChatSessionPage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -1,5 +1,5 @@
 
-const ChatSession = () => {
+const ChatSessionPage = () => {
     return (
         <>
             Hello
@@ -7,4 +7,4 @@ const ChatSession = () => {
     )
 }
 
-export default ChatSession
+export default ChatSessionPage

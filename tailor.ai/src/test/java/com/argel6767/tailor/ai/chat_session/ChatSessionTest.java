@@ -16,7 +16,7 @@ public class ChatSessionTest {
 
     @Test
     public void testSetCreatedAtWithNull() {
-        ChatSession chatSession = new ChatSession();
+        ChatSessionPage chatSession = new ChatSessionPage();
         chatSession.setCreatedAt(null);
         LocalDateTime result = chatSession.getCreatedAt();
         assertNull(result);
@@ -25,7 +25,7 @@ public class ChatSessionTest {
     @Test
     public void testSetCreatedAtWithSpecificDate() {
         LocalDateTime now = LocalDateTime.now();
-        ChatSession chatSession = new ChatSession();
+        ChatSessionPage chatSession = new ChatSessionPage();
         chatSession.setCreatedAt(now);
         LocalDateTime result = chatSession.getCreatedAt();
         assertEquals(now, result);
@@ -34,7 +34,7 @@ public class ChatSessionTest {
     @Test
     public void testSetCreatedAtWithPastDate() {
         LocalDateTime past = LocalDateTime.now().minusDays(5);
-        ChatSession chatSession = new ChatSession();
+        ChatSessionPage chatSession = new ChatSessionPage();
         chatSession.setCreatedAt(past);
         LocalDateTime result = chatSession.getCreatedAt();
         assertEquals(past, result);
@@ -43,7 +43,7 @@ public class ChatSessionTest {
     @Test
     public void testSetCreatedAtWithFutureDate() {
         LocalDateTime future = LocalDateTime.now().plusDays(5);
-        ChatSession chatSession = new ChatSession();
+        ChatSessionPage chatSession = new ChatSessionPage();
         chatSession.setCreatedAt(future);
         LocalDateTime result = chatSession.getCreatedAt();
         assertEquals(future, result);
@@ -53,7 +53,7 @@ public class ChatSessionTest {
     public void testSetCreatedAtAndChange() {
         LocalDateTime initial = LocalDateTime.now().minusDays(1);
         LocalDateTime changed = LocalDateTime.now().plusDays(1);
-        ChatSession chatSession = new ChatSession();
+        ChatSessionPage chatSession = new ChatSessionPage();
         chatSession.setCreatedAt(initial);
         chatSession.setCreatedAt(changed);
         LocalDateTime result = chatSession.getCreatedAt();

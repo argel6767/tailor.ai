@@ -1,5 +1,5 @@
 package com.argel6767.tailor.ai.user;
-import com.argel6767.tailor.ai.chat_session.ChatSession;
+import com.argel6767.tailor.ai.chat_session.ChatSessionPage;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -74,8 +74,8 @@ class UserTest {
 
     @Test
     public void testSetAndGetChatSessions() {
-        List<ChatSession> chatSessions = new ArrayList<>();
-        ChatSession chatSession = new ChatSession();
+        List<ChatSessionPage> chatSessions = new ArrayList<>();
+        ChatSessionPage chatSession = new ChatSessionPage();
         chatSessions.add(chatSession);
         user.setChatSessions(chatSessions);
         assertEquals(chatSessions, user.getChatSessions(), "ChatSessions should be set and retrieved correctly.");

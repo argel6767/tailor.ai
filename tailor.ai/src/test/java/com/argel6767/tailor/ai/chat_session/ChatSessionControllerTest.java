@@ -36,7 +36,7 @@ class ChatSessionControllerTest {
     private ChatSessionController chatSessionController;
 
     private MockMvc mockMvc;
-    private ChatSession mockChatSession;
+    private ChatSessionPage mockChatSession;
     private static final String TEST_EMAIL = "test@example.com";
     private static final Long TEST_CHAT_SESSION_ID = 1L;
 
@@ -46,7 +46,7 @@ class ChatSessionControllerTest {
                 .standaloneSetup(chatSessionController)
                 .build();
 
-        mockChatSession = new ChatSession();
+        mockChatSession = new ChatSessionPage();
         mockChatSession.setChatSessionId(TEST_CHAT_SESSION_ID);
         mockChatSession.setS3FileKey("test-key");
     }

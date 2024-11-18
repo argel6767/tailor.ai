@@ -1,6 +1,6 @@
 package com.argel6767.tailor.ai.message;
 
-import com.argel6767.tailor.ai.chat_session.ChatSession;
+import com.argel6767.tailor.ai.chat_session.ChatSessionPage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -47,9 +47,9 @@ class MessageTest {
 
     @Test
     public void testSetAndGetChatSession() {
-        ChatSession chatSession = new ChatSession();
+        ChatSessionPage chatSession = new ChatSessionPage();
         message.setChatSession(chatSession);
-        assertEquals(chatSession, message.getChatSession(), "ChatSession should be set and retrieved correctly.");
+        assertEquals(chatSession, message.getChatSession(), "ChatSessionPage should be set and retrieved correctly.");
     }
 }
 
