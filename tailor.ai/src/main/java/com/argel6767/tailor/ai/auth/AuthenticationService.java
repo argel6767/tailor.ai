@@ -7,7 +7,9 @@ import com.argel6767.tailor.ai.email.EmailVerificationException;
 import com.argel6767.tailor.ai.user.User;
 import com.argel6767.tailor.ai.user.UserRepository;
 import jakarta.mail.MessagingException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,7 +43,13 @@ public class AuthenticationService {
         User user = new User();
         user.setEmail(request.getUsername());
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
-        setVerificationCodeAndSendIt(user);
+        try {
+            user = userRepository.save(user);
+            setVerificationCodeAndSendIt(user);
+        }
+        catch (Exception e) {
+            throw new AuthenticationServiceException("User already exists", e);
+        }
         return userRepository.save(user);
     }
 
@@ -140,5 +148,6 @@ public class AuthenticationService {
         Random random = new Random();
         return String.valueOf(random.nextInt(900000) + 100000); //guaranteed 6-digit number
     }
+
 
 }
