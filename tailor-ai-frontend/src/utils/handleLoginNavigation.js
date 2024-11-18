@@ -5,8 +5,8 @@ import getHasSetProfession from "../api/getHasSetProfession.js";
  * if the user has yet to set their profession (ie a new user) they will be routed and prompted to do so
  * else the user has set their profession so they routed to /chats to see their chats dashboard
  */
-export const handleLoginNavigation = async (navigate, request) => {
-    const hasSetProfession = await getHasSetProfession(request);
+export const handleLoginNavigation = async (navigate, email) => {
+    const hasSetProfession = await getHasSetProfession(email);
     hasSetProfession ? goToChatDashBoardPage(navigate) : goToProfessionPage(navigate)
 
 }

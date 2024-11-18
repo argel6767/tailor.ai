@@ -8,8 +8,10 @@ import VerifyPage from "./pages/VerifyPage.jsx";
 import ChatDashboardPage from "./pages/ChatDashboardPage.jsx";
 import ChatSessionPage from "./pages/ChatSessionPage.jsx";
 import Footer from "./components/Footer.jsx";
+import useCheckCookie from "./utils/useCheckCookie.js";
 
 function App() {
+    useCheckCookie();
 
   return (
       <div className="flex flex-col h-screen">

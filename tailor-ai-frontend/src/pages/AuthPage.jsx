@@ -49,7 +49,7 @@ const AuthPage = () => {
 
     const login = async (authRequestValues) => {
         await loginUser(authRequestValues);
-        await handleLoginNavigation(navigate, loginNavigationRequest);
+        await handleLoginNavigation(navigate, email);
     }
 
     const register = async (authRequestValues) => {
@@ -63,7 +63,6 @@ const AuthPage = () => {
                 <h1 className="text-3xl font-bold text-center pb-1">
                     {hasAccount ? "Welcome back, sign in to your account." : "Welcome to Tailor.ai, sign up here."}
                 </h1>
-                <form className="flex flex-col  justify-center items-center p-2 space-y-6 w-2/5 gap-1" onSubmit={handleAccountChange}>
                     <label className="input input-bordered flex items-center gap-2 bg-primary">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +74,7 @@ const AuthPage = () => {
                             <path
                                 d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"/>
                         </svg>
-                        <input type="text" className="grow" placeholder="Email" id={"email-input"} required={true} value={email}
+                        <input type="text" className="grow" placeholder="Email" id={"email-input"} value={email}
                         onChange={(e) => {
                             setEmail(e.target.value);
                             setValidEmail(validateEmail(email));
@@ -92,14 +91,13 @@ const AuthPage = () => {
                                 d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
                                 clipRule="evenodd"/>
                         </svg>
-                        <input type="password" className="grow" placeholder="Password" id={"password-input"} required={true} value={password}
+                        <input type="password" className="grow" placeholder="Password" id={"password-input"} value={password}
                         onChange={(e) => setPassword(e.target.value)}/>
                     </label>
                     <button className={`btn btn-active btn-primary`}
-                            type={"submit"}  disabled={!email || !isValidEmail || !password}>
+                            onClick={submitAuthRequestValues}  disabled={!email || !isValidEmail || !password}>
                         {hasAccount ? "Sign in" : "Sign up"}
                     </button>
-                </form>
 
                 {hasAccount ?
                     <p>Not have an account? <button id={"switchToSignUp"} className="underline"

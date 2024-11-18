@@ -1,9 +1,9 @@
 import axios from 'axios';
-import config from "../config/jwtToken.js";
+import {jwtToken} from "../config/httpConfigs.js";
 
 const getUserChatSessions = async (email) => {
     try {
-        const response = await axios.get(`http://localhost:8080/chatsession/${email}`, config);
+        const response = await axios.get(`http://localhost:8080/chatsession/${email}`, jwtToken);
         return response.data;
     }
     catch (error) {

@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Houses all business logic of messages
+ */
 @Service
 public class MessageService {
 
@@ -19,10 +22,16 @@ public class MessageService {
         this.chatSessionService = chatSessionService;
     }
 
+    /*
+     * add a message
+     */
     public ResponseEntity<Message> addMessage(Message message) {
         return ResponseEntity.ok(messageRepository.save(message));
     }
 
+    /*
+     * create a message
+     */
     public ResponseEntity<Message> createMessage(NewMessageRequest newMessageRequest, Long chatSessionId) {
         ChatSession chatSession = chatSessionService.getChatSession(chatSessionId);
         if (chatSession != null) {
@@ -31,6 +40,9 @@ public class MessageService {
         return ResponseEntity.notFound().build();
     }
 
+    /*
+     * get all the messages from a chat session
+     */
     public ResponseEntity<List<Message>> getAllChatSessionMessages(Long chatSessionId) {
         ChatSession chatSession = chatSessionService.getChatSession(chatSessionId);
         if (chatSession != null) {
@@ -39,6 +51,9 @@ public class MessageService {
         return ResponseEntity.notFound().build();
     }
 
+    /*
+     * save both the message entity and parent chat session entity
+     */
     private ResponseEntity<Message> createNewMessageAndAttachToParentChatSession(NewMessageRequest newMessageRequest, ChatSession chatSession) {
         Message message = new Message();
         message.setAuthor(newMessageRequest.getAuthor());

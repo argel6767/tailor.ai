@@ -21,9 +21,9 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @GetMapping("/profession/status")
-    public ResponseEntity<Boolean> getProfessionStatus(@RequestBody EmailObjectRequest request) {
-        Boolean status = userService.hasSetProfession(request.getEmail());
+    @GetMapping("/profession/{email}")
+    public ResponseEntity<Boolean> getProfessionStatus(@PathVariable String email) {
+        Boolean status = userService.hasSetProfession(email);
         return ResponseEntity.ok(status);
     }
 }

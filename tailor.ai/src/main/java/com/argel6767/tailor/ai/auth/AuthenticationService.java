@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-/*
+/**
  * holds the business logic for authenticating users and sending emails for verification codes
  */
 @Service
@@ -38,11 +38,9 @@ public class AuthenticationService {
      * signs up user to app, will fail if the email is taken as they need to be unique
      */
     public User signUp(AuthenticateUserDto request) {
-        System.out.println("This is the email"+ request.getUsername());
         User user = new User();
         user.setEmail(request.getUsername());
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
-        System.out.println("this is the user's email:" + user.getEmail());
         setVerificationCodeAndSendIt(user);
         return userRepository.save(user);
     }

@@ -39,7 +39,7 @@ const ChatDashboardPage = () => {
      * that uses the returned ChatSessionPage object from the api call to make a new route
      */
     const makeChatSession = async () => {
-        const file = document.getElementById("file-input").value;
+        const file = document.getElementById("file-input").files[0];
         const email = localStorage.getItem("email");
         const chatSessionDetails = await createChatSession(email, file);
         navigate(`/chats/${chatSessionDetails.id}`);

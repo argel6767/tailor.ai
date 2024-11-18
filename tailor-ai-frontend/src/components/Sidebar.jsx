@@ -12,7 +12,7 @@ const Sidebar = () => {
         const getChats = async () => {
             const grabbedChatSessions  = await getUserChatSessions(localStorage.getItem("email"));
             if (grabbedChatSessions) {
-                setChats((userChats) => [...userChats, ...grabbedChatSessions]);
+                setChats(grabbedChatSessions);
                 setLoading(false);
             }
         }
@@ -42,10 +42,10 @@ const Sidebar = () => {
 
                     </div>
                         :
-                    <ul className="menu bg-base-300 text-base-content min-h-full w-80 p-4">
+                    <ul className="menu bg-base-300 text-base-content min-h-full w-80 p-4 gap-2.5">
                         {userChats.map((chat, index) => (
                             <li key={index}>
-                                <Link to={`/chats/${chat.id}`}>{chat.name}</Link>
+                                <Link to={`/chats/${chat.chatSessionId}`}>{chat.chatSessionName}</Link>
                             </li>
                         ))}
                     </ul>}

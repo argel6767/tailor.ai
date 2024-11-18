@@ -40,7 +40,7 @@ class UserControllerTest {
     @Test
     void testGetProfessionStatus() {
         when(userService.hasSetProfession(EMAIL)).thenReturn(true);
-        ResponseEntity<Boolean> response = userController.getProfessionStatus(emailObjectRequest);
+        ResponseEntity<Boolean> response = userController.getProfessionStatus(EMAIL);
         assertNotNull(response);
         assertTrue(response.getBody());
     }

@@ -6,7 +6,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-
+/**
+ * houses ChatSession endpoints
+ */
 @RestController
 @RequestMapping("/chatsession")
 public class ChatSessionController {

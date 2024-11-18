@@ -9,7 +9,7 @@ const registerUser = async (authRequestValues) => {
         console.log(response);
     }
     catch (error) {
-        console.log(error.response? error.response.data : error);
+        throw error.response? error.response.data : error;
     }
 }
 
