@@ -1,5 +1,26 @@
+import {useEffect, useState} from "react";
+import Loading from "./Loading.jsx";
+import getUserChatSessions from "../api/getUserChatSessions.js";
+import {Link} from "react-router-dom";
 
 const Sidebar = () => {
+
+    const [userChats, setChats] = useState([])
+    const [loading, setLoading] = useState(true);
+
+    useEffect( () => {
+        const getChats = async () => {
+            const grabbedChatSessions  = await getUserChatSessions();
+            if (grabbedChatSessions) {
+                setChats((userChats) => [...userChats, ...grabbedChatSessions]);
+                setLoading(false);
+            }
+        }
+        getChats() //commented until real implementation
+    }, [])
+
+
+
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle"/>
@@ -10,14 +31,24 @@ const Sidebar = () => {
                 </label>
             </div>
             <div className="drawer-side bg-base-300 pl-2">
-                <h1 className="text-2xl text-center pt-1">View previous chats below.</h1>
+                <h1 className="text-2xl text-center pt-1 px-2">View previous chats below.</h1>
                 <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-                <ul className="menu bg-base-300 text-base-content min-h-full w-80 p-4">
                     {/*TODO dynamically make list of chat sessions gotten by the api request*/}
                     {/*TODO also make a loading placeholder for them until they load up eventually*/}
-                    <li><a>Sidebar Item 1</a></li> {/* name will be either the name set or just the default name*/}
-                    <li><a>Sidebar Item 2</a></li>
-                </ul>
+                {loading ? <div className="flex items-center justify-center h-3/4">
+                        <div className="flex flex-col">
+                            <Loading/>
+                        </div>
+
+                    </div>
+                        :
+                    <ul className="menu bg-base-300 text-base-content min-h-full w-80 p-4">
+                        {userChats.map((chat, index) => (
+                            <li key={index}>
+                                <Link to={`/chats/${chat.id}`}>{chat.name}</Link>
+                            </li>
+                        ))}
+                    </ul>}
             </div>
         </div>
     )

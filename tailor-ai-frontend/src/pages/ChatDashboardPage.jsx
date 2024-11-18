@@ -46,7 +46,7 @@ const ChatDashboardPage = () => {
     }
 
     return (
-        <div className="flex gap-3.5">
+        <div className="flex gap-3">
             <span>
                 <Sidebar />
             </span>
