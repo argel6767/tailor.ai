@@ -1,6 +1,6 @@
 package com.argel6767.tailor.ai.message;
 
-import com.argel6767.tailor.ai.chat_session.ChatSessionPage;
+import com.argel6767.tailor.ai.chat_session.ChatSession;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
@@ -25,7 +25,7 @@ public class Message {
     @ManyToOne
     @JoinColumn(name = "chat_session_id")
     @JsonBackReference
-    private ChatSessionPage chatSession;
+    private ChatSession chatSession;
     
     public void setMessageId(Long messageId) {
         this.messageId = messageId;
@@ -59,11 +59,11 @@ public class Message {
         this.createdAt = createdAt;
     }
 
-    public ChatSessionPage getChatSession() {
+    public ChatSession getChatSession() {
         return chatSession;
     }
 
-    public void setChatSession(ChatSessionPage chatSession) {
+    public void setChatSession(ChatSession chatSession) {
         this.chatSession = chatSession;
     }
 

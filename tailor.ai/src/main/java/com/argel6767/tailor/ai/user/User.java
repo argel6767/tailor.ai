@@ -1,6 +1,6 @@
 package com.argel6767.tailor.ai.user;
 
-import com.argel6767.tailor.ai.chat_session.ChatSessionPage;
+import com.argel6767.tailor.ai.chat_session.ChatSession;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jdk.jfr.Timestamp;
@@ -52,7 +52,7 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy="user")
     @JsonManagedReference
-    private List<ChatSessionPage> chatSessions = new ArrayList<>();
+    private List<ChatSession> chatSessions = new ArrayList<>();
 
     public User() {}
 
@@ -130,11 +130,11 @@ public class User implements UserDetails {
         this.passwordHash = passwordHash;
     }
 
-    public List<ChatSessionPage> getChatSessions() {
+    public List<ChatSession> getChatSessions() {
         return chatSessions;
     }
 
-    public void setChatSessions(List<ChatSessionPage> chatSessions) {
+    public void setChatSessions(List<ChatSession> chatSessions) {
         this.chatSessions = chatSessions;
     }
 

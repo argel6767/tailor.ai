@@ -18,7 +18,7 @@ public class ChatSessionController {
     }
 
     @PostMapping("/{email}")
-    public ResponseEntity<ChatSessionPage> createChatSession(@RequestParam("file") MultipartFile file, @PathVariable String email) {
+    public ResponseEntity<ChatSession> createChatSession(@RequestParam("file") MultipartFile file, @PathVariable String email) {
         return ResponseEntity.ok(chatSessionService.createChatSession(file, email));
     }
 
@@ -28,7 +28,7 @@ public class ChatSessionController {
     }
 
     @GetMapping("/{email}")
-    public ResponseEntity<List<ChatSessionPage>> getUserChatSessions(@PathVariable String email) {
+    public ResponseEntity<List<ChatSession>> getUserChatSessions(@PathVariable String email) {
         return chatSessionService.getAllUserChatSessions(email);
     }
 

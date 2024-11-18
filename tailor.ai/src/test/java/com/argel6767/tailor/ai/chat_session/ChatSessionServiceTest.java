@@ -45,7 +45,7 @@ class ChatSessionServiceTest {
     @InjectMocks
     private ChatSessionService chatSessionService;
 
-    private ChatSessionPage chatSession;
+    private ChatSession chatSession;
     private Long chatSessionId;
     private User user;
     private MultipartFile mockPdfFile;
@@ -54,12 +54,12 @@ class ChatSessionServiceTest {
 
     @BeforeEach
     void setUp() {
-        chatSession = new ChatSessionPage();
+        chatSession = new ChatSession();
         chatSession.setChatSessionId(chatSessionId);
 
         user = new User();
         user.setEmail(TEST_EMAIL);
-        List<ChatSessionPage> chatSessions = new ArrayList<>();
+        List<ChatSession> chatSessions = new ArrayList<>();
         chatSessions.add(chatSession);
         user.setChatSessions(chatSessions);
 
@@ -69,10 +69,10 @@ class ChatSessionServiceTest {
     @Test
     void testAddChatSessionShouldSaveAndReturnChatSession() {
         // Arrange
-        when(chatSessionRepository.save(any(ChatSessionPage.class))).thenReturn(chatSession);
+        when(chatSessionRepository.save(any(ChatSession.class))).thenReturn(chatSession);
 
         // Act
-        ChatSessionPage result = chatSessionService.addChatSession(chatSession);
+        ChatSession result = chatSessionService.addChatSession(chatSession);
 
         // Assert
         assertNotNull(result);
@@ -83,16 +83,16 @@ class ChatSessionServiceTest {
     @Test
     void testCreateChatSessionShouldCreateSessionWithFileAndUser() {
         // Arrange
-        when(chatSessionRepository.save(any(ChatSessionPage.class))).thenReturn(chatSession);
+        when(chatSessionRepository.save(any(ChatSession.class))).thenReturn(chatSession);
         when(userService.getUserByEmail(TEST_EMAIL)).thenReturn(user);
         when(s3Service.uploadFile(any(), any(File.class))).thenReturn(TEST_S3_KEY);
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         // Act
-        ChatSessionPage result = chatSessionService.createChatSession(mockPdfFile, TEST_EMAIL);
+        ChatSession result = chatSessionService.createChatSession(mockPdfFile, TEST_EMAIL);
 
         // Verify interactions
-        verify(chatSessionRepository, times(2)).save(any(ChatSessionPage.class));
+        verify(chatSessionRepository, times(2)).save(any(ChatSession.class));
         verify(s3Service).uploadFile(any(), any());
         verify(userService).getUserByEmail(TEST_EMAIL);
         verify(userRepository).save(user);
@@ -113,7 +113,7 @@ class ChatSessionServiceTest {
     @Test
     void testCreateChatSessionShouldHandleS3UploadFailure() {
         // Arrange
-        when(chatSessionRepository.save(any(ChatSessionPage.class))).thenReturn(chatSession);
+        when(chatSessionRepository.save(any(ChatSession.class))).thenReturn(chatSession);
         when(userService.getUserByEmail(TEST_EMAIL)).thenReturn(user);
         when(s3Service.uploadFile(any(), any(File.class))).thenThrow(new RuntimeException("Upload failed"));
 
@@ -125,7 +125,7 @@ class ChatSessionServiceTest {
     @Test
     void testLinkUserToChatSessionShouldProperlyLinkUserAndSession() {
         // Arrange
-        when(chatSessionRepository.save(any(ChatSessionPage.class))).thenReturn(chatSession);
+        when(chatSessionRepository.save(any(ChatSession.class))).thenReturn(chatSession);
         when(userService.getUserByEmail(TEST_EMAIL)).thenReturn(user);
         when(userRepository.save(any(User.class))).thenReturn(user);
 
@@ -160,7 +160,7 @@ class ChatSessionServiceTest {
         when(userService.getUserByEmail(TEST_EMAIL)).thenReturn(user);
 
         // Act
-        ResponseEntity<List<ChatSessionPage>> response = chatSessionService.getAllUserChatSessions(TEST_EMAIL);
+        ResponseEntity<List<ChatSession>> response = chatSessionService.getAllUserChatSessions(TEST_EMAIL);
 
         // Assert
         assertTrue(response.getStatusCode().is2xxSuccessful());
@@ -178,7 +178,7 @@ class ChatSessionServiceTest {
         when(userService.getUserByEmail(TEST_EMAIL)).thenReturn(user);
 
         // Act
-        ResponseEntity<List<ChatSessionPage>> response = chatSessionService.getAllUserChatSessions(TEST_EMAIL);
+        ResponseEntity<List<ChatSession>> response = chatSessionService.getAllUserChatSessions(TEST_EMAIL);
 
         // Assert
         assertTrue(response.getStatusCode().is2xxSuccessful());
@@ -191,7 +191,7 @@ class ChatSessionServiceTest {
     @Test
     void testGetChatSessionPDFReturnsSuccessfulResponse() {
         // Arrange
-        ChatSessionPage session = new ChatSessionPage();
+        ChatSession session = new ChatSession();
         session.setChatSessionId(chatSessionId);
         session.setS3FileKey(TEST_S3_KEY);  // Explicitly set the S3 key
 

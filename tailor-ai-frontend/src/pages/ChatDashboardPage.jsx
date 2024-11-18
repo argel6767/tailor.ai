@@ -55,7 +55,7 @@ const ChatDashboardPage = () => {
                 <div className="flex gap-8 justify-center">
                     <input type="file" onChange={handleFileSubmission}
                            className="file-input file-input-bordered w-full max-w-xs" id='file-input' data-testid="file-input" />
-                    <button className={`btn ${hasSubmitted ? 'btn-primary' : 'btn-disable'}`}
+                    <button className={`btn btn-active ${hasSubmitted ? 'btn-primary' : 'btn-disable'}`}
                             disabled={!hasSubmitted} onClick={makeChatSession}>Begin chat
                     </button>
                 </div>
