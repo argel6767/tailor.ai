@@ -11,8 +11,9 @@ const useCheckCookie = (redirectPath = "/auth", excludePaths = ["/"]) => {
 
     useEffect(() => {
         const checkJwtCookie = () => {
-            if (isCookieExpired() && !excludePaths.includes(redirectPath)) {
-                navigate("/");
+            const currentPath = window.location.pathname;
+            if (isCookieExpired() && !excludePaths.includes(currentPath)) {
+                navigate(redirectPath);
             }
         }
         checkJwtCookie();
