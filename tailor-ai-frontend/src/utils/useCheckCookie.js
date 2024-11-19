@@ -6,12 +6,12 @@ import {isCookieExpired} from "../config/cookieConfig.js";
  * custom hook that checks whether cookie is expired, and does so every 15 minutes
  * if the token is indeed expired then the user is sent back to the home page to re login
  */
-const useCheckCookie = () => {
+const useCheckCookie = (redirectPath = "/auth", excludePaths = ["/"]) => {
     const navigate = useNavigate();
 
     useEffect(() => {
         const checkJwtCookie = () => {
-            if (isCookieExpired()) {
+            if (isCookieExpired() && !excludePaths.includes(redirectPath)) {
                 navigate("/");
             }
         }

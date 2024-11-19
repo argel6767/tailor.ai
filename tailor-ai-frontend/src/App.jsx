@@ -11,7 +11,7 @@ import Footer from "./components/Footer.jsx";
 import useCheckCookie from "./utils/useCheckCookie.js";
 
 function App() {
-    useCheckCookie();
+    useCheckCookie("/auth", ["/", "/auth"]);
 
   return (
       <div className="flex flex-col h-screen">
