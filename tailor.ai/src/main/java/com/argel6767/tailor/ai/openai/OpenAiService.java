@@ -16,14 +16,20 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
+/**
+ * Houses business logic for
+ */
 @Service
 public class OpenAiService {
     private final ChatClient chatClient;
     private final MessageService messageService;
+
     @Value("${OPEN_AI_API}")
     private String apiKey;
+
 
     public OpenAiService(ChatClient chatClient, MessageService messageService) {
         this.chatClient = chatClient;
@@ -35,21 +41,24 @@ public class OpenAiService {
      * then uses .reduce() to asynchronously creating a new message Entity in the db, that being the Ai response
      */
     public Flux<String> getAiResponse(Long id, String message) {
-        Flux<String> response = chatClient.prompt()
+        return chatClient.prompt()
                 .user(message)
                 .stream()
-                .content();
-        response.reduce("", String::concat)
-                .flatMap(fullMessage -> {
-                    // Save the concatenated message to the database
-                    NewMessageRequest request = new NewMessageRequest(fullMessage, Author.ASSISTANT);
-                    return Mono.fromCallable(() -> messageService.createMessage(request, id))
-                            .subscribeOn(Schedulers.boundedElastic()) // Run the blocking operation on a separate thread
-                            .then(); // Convert ResponseEntity to a reactive Mono<Void>
-                })
-                .subscribe();
+                .content()
+                .publishOn(Schedulers.boundedElastic())
+                .collectList()
+                .flatMap(chunks -> {
+                    // Concatenate all chunks
+                    String fullMessage = String.join("", chunks);
 
-        return response;
+                    // Create message request
+                    NewMessageRequest request = new NewMessageRequest(fullMessage, Author.ASSISTANT);
+
+                    // Save to database and return original stream
+                    return Mono.fromCallable(() -> messageService.createMessage(request, id))
+                            .thenReturn(Flux.fromIterable(chunks));
+                })
+                .flatMapMany(Function.identity());
     }
 
 
