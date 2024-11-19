@@ -15,7 +15,7 @@ public class Message {
     private Long messageId;
     
     @Column(nullable = false)
-    private Enum<Author> author;
+    private Author author;
     
     @Column(nullable = false, columnDefinition = "text")
     private String body;
@@ -35,11 +35,11 @@ public class Message {
         return messageId;
     }
 
-    public Enum<Author> getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(Enum<Author> author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 
