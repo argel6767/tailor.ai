@@ -29,10 +29,22 @@ public class ChatSessionController {
         return chatSessionService.getChatSessionPDF(id);
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/all/{email}")
     public ResponseEntity<List<ChatSession>> getUserChatSessions(@PathVariable String email) {
         return chatSessionService.getAllUserChatSessions(email);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ChatSession> getChatSession(@PathVariable Long id) {
+        ChatSession chatSession = chatSessionService.getChatSession(id);
+        if (chatSession == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(chatSession);
+    }
 
+    @PutMapping("/{id}/name")
+    public ResponseEntity<?> updateChatSessionName(@PathVariable Long id, @RequestBody String name) {
+        return chatSessionService.updateChatSessionName(id, name);
+    }
 }

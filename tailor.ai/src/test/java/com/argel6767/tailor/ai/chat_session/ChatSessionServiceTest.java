@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -219,5 +219,33 @@ class ChatSessionServiceTest {
         assertTrue(response.getStatusCode().is4xxClientError());
         verify(chatSessionRepository).findById(chatSessionId);
         verify(s3Service, never()).downloadFile(anyString());
+    }
+
+    @Test
+    void testUpdateSessionName() {
+        //Arrange
+        when(chatSessionRepository.findById(chatSessionId)).thenReturn(Optional.of(chatSession));
+        String name = "New Chat Name";
+
+        //Act
+        ResponseEntity<?> response = chatSessionService.updateChatSessionName(chatSessionId, name);
+
+        //Assert
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+        assertEquals(name, chatSession.getChatSessionName());
+        verify(chatSessionRepository).findById(chatSessionId);
+    }
+
+    @Test
+    void testUpdateChatSessionNameWithInvalidId() {
+        //Arrange
+        when(chatSessionRepository.findById(chatSessionId)).thenReturn(Optional.empty());
+        String name = "New Chat Name";
+
+        //Act
+        ResponseEntity<?> response = chatSessionService.updateChatSessionName(chatSessionId, name);
+        assertTrue(response.getStatusCode().is4xxClientError());
+        assertEquals("New Chat", chatSession.getChatSessionName());
+        verify(chatSessionRepository).findById(chatSessionId);
     }
 }

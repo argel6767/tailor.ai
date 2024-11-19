@@ -77,6 +77,18 @@ public class ChatSessionService {
     }
 
     /*
+     * allows user to update chatSessionName
+     */
+    public ResponseEntity<?> updateChatSessionName(Long chatSessionId, String name) {
+        ChatSession chatSession = chatSessionRepository.findById(chatSessionId).orElse(null);
+        if (chatSession != null) {
+            chatSession.setChatSessionName(name);
+            return ResponseEntity.ok(chatSessionRepository.save(chatSession));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    /*
      * converts the file back into a regular File object
      */
     private File convertMultipartFileToFile(MultipartFile multipartFile)  {

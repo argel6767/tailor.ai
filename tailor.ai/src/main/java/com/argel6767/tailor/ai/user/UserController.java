@@ -26,4 +26,6 @@ public class UserController {
         Boolean status = userService.hasSetProfession(email);
         return ResponseEntity.ok(status);
     }
+
+    //TODO add change password, possibly log out?
 }

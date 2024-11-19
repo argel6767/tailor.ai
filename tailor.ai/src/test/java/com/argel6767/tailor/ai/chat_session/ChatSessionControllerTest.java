@@ -22,8 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -130,7 +129,7 @@ class ChatSessionControllerTest {
                 .thenReturn(ResponseEntity.ok(List.of()));
 
         // Act & Assert
-        mockMvc.perform(get("/chatsession/{email}", TEST_EMAIL)
+        mockMvc.perform(get("/chatsession/all/{email}", TEST_EMAIL)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -183,10 +182,57 @@ class ChatSessionControllerTest {
                 .thenReturn(ResponseEntity.badRequest().build());
 
         // Act & Assert
-        mockMvc.perform(get("/chatsession/{email}", invalidEmail)
+        mockMvc.perform(get("/chatsession/all/{email}", invalidEmail)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
         verify(chatSessionService).getAllUserChatSessions(invalidEmail);
+    }
+
+    @Test
+    void testGetChatSession() throws Exception {
+        //Arrange
+        when(chatSessionService.getChatSession(TEST_CHAT_SESSION_ID)).thenReturn(mockChatSession);
+
+        //Act & Assert
+        mockMvc.perform(get("/chatsession/{id}", TEST_CHAT_SESSION_ID)).andExpect(status().isOk());
+
+        verify(chatSessionService).getChatSession(TEST_CHAT_SESSION_ID);
+    }
+
+    @Test
+    void testGetChatSessionWithInvalidId() throws Exception {
+        //Arrange
+        when(chatSessionService.getChatSession(TEST_CHAT_SESSION_ID)).thenReturn(null);
+
+        //Act & Assert
+        mockMvc.perform(get("/chatsession/{id}", TEST_CHAT_SESSION_ID)).andExpect(status().isNotFound());
+
+        verify(chatSessionService).getChatSession(TEST_CHAT_SESSION_ID);
+    }
+
+    @Test
+    void testUpdateChatSessionName() throws Exception {
+        //Arrange
+        String name =  "New name";
+        when(chatSessionService.updateChatSessionName(TEST_CHAT_SESSION_ID, name)).thenReturn(ResponseEntity.ok().build());
+        //Act & Assert
+        mockMvc.perform(put("/chatsession/{id}/name", TEST_CHAT_SESSION_ID)
+                .content(name).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+
+        verify(chatSessionService).updateChatSessionName(TEST_CHAT_SESSION_ID, name);
+    }
+
+    @Test
+    void testUpdateChatSessionNameWithInvalidId() throws Exception {
+        String name =  "New name";
+        when(chatSessionService.updateChatSessionName(TEST_CHAT_SESSION_ID, name)).thenReturn(ResponseEntity.notFound().build());
+
+        //Act & Assert
+        mockMvc.perform(put("/chatsession/{id}/name", TEST_CHAT_SESSION_ID)
+                .content(name).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+
+        verify(chatSessionService).updateChatSessionName(TEST_CHAT_SESSION_ID, name);
+
     }
 }
