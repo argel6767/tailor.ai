@@ -1,4 +1,4 @@
-package com.argel6767.tailor.ai.openai;
+package com.argel6767.tailor.ai.openai.utils;
 
 import com.argel6767.tailor.ai.message.Author;
 import com.argel6767.tailor.ai.message.Message;

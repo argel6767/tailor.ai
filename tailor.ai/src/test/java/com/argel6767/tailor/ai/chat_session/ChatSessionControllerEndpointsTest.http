@@ -8,7 +8,7 @@ file=@dummy.pdf
 ###
 
 ### GET to grab all user chat sessions
-GET localhost:8080/chatsession/argel6767@gmail.com
+GET localhost:8080/chatsession/all/argel6767@gmail.com
 Authorization: Bearer {{auth_token}}
 ###
 

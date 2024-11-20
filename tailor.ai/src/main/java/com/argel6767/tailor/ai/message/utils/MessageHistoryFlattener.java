@@ -14,6 +14,9 @@ public class MessageHistoryFlattener {
      * flattens message history
      */
     public static String flattenMessageHistory(List<Message> messages) {
+        if (messages == null || messages.isEmpty()) {
+            return "";
+        }
         StringBuilder historyFlattened = new StringBuilder();
         for (Message message : messages) {
             historyFlattened.append(message.getAuthor());

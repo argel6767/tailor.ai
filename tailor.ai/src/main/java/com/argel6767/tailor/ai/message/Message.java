@@ -13,7 +13,8 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
     private Long messageId;
-    
+
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Author author;
     
