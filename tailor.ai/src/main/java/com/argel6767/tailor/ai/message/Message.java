@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 @Entity
 public class Message {
 
+    public Message() {}
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
@@ -27,7 +29,12 @@ public class Message {
     @JoinColumn(name = "chat_session_id")
     @JsonBackReference
     private ChatSession chatSession;
-    
+
+    public Message(String body, Author author) {
+        this.body = body;
+        this.author = author;
+    }
+
     public void setMessageId(Long messageId) {
         this.messageId = messageId;
     }

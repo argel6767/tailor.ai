@@ -1,5 +1,6 @@
 package com.argel6767.tailor.ai.chat_session;
 
+import com.argel6767.tailor.ai.pdf.utils.FileConverter;
 import com.argel6767.tailor.ai.s3.S3Service;
 import com.argel6767.tailor.ai.user.User;
 import com.argel6767.tailor.ai.user.UserRepository;
@@ -40,7 +41,7 @@ public class ChatSessionService {
      * the user's email is also grabbed to allow for being able to link the user in the db, handling the relationship
      */
     public ChatSession createChatSession(MultipartFile pdfFileMulti, String email) {
-        File pdfFile = convertMultipartFileToFile(pdfFileMulti);
+        File pdfFile = FileConverter.convertMultipartFileToFile(pdfFileMulti);
         ChatSession chatSession = new ChatSession();
         linkUserToChatSession(email, chatSession);
         String key = s3Service.uploadFile(chatSession.getChatSessionId(), pdfFile);
@@ -88,20 +89,7 @@ public class ChatSessionService {
         return ResponseEntity.notFound().build();
     }
 
-    /*
-     * converts the file back into a regular File object
-     */
-    private File convertMultipartFileToFile(MultipartFile multipartFile)  {
-        // Create a temporary file and copy the contents of the multipart file
-        File file = null;
-        try {
-            file = File.createTempFile("uploaded-", multipartFile.getOriginalFilename());
-            multipartFile.transferTo(file);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return file;
-    }
+
 
     /*
      * links the chatSession to the User that made the session

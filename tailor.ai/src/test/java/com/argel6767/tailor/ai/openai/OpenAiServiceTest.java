@@ -4,93 +4,128 @@ import com.argel6767.tailor.ai.message.Author;
 import com.argel6767.tailor.ai.message.Message;
 import com.argel6767.tailor.ai.message.MessageService;
 import com.argel6767.tailor.ai.message.requests.NewMessageRequest;
-import com.argel6767.tailor.ai.message.utils.MessageHistoryFlattener;
+import com.argel6767.tailor.ai.message.responses.AiResponse;
+import com.argel6767.tailor.ai.pdf.PdfService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
+import org.mockito.*;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.http.ResponseEntity;
-import reactor.core.publisher.Flux;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 public class OpenAiServiceTest {
 
-    private OpenAiService openAiService;
+    @Mock
     private ChatClient chatClient;
+
+    @Mock
     private MessageService messageService;
 
+    @Mock
+    private PdfService pdfService;
+
+    @InjectMocks
+    private OpenAiService openAiService;
+
+    private final String AI_RESPONSE = "AI RESPONSE";
+
     @BeforeEach
-    public void setup() {
-        chatClient = mock(ChatClient.class);
-        messageService = mock(MessageService.class);
-        openAiService = new OpenAiService(chatClient, messageService);
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testGetAiResponse() {
+    public void testGetAiResponse_callsChatClientAndSavesMessage() {
+        // Arrange
         Long chatSessionId = 1L;
-        String userMessage = "Hello, how are you?";
+        String userMessage = "Hello AI";
 
-        // Mock the message history
-        Message message1 = new Message();
-        message1.setBody("Hell World");
-        message1.setAuthor(Author.ASSISTANT);
-        Message message2 = new Message();
-        message2.setBody("How are you?");
-        message2.setAuthor(Author.USER);
-        List<Message> messageHistory = Arrays.asList(message1, message2);
-        ResponseEntity<List<Message>> responseEntity = ResponseEntity.ok(messageHistory);
+        // Mock message history
+        when(messageService.getAllChatSessionMessages(chatSessionId))
+                .thenReturn(ResponseEntity.ok(Collections.emptyList()));
 
-        when(messageService.getAllChatSessionMessages(chatSessionId)).thenReturn(responseEntity);
+        // Mock chatClient to return a fixed response
 
-        // Mock the flattening of message history
-        String flattenedHistory = "Assistant: Hi there!\nUser: I am fine, thank you.";
-        String completeHistory = flattenedHistory + "\nUser: " + userMessage;
+        // Act
+        ResponseEntity<AiResponse> response = openAiService.getAiResponse(chatSessionId, userMessage);
 
-        // Optionally mock MessageHistoryFlattener if it's a dependency
-        // If MessageHistoryFlattener is static, you can use a utility like PowerMockito to mock it
-        // For this example, we assume it works as intended
+        // Assert
+        assertNotNull(response);
 
-        // Mock the chain of calls on chatClient
-        Prompt promptMock = mock(Prompt.class, RETURNS_SELF);
-        when(chatClient.prompt()).thenReturn((ChatClient.ChatClientRequestSpec) promptMock);
-        when(((ChatClient.ChatClientRequestSpec) promptMock).user(completeHistory)).thenReturn((ChatClient.ChatClientRequestSpec) promptMock);
-        when(((ChatClient.ChatClientRequestSpec) promptMock).stream()).thenReturn((ChatClient.StreamResponseSpec) promptMock);
+        // Verify that chatClient.prompt was called with any string
+        verify(chatClient).prompt(anyString());
 
-        // Mock the AI response
-        Flux<String> aiResponseFlux = Flux.just("I'm doing well", ", thank you!");
-        when(((ChatClient.StreamResponseSpec) promptMock).content()).thenReturn(aiResponseFlux);
+        // Verify that messageService.createMessage was called with expected arguments
+        verify(messageService).createMessage(
+                argThat(request -> request.getMessage().equals("AI Response") && request.getAuthor() == Author.ASSISTANT),
+                eq(chatSessionId)
+        );
+    }
 
-        // Mock the messageService.createMessage() method
-        when(messageService.createMessage(any(NewMessageRequest.class), eq(chatSessionId))).thenReturn(null);
+    @Test
+    public void testSendPDFForReading_callsPdfServiceAndChatClient() throws IOException {
+        // Arrange
+        Long chatSessionId = 1L;
+        String profession = "Software Engineer";
+        MultipartFile multipartFile = mock(MultipartFile.class);
+        String fileContent = "Resume Content";
 
-        // Call the method under test
-       Object resultFlux = openAiService.getAiResponse(chatSessionId, userMessage);
+        // Mock pdfService to return fileContent
+        when(pdfService.readFile(any(File.class))).thenReturn(fileContent);
 
-        // Collect the emitted items
-        List<String> resultList = new ArrayList<>();
+        // Mock chatClient to return a fixed response
 
-        // Verify the result
-        assertNotNull(resultList);
-        assertEquals(2, resultList.size());
-        assertEquals("I'm doing well", resultList.get(0));
-        assertEquals(", thank you!", resultList.get(1));
 
-        // Verify that messageService.createMessage() was called with the correct parameters
-        ArgumentCaptor<NewMessageRequest> argumentCaptor = ArgumentCaptor.forClass(NewMessageRequest.class);
-        verify(messageService).createMessage(argumentCaptor.capture(), eq(chatSessionId));
+        // Act
+        ResponseEntity<AiResponse> response = openAiService.sendPDFForReading(multipartFile, profession, chatSessionId);
 
-        NewMessageRequest capturedRequest = argumentCaptor.getValue();
-        assertEquals("I'm doing well, thank you!", capturedRequest.getMessage());
-        assertEquals(Author.ASSISTANT, capturedRequest.getAuthor());
+
+        // Verify that pdfService.readFile was called
+        verify(pdfService).readFile(any(File.class));
+
+        // Verify that chatClient.prompt was called with any string
+        verify(chatClient).prompt(anyString());
+
+        // Verify that messageService.createMessage was called with expected arguments
+        verify(messageService).createMessage(
+                argThat(request -> request.getMessage().equals("Tailored Resume") && request.getAuthor() == Author.ASSISTANT),
+                eq(chatSessionId)
+        );
+    }
+
+    @Test
+    public void testSendPDFForReading_handlesIOException() throws IOException {
+        // Arrange
+        Long chatSessionId = 1L;
+        String profession = "Software Engineer";
+        MultipartFile multipartFile = mock(MultipartFile.class);
+
+        // Mock pdfService.readFile to throw IOException
+        when(pdfService.readFile(any(File.class))).thenThrow(new IOException("Failed to read file"));
+
+        // Act & Assert
+        IOException exception = assertThrows(IOException.class, () -> {
+            openAiService.sendPDFForReading(multipartFile, profession, chatSessionId);
+        });
+
+        assertEquals("Failed to read file", exception.getMessage());
+
+        // Verify that pdfService.readFile was called
+        verify(pdfService).readFile(any(File.class));
+
+        // Verify that chatClient.prompt was not called
+        verify(chatClient, never()).prompt(anyString());
+
+        // Verify that messageService.createMessage was not called
+        verify(messageService, never()).createMessage(any(), anyLong());
     }
 }
+
 
