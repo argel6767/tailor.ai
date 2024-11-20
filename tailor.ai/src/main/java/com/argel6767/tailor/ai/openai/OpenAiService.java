@@ -44,4 +44,9 @@ public class OpenAiService {
         return ResponseEntity.ok(new AiResponse(response));
     }
 
+    /*
+     * TODO: Handle putting SYSTEM message
+     *  API endpoint for submitting have the ai read the String representation of the resume pdf
+     */
+
 }
