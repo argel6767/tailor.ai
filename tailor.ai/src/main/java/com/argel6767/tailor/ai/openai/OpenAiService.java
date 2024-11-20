@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 /**
@@ -25,7 +26,7 @@ import java.util.List;
 public class OpenAiService {
     private final String systemMessage = "You are a professional resume assistant AI specialized in tailoring resumes to match the requirements and expectations of specific professions. Your role is to analyze user-provided resumes, identify strengths, " +
             "and suggest targeted improvements based on the desired job or profession. Focus on emphasizing relevant skills, experiences, and keywords that align with the job description or industry standards. Ensure your responses are concise, professional, " +
-            "and tailored to enhance the user’s chances of standing out to recruiters and hiring managers. Make sure to be open to follow up questions.";
+            "and tailored to enhance the user’s chances of standing out to recruiters and hiring managers. Make sure to be give suggestions and open the conversation for follow up questions.";
     private final ChatClient chatClient;
     private final MessageService messageService;
     private final PdfService pdfService;
@@ -59,7 +60,7 @@ public class OpenAiService {
      * to Chat Completions API to have resume tailored with suggestions from AI
      * then save the response to Chat session history
      */
-    public ResponseEntity<AiResponse> sendPDFForReading(MultipartFile file, String profession ,Long id) throws IOException {
+    public ResponseEntity<AiResponse> sendPDFForReading(MultipartFile file, String profession, Long id) throws IOException {
       File rebuiltFile = FileConverter.convertMultipartFileToFile(file);
       String fileContent = pdfService.readFile(rebuiltFile);
       String prompt = "System: " + systemMessage + "\nUser: Tailor the following resume for the profession "+ profession + "\n" + fileContent;
