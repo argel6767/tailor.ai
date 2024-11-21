@@ -1,4 +1,5 @@
 import axios from "axios";
+import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 import {jwtToken} from "../../config/httpConfigs.js";
 
 /**
@@ -6,7 +7,7 @@ import {jwtToken} from "../../config/httpConfigs.js";
  */
 const getHasSetProfession = async (email) => {
     try {
-        const response = await axios.get(`http://localhost:8080/user/profession/${email}`, jwtToken);
+        const response = await axios.get(`${API_ENDPOINT}/user/profession/${email}`, jwtToken);
         return response.data;
     }
     catch (error) {
