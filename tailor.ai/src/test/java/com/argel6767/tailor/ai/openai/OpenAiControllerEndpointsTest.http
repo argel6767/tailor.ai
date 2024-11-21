@@ -1,11 +1,11 @@
 ### POST request for ai response
-POST http://localhost:8080/ai/response
+POST {{endpoint}}/ai/response
 Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
   "chatSessionId": 1,
-  "userMessage": "Can you tell me the things you've previously said?"
+  "userMessage": "Give me 5 cool facts about eating pizza"
 }
 
 ### POST request for sending file to be read and given tailoring suggestions

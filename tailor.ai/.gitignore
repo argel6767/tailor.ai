@@ -34,3 +34,8 @@ build/
 
 ### ENV ###
 *.env
+Dockerrun.aws.json
+deploy.zip
+env-variables.json
+
+.DS_Store

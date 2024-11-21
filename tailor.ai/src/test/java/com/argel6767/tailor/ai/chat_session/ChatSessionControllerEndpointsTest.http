@@ -1,6 +1,6 @@
 
 ### POST to create chat session
-POST http://localhost:8080/chatsession/argel6767@gmail.com
+POST {{endpoint}}/chatsession/argel6767@gmail.com
 Authorization: Bearer {{auth_token}}
 
 file=@dummy.pdf
@@ -8,10 +8,10 @@ file=@dummy.pdf
 ###
 
 ### GET to grab all user chat sessions
-GET localhost:8080/chatsession/all/argel6767@gmail.com
+GET {{endpoint}}/chatsession/all/argel6767@gmail.com
 Authorization: Bearer {{auth_token}}
 ###
 
 ### GET to grab a chat session's pdf by its id
-GET http://localhost:8080/chatsession/pdf/1
+GET {{endpoint}}/chatsession/pdf/1
 Authorization: Bearer {{auth_token}}

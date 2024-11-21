@@ -2,3 +2,6 @@
 mockdata/*
 target/*
 *.env
+.DS_Store
+*.pem
+rest-client.env.json
