@@ -1,20 +1,17 @@
 ### PUT request for add users profession
-PUT http://localhost:8080/user/profession
+PUT {{endpoint}}/user/profession
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-  "email":"argel6767@gmail.com",
+  "email":"tailor.ai.com@gmail.com",
   "profession":"Software Engineer"
 }
 ###
 
 ### GET request for getProfessionStatus
-GET localhost:8080/user/profession/status
+GET {{endpoint}}/user/profession/tailor.ai.com@gmail.com
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
-{
-  "email": "tailor.ai.com@gmail.com"
-}
 ###
