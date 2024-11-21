@@ -6,7 +6,7 @@ export default {
       colors: {
         primary: '#0C7C59', // Surfie Green
         secondary: '#58B19F', // Aquamarine
-        accent: '#868686', // Muted Gray
+        accent: '#2A2A2A', // Muted Gray
         background: '#1C1C1C', // Dark Background
       },
       fontFamily: {

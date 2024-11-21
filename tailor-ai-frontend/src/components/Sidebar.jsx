@@ -37,7 +37,7 @@ const Sidebar = () => {
                     {/*TODO also make a loading placeholder for them until they load up eventually*/}
                 {loading ? <div className="flex items-center justify-center h-3/4">
                         <div className="flex flex-col">
-                            <Loading/>
+                            <Loading loadingMessage={"Grabbing previous chats..."} />
                         </div>
 
                     </div>
