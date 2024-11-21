@@ -1,3 +1,7 @@
 .idea/*
 mockdata/*
 target/*
+*.env
+.DS_Store
+*.pem
+*.env.json
