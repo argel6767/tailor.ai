@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {jwtToken} from "../config/httpConfigs.js";
+import {jwtToken} from "../../config/httpConfigs.js";
 
 /**
  * PUT request that is made to backend to add a users profession

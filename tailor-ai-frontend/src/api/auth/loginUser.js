@@ -1,6 +1,6 @@
 import axios from 'axios';
+import {getJwtToken, setCookie} from "../../config/cookieConfig.js";
 import {API_KEY} from "../../config/apiKeyConfig.js";
-import {getJwtToken, setCookie} from "../config/cookieConfig.js";
 
 /**
  * logs in user then saves the jwt token response in cookie to allow for security and to use across

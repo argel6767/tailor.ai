@@ -1,5 +1,5 @@
-import verifyUser from "../api/verifyUser.js";
-import resendVerificationEmail from "../api/resendVerificationEmail.js";
+import verifyUser from "../api/auth/verifyUser.js";
+import resendVerificationEmail from "../api/auth/resendVerificationEmail.js";
 import {useState} from "react";
 
 const VerifyPage = () => {

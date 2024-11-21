@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {fileHeader} from "../config/httpConfigs.js";
+import {fileHeader} from "../../config/httpConfigs.js";
 
 /**
  * makes the POST request for creating a new chat session in the by the user email

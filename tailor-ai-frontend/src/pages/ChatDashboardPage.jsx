@@ -1,7 +1,7 @@
 import Sidebar from "../components/Sidebar.jsx";
 import {useState} from "react";
 import {sleep} from "../utils/sleep.js";
-import createChatSession from "../api/createChatSession.js";
+import createChatSession from "../api/chat_session/createChatSession.js";
 import {useNavigate} from "react-router-dom";
 
 /**

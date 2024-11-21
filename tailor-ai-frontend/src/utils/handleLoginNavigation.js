@@ -1,4 +1,4 @@
-import getHasSetProfession from "../api/getHasSetProfession.js";
+import getHasSetProfession from "../api/user/getHasSetProfession.js";
 
 /**
  * handles the navigation logic of when a user logins
