@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { describe, it, vi, expect } from "vitest";
 import {BrowserRouter} from "react-router-dom";
 import Sidebar from "../../src/components/Sidebar.jsx";
-import getUserChatSessions from "../../src/api/getUserChatSessions.js";
+import getUserChatSessions from "../../src/api/chat_session/getUserChatSessions.js";
 
 // Mocked list of objects
 const mockChats = [

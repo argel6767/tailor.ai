@@ -4,7 +4,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ChatDashboardPage from '../../src/pages/ChatDashboardPage.jsx';
 import { vi } from 'vitest';
 import * as ReactRouterDom from 'react-router-dom';
-import createChatSession from '../../src/api/createChatSession.js';
+import createChatSession from '../../src/api/chat_session/createChatSession.js';
 
 // Mock the dependencies
 vi.mock('../../src/api/createChatSession.js', () => ({

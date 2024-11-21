@@ -1,5 +1,5 @@
 import image from "../assets/pexels-jopwell-2422293.jpg"
-import addUserProfession from "../api/addUserProfession.js";
+import addUserProfession from "../api/user/addUserProfession.js";
 
 const AddingProfessionPage = () => {
 

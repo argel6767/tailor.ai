@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import Loading from "./Loading.jsx";
-import getUserChatSessions from "../api/getUserChatSessions.js";
+import getUserChatSessions from "../api/chat_session/getUserChatSessions.js";
 import {Link} from "react-router-dom";
 
 const Sidebar = () => {

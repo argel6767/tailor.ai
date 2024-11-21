@@ -1,9 +1,9 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import AuthPage from '../../src/pages/AuthPage.jsx';
-import loginUser from '../../src/api/loginUser.js';
-import registerUser from '../../src/api/registerUser.js';
-import * as apiModule from "../../src/api/getHasSetProfession.js";
+import loginUser from '../../src/api/auth/loginUser.js';
+import registerUser from '../../src/api/auth/registerUser.js';
+import * as apiModule from "../../src/api/user/getHasSetProfession.js";
 import {handleLoginNavigation} from "../../src/utils/handleLoginNavigation.js";
 
 // Mock the auth functions

@@ -1,6 +1,6 @@
 import axios from 'axios';
-import {API_KEY} from "../../config/apiKeyConfig.js";
-import {getJwtToken, setCookie} from "../config/cookieConfig.js";
+import {getJwtToken, setCookie} from "../../config/cookieConfig.js";
+import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 
 /**
  * logs in user then saves the jwt token response in cookie to allow for security and to use across
@@ -8,7 +8,7 @@ import {getJwtToken, setCookie} from "../config/cookieConfig.js";
  */
 const loginUser = async (authRequestValues) => {
     try {
-        const response = await axios.post(`${API_KEY}/auth/login`, authRequestValues);
+        const response = await axios.post(`${API_ENDPOINT}/auth/login`, authRequestValues);
         setCookie(response.data.token);
         console.log(getJwtToken());
     }
