@@ -14,6 +14,7 @@ const ChattingContainer = ({initialMessageHistory}) => {
     const [hasInput, setHasInput] = useState(false);
     const [chatName, setChatName] = useState("");
     const [hasClickedChatName, setClickedChatName] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
 
     useEffect(() => {
@@ -60,6 +61,7 @@ const ChattingContainer = ({initialMessageHistory}) => {
         const userMessage = document.getElementById("input").value;
         createMessageRequest.message = userMessage;
         clearInput()
+        setIsLoading(true);
         await createMessage(createMessageRequest, id);
         const newMessage = {
             messageId: Math.random(),
@@ -80,7 +82,7 @@ const ChattingContainer = ({initialMessageHistory}) => {
             author : "ASSISTANT",
             chatSessionId: id,
         }
-
+        setIsLoading(false);
         setMessageHistory((prevMessages) => [...prevMessages, newResponse]);
     }
 
@@ -110,11 +112,12 @@ const ChattingContainer = ({initialMessageHistory}) => {
                     }
                 </div>
             <div className="flex flex-col flex-1 gap-2.5 overflow-y-auto max-h-[600px] px-1 mb-3" id="messages">
-                    {messageHistory.slice(1).map((message) => (
-                        <MessageBubble key={message.messageId} message={message}/>
+                {messageHistory.slice(1).map((message) => (
+                    <MessageBubble key={message.messageId} message={message}/>
                     ))}
-                </div>
-                <div className="flex justify-center items-center gap-4 w-full pt-4">
+                {isLoading ? <span className="loading loading-dots w-12"></span> : null}
+            </div>
+            <div className="flex justify-center items-center gap-4 w-full pt-4">
                     <input type="text" placeholder="Message AI" className="input input-bordered w-full max-w-xl"
                            onChange={handleInputChange} onKeyDown={handleKeyPress} id="input"/>
                     <button onClick={handleSubmit}  className={`btn ${hasInput ? "btn-primary" : "btn-disabled"}`}>Send
