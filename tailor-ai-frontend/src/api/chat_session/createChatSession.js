@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {fileHeader} from "../../config/httpConfigs.js";
+import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 
 /**
  * makes the POST request for creating a new chat session in the by the user email
@@ -9,7 +10,7 @@ const createChatSession = async (email, resumeFile) => {
     const formData = new FormData();
     formData.append('file', resumeFile);
     try {
-        const response = await axios.post(`http://localhost:8080/chatsession/${email}`, formData, fileHeader);
+        const response = await axios.post(`${API_ENDPOINT}/chatsession/${email}`, formData, fileHeader);
         return response.data
     }
     catch (error) {

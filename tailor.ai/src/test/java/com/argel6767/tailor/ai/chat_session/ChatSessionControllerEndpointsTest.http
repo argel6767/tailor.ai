@@ -15,3 +15,11 @@ Authorization: Bearer {{auth_token}}
 ### GET to grab a chat session's pdf by its id
 GET {{endpoint}}/chatsession/pdf/1
 Authorization: Bearer {{auth_token}}
+
+###PUT to update chat session name
+PUT {{endpoint}}/chatsession/1/name
+Authorization: Bearer {{auth_token}}
+Content-Type: text/plain
+
+Apple Sauce
+
