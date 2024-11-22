@@ -16,20 +16,21 @@ Tailor.AI is an innovative application designed to help users customize their re
 
 - **Framework**: Spring Boot 3
 - **Authentication**: JWT-based stateless session management
-- **Database**: AWS RDS PostgreSQL
+- **Database**: Heroku hosted PostgreSQL database
 - **Storage**: AWS S3 Bucket
 - **Language**: Java 17
 - **API**: RESTful endpoints for processing user data and integrating AI services
+- **Testing**: JUnit 5 and Mockito 5
 
 ### Frontend
 
 - **Framework**: React
 - **UI Library**: DaisyUI
-- **Testing**: Vitest
+- **Testing**: Vitest & Jsdom
 
 ## Current Status
 
-- Backend MVP is completed and ready to deploy.
+- Backend MVP is completed and on Heroku.
 - Frontend MVP is under development.
 - A website will be launched once the frontend MVP is ready.
 
