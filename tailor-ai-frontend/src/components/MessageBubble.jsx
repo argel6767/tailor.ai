@@ -6,7 +6,7 @@ const MessageBubble = ({message}) => {
 
     return (
         <div className={`chat ${isAuthorAssistant(message) ? "chat-start" : "chat-end"} flex-1`}>
-            <div className="chat-bubble chat-bubble-primary">{message.body}</div>
+            <div className={`chat-bubble ${isAuthorAssistant(message) ? "chat-bubble-accent" : "chat-bubble-primary"}`}>{message.body}</div>
         </div>
     )
 }
