@@ -4,6 +4,7 @@ import {sleep} from "../utils/sleep.js";
 import createChatSession from "../api/chat_session/createChatSession.js";
 import sendResumeToAi from "../api/ai/sendResumeToAi.js";
 import getUser from "../api/user/getUser.js";
+import Loading from "../components/Loading.jsx";
 import {useNavigate} from "react-router-dom";
 
 /**
@@ -13,7 +14,12 @@ const ChatDashboardPage = () => {
 
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [pdfReminder, setPdfReminder] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+
+    const handleLoading = () => {
+        setIsLoading(!isLoading);
+    }
 
     /**
      * handles when a user uploads a file, first checks if the file is a pdf
@@ -43,9 +49,10 @@ const ChatDashboardPage = () => {
     const makeChatSession = async () => {
         const file = document.getElementById("file-input").files[0];
         const email = localStorage.getItem("email");
+        handleLoading()
         const chatSessionDetails = await createChatSession(email, file);
         const user = await getUser(email);
-        await sendResumeToAi(chatSessionDetails.chatSessionId, user.profession, chatSessionDetails);
+        await sendResumeToAi(chatSessionDetails.chatSessionId, user.profession, file);
         navigate(`/chats/${chatSessionDetails.chatSessionId}`);
     }
 
@@ -56,14 +63,20 @@ const ChatDashboardPage = () => {
             </span>
             <main className="flex-1 flex flex-col text-center px-2 pt-12 gap-8">
                 <h1 className="text-6xl">Welcome, begin a new chat by uploading your resume.</h1>
-                <div className="flex gap-8 justify-center">
+                <div className="flex gap-8 justify-center pb-6">
                     <input type="file" onChange={handleFileSubmission}
                            className="file-input file-input-bordered w-full max-w-xs" id='file-input' data-testid="file-input" />
                     <button className={`btn btn-active ${hasSubmitted ? 'btn-primary' : 'btn-disable'}`}
                             disabled={!hasSubmitted} onClick={makeChatSession}>Begin chat
                     </button>
                 </div>
-                <footer className={`flex gap-8 justify-center text-center ${pdfReminder ? 'visible' : 'invisible'}`}> Must be of type PDF</footer>
+                    <span className="flex justify-center items-center">
+                        <div className="w-2/5">
+                            {isLoading ? <Loading loadingMessage={"Creating new chat..."}/> : null}
+                        </div>
+                    </span>
+                <footer
+                    className={`flex gap-8 justify-center text-center ${pdfReminder ? 'visible' : 'invisible'}`}> Must be of type PDF</footer>
             </main>
         </div>
 
