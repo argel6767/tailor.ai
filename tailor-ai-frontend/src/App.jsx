@@ -16,7 +16,7 @@ function App() {
   return (
       <div className="flex flex-col h-screen">
           <Navbar />
-          <main className="flex-1">
+          <main className="flex-1 overflow-hidden">
               <Routes>
                   <Route path="/" element={<LandingPage/>}/>
                   <Route path="/auth" element={<AuthPage/>}/>
