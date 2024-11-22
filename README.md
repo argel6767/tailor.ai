@@ -36,7 +36,7 @@ Tailor.AI is an innovative application designed to help users customize their re
 
 ## Note
 
-This repository is not intended for independent setup or deployment. The application is configured to work with specific AWS resources, including an RDS PostgreSQL database and an S3 bucket.
+This repository is not intended for independent setup or deployment. The application is configured to work with specific AWS and Heroku resources, including a Heroku database, Heroku backend server, and an S3 bucket.
 
 ## Contact
 
