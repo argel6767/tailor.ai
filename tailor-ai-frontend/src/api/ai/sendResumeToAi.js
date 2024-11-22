@@ -7,7 +7,7 @@ const sendResumeToAi = async (id, profession, resumeFile) => {
     formData.append("file", resumeFile);
     formData.append("profession", profession);
     try {
-        const response = await axios.post(`${API_ENDPOINT}/file/${id}`, formData, fileHeader);
+        const response = await axios.post(`${API_ENDPOINT}/ai/file/${id}`, formData, fileHeader);
         return response.data
     }
     catch (error) {
