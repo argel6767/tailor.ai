@@ -64,6 +64,7 @@ public class OpenAiService {
       File rebuiltFile = FileConverter.convertMultipartFileToFile(file);
       String fileContent = pdfService.readFile(rebuiltFile);
       String prompt = "System: " + systemMessage + "\nUser: Tailor the following resume for the profession "+ profession + "\n" + fileContent;
+      messageService.createMessage(new NewMessageRequest("System Message", Author.SYSTEM), id);
       String response = chatClient.prompt().user(prompt).call().content();
       messageService.createMessage(new NewMessageRequest(response, Author.ASSISTANT), id);
       return ResponseEntity.ok(new AiResponse(response));
