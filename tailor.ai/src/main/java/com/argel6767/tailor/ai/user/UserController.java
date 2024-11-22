@@ -27,5 +27,16 @@ public class UserController {
         return ResponseEntity.ok(status);
     }
 
+    @GetMapping("/{email}")
+    public ResponseEntity<User> getUser(@PathVariable String email) {
+        try {
+            User user = userService.getUserByEmail(email);
+            return ResponseEntity.ok(user);
+        }
+        catch(RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     //TODO add change password, possibly log out?
 }
