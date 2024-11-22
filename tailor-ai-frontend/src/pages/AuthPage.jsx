@@ -5,6 +5,7 @@ import loginUser from "../api/auth/loginUser.js";
 import {handleLoginNavigation} from "../utils/handleLoginNavigation.js";
 import {emailObjectRequest} from "../api/requests/emailObjectRequest.js";
 import {validateEmail} from "../utils/validateEmail.js";
+import Loading from "../components/Loading.jsx";
 
 /**
  * The AuthPage (login or sign up)
@@ -23,6 +24,7 @@ const AuthPage = () => {
     const[email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const[isValidEmail, setValidEmail] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
 
     const handleAccountChange = () => {
@@ -34,17 +36,23 @@ const AuthPage = () => {
         "password":null,
     }
 
+    const handleLoading = () => {
+        setIsLoading(!isLoading);
+    }
+
     /**
      * submits the values given by user to the endpoint for logging in or signing up
      * then routes user to appropriate page based on status
      */
     const submitAuthRequestValues = async () => {
+        handleLoading();
         authRequestValues.username = email;
         authRequestValues.password = password;
         loginNavigationRequest.email = email;
         localStorage.setItem("email", email);
         console.log(authRequestValues);
         hasAccount?  await login(authRequestValues) : await register(authRequestValues);
+        handleLoading();
     }
 
     const login = async (authRequestValues) => {
@@ -60,9 +68,10 @@ const AuthPage = () => {
     return (
         <div className="flex justify-center items-center pt-20">
             <div className="flex flex-col  justify-center items-center p-2 space-y-6 w-2/5  ">
-                <h1 className="text-3xl font-bold text-center pb-1">
+                <h1 className="text-3xl font-bold text-center pb-2">
                     {hasAccount ? "Welcome back, sign in to your account." : "Welcome to Tailor.ai, sign up here."}
                 </h1>
+                {isLoading ? (<Loading loadingMessage={"Speaking with the backend..."}/>) : (<>
                     <label className="input input-bordered flex items-center gap-2 bg-primary">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -75,10 +84,10 @@ const AuthPage = () => {
                                 d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"/>
                         </svg>
                         <input type="text" className="grow" placeholder="Email" id={"email-input"} value={email}
-                        onChange={(e) => {
-                            setEmail(e.target.value);
-                            setValidEmail(validateEmail(email));
-                        }}/>
+                               onChange={(e) => {
+                                   setEmail(e.target.value);
+                                   setValidEmail(validateEmail(email));
+                               }}/>
                     </label>
                     <label className="input input-bordered flex items-center gap-2 bg-primary">
                         <svg
@@ -91,20 +100,22 @@ const AuthPage = () => {
                                 d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
                                 clipRule="evenodd"/>
                         </svg>
-                        <input type="password" className="grow" placeholder="Password" id={"password-input"} value={password}
-                        onChange={(e) => setPassword(e.target.value)}/>
+                        <input type="password" className="grow" placeholder="Password" id={"password-input"}
+                               value={password}
+                               onChange={(e) => setPassword(e.target.value)}/>
                     </label>
+
                     <button className={`btn btn-active btn-primary`}
-                            onClick={submitAuthRequestValues}  disabled={!email || !isValidEmail || !password}>
+                            onClick={submitAuthRequestValues} disabled={!email || !isValidEmail || !password}>
                         {hasAccount ? "Sign in" : "Sign up"}
                     </button>
 
-                {hasAccount ?
-                    <p>Not have an account? <button id={"switchToSignUp"} className="underline"
-                                                    onClick={handleAccountChange}>Sign Up</button></p> :
-                    <p>Already have an account? <button id={"switchToSignIn"} className="underline"
-                                                        onClick={handleAccountChange}>Sign In</button></p>
-                }
+                    {hasAccount ?
+                        <p>Not have an account? <button id={"switchToSignUp"} className="underline"
+                                                        onClick={handleAccountChange}>Sign Up</button></p> :
+                        <p>Already have an account? <button id={"switchToSignIn"} className="underline"
+                                                            onClick={handleAccountChange}>Sign In</button></p>}
+                </>)}
             </div>
         </div>
     )
