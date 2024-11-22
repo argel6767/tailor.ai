@@ -1,6 +1,6 @@
 # Tailor.AI
 
-Tailor.AI is an innovative application designed to help users customize their resumes for specific professions using the power of AI. With Tailor.AI, you can craft job-specific resumes quickly and effectively, giving you the edge you need to stand out in the job market.
+Tailor.AI is an innovative application designed to help users customize their resumes for specific professions using the power of AI. With Tailor.AI, you can craft profession-specific resumes quickly and effectively, giving you the edge you need to stand out in the job market.
 
 ## Features
 
@@ -33,6 +33,10 @@ Tailor.AI is an innovative application designed to help users customize their re
 - Backend MVP is completed and hosted on Heroku.
 - Frontend MVP is under development.
 - A website will be launched once the frontend MVP is ready.
+
+## Future Ideas
+
+- A job description scraping micro-service to further tailor resumes to job-specfic descriptions, utilizing Flask and Beautiful Soup.
 
 ## Note
 
