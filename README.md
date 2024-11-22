@@ -30,7 +30,7 @@ Tailor.AI is an innovative application designed to help users customize their re
 
 ## Current Status
 
-- Backend MVP is completed and on Heroku.
+- Backend MVP is completed and hosted on Heroku.
 - Frontend MVP is under development.
 - A website will be launched once the frontend MVP is ready.
 
