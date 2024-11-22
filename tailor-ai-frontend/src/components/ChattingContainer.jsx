@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import createMessage from "../api/message/createMessage.js";
 import requestAiResponse from "../api/ai/requestAiResponse.js";
+import getChatSession from "../api/chat_session/getChatSession.js";
 
 
 const ChattingContainer = ({initialMessageHistory}) => {
@@ -10,6 +11,16 @@ const ChattingContainer = ({initialMessageHistory}) => {
     const [messageHistory, setMessageHistory] = useState(initialMessageHistory);
     const {id} = useParams();
     const [hasInput, setHasInput] = useState(false);
+    const [chatName, setChatName] = useState("");
+
+
+    useEffect(() => {
+        const getName = async () => {
+            const response = await getChatSession(id);
+            setChatName(response.chatSessionName);
+        }
+        getName()
+    }, [id]);
 
     const createMessageRequest = {
         "message": null,
@@ -27,7 +38,7 @@ const ChattingContainer = ({initialMessageHistory}) => {
     }
 
     /*
-     * submit
+     * submits user message to both db and as the prompt for the ai for a response
      */
     const handleSubmit = async () => {
         const userMessage = document.getElementById("input").value;
@@ -62,6 +73,9 @@ const ChattingContainer = ({initialMessageHistory}) => {
         setHasInput(false);
     }
 
+    /*
+     * scroll effect, so the newest message is seen when it is put on the ui
+     */
     useEffect(() => {
         const messagesContainer = document.getElementById("messages")
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -70,8 +84,8 @@ const ChattingContainer = ({initialMessageHistory}) => {
 
     return (
         <main className="flex flex-col items-center h-full px-1">
-                <div className="text-center text-4xl py-4">
-                    <h1>This is the header where the chat name will go</h1>
+                <div className="text-center text-4xl py-4 cursor-pointer">
+                    <h1>{chatName}</h1>
                 </div>
                 <div className="flex flex-col flex-1 gap-2.5 overflow-y-auto max-h-[600px] px-1 mb-3" id="messages">
                     {messageHistory.slice(1).map((message) => (
