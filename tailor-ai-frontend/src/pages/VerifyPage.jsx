@@ -1,8 +1,11 @@
 import verifyUser from "../api/auth/verifyUser.js";
 import resendVerificationEmail from "../api/auth/resendVerificationEmail.js";
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 const VerifyPage = () => {
+
+    const navigate = useNavigate();
 
     const[sentToken, setSentToken] = useState(false);
 
@@ -21,7 +24,7 @@ const VerifyPage = () => {
         console.log(verifyRequest);
         await verifyUser(verifyRequest)
         localStorage.clear()
-        window.location.href = "/auth";
+        navigate("/auth")
     }
 
     const handleResendTokenRequest = async () => {

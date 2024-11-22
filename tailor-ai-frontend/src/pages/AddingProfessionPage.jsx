@@ -1,7 +1,10 @@
 import image from "../assets/pexels-jopwell-2422293.jpg"
 import addUserProfession from "../api/user/addUserProfession.js";
+import {useNavigate} from "react-router-dom";
 
 const AddingProfessionPage = () => {
+
+    const navigate = useNavigate();
 
     const addProfessionRequest = {
         "email": localStorage.getItem("email"),
@@ -13,7 +16,7 @@ const AddingProfessionPage = () => {
         addProfessionRequest["profession"] = profession;
         console.log(addProfessionRequest);
         await addUserProfession(addProfessionRequest);
-        window.location.href = "/chats"
+        navigate("/chats");
     }
 
     return (

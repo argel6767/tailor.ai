@@ -26,21 +26,21 @@ Tailor.AI is an innovative application designed to help users customize their re
 
 - **Framework**: React
 - **UI Library**: DaisyUI
-- **Testing**: Vitest & Jsdom
+- **Testing**: Vitest & JSDOM
 
 ## Current Status
 
 - Backend MVP is completed and hosted on Heroku.
-- Frontend MVP is under development.
-- A website will be launched once the frontend MVP is ready.
+- Frontend MVP is in a working state and hosted on Netlify.
+- Go to [Tailor.ai here](https://tailor-ai.netlify.app/).
 
 ## Future Ideas
 
-- A job description scraping micro-service to further tailor resumes to job-specfic descriptions, utilizing Flask and Beautiful Soup.
+- A job description scraping microservice to further tailor resumes to job-specific descriptions, utilizing Flask and Beautiful Soup.
 
 ## Note
 
-This repository is not intended for independent setup or deployment. The application is configured to work with specific AWS and Heroku resources, including a Heroku database, Heroku backend server, and an S3 bucket.
+This repository is not intended for independent setup or deployment. The application is configured to work with specific AWS and Heroku resources, including a Heroku hosted database, Heroku hosted backend server, and an S3 bucket.
 
 ## Contact
 
