@@ -2,6 +2,8 @@ import Sidebar from "../components/Sidebar.jsx";
 import {useState} from "react";
 import {sleep} from "../utils/sleep.js";
 import createChatSession from "../api/chat_session/createChatSession.js";
+import sendResumeToAi from "../api/ai/sendResumeToAi.js";
+import getUser from "../api/user/getUser.js";
 import {useNavigate} from "react-router-dom";
 
 /**
@@ -42,7 +44,9 @@ const ChatDashboardPage = () => {
         const file = document.getElementById("file-input").files[0];
         const email = localStorage.getItem("email");
         const chatSessionDetails = await createChatSession(email, file);
-        navigate(`/chats/${chatSessionDetails.id}`);
+        const user = await getUser(email);
+        await sendResumeToAi(chatSessionDetails.chatSessionId, user.profession, chatSessionDetails);
+        navigate(`/chats/${chatSessionDetails.chatSessionId}`);
     }
 
     return (
