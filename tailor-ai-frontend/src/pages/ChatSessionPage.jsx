@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import ChattingContainer from "../components/ChattingContainer.jsx";
 import Loading from "../components/Loading.jsx";
-import {getChatHistory} from "../api/message/getChatHistory.js";
+import getChatHistory from "../api/message/getChatHistory.js";
 
 
 const ChatSessionPage = () => {

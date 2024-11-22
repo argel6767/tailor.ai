@@ -115,11 +115,16 @@ const ChattingContainer = ({initialMessageHistory}) => {
                 {messageHistory.slice(1).map((message) => (
                     <MessageBubble key={message.messageId} message={message}/>
                     ))}
-                {isLoading ? <span className="loading loading-dots w-12"></span> : null}
+                {isLoading ? <div className="chat chat-start flex-1">
+                    <div
+                        className="chat-bubble chat-bubble-accent">
+                        <span className="loading loading-dots w-8"></span>
+                    </div>
+                </div> : null}
             </div>
             <div className="flex justify-center items-center gap-4 w-full pt-4">
-                    <input type="text" placeholder="Message AI" className="input input-bordered w-full max-w-xl"
-                           onChange={handleInputChange} onKeyDown={handleKeyPress} id="input"/>
+                <input type="text" placeholder="Message AI" className="input input-bordered w-full max-w-xl"
+                       onChange={handleInputChange} onKeyDown={handleKeyPress} id="input"/>
                     <button onClick={handleSubmit}  className={`btn ${hasInput ? "btn-primary" : "btn-disabled"}`}>Send
                     </button>
                 </div>
