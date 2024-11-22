@@ -4,7 +4,7 @@ import {useParams} from "react-router-dom";
 import ChattingContainer from "../components/ChattingContainer.jsx";
 import Loading from "../components/Loading.jsx";
 import {getChatHistory} from "../api/message/getChatHistory.js";
-import {useFetchChatHistory} from "../utils/useFetchChatHistory.js";
+
 
 const ChatSessionPage = () => {
     const [messages, setMessages] = useState([]);
