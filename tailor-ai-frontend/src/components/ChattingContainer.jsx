@@ -4,6 +4,7 @@ import {useParams} from "react-router-dom";
 import createMessage from "../api/message/createMessage.js";
 import requestAiResponse from "../api/ai/requestAiResponse.js";
 import getChatSession from "../api/chat_session/getChatSession.js";
+import changeChatSessionName from "../api/chat_session/changeChatSessionName.js";
 
 
 const ChattingContainer = ({initialMessageHistory}) => {
@@ -12,6 +13,7 @@ const ChattingContainer = ({initialMessageHistory}) => {
     const {id} = useParams();
     const [hasInput, setHasInput] = useState(false);
     const [chatName, setChatName] = useState("");
+    const [hasClickedChatName, setClickedChatName] = useState(false);
 
 
     useEffect(() => {
@@ -21,6 +23,20 @@ const ChattingContainer = ({initialMessageHistory}) => {
         }
         getName()
     }, [id]);
+
+    const updateChatName = async () => {
+        const chatSessionName = document.getElementById("chatSessionName").value;
+        if (chatSessionName !== "") {
+            setChatName(chatSessionName);
+            await changeChatSessionName(id, chatSessionName);
+        }
+        handleNameClick()
+
+    }
+
+    const handleNameClick = () => {
+        setClickedChatName(!hasClickedChatName);
+    }
 
     const createMessageRequest = {
         "message": null,
@@ -84,10 +100,16 @@ const ChattingContainer = ({initialMessageHistory}) => {
 
     return (
         <main className="flex flex-col items-center h-full px-1">
-                <div className="text-center text-4xl py-4 cursor-pointer">
-                    <h1>{chatName}</h1>
+                <div className="text-center text-4xl py-4 cursor-pointer pb-4">
+                    {hasClickedChatName?
+                        <div className="flex items-center justify-center flex-1 gap-3">
+                            <input type="text" placeholder={chatName} className="input w-full input-ghost max-w-xl text-4xl" id="chatSessionName"/>
+                            <button className="btn btn-sm" onClick={updateChatName}>Save</button>
+                        </div>
+                        : <h1 onClick={handleNameClick}>{chatName}</h1>
+                    }
                 </div>
-                <div className="flex flex-col flex-1 gap-2.5 overflow-y-auto max-h-[600px] px-1 mb-3" id="messages">
+            <div className="flex flex-col flex-1 gap-2.5 overflow-y-auto max-h-[600px] px-1 mb-3" id="messages">
                     {messageHistory.slice(1).map((message) => (
                         <MessageBubble key={message.messageId} message={message}/>
                     ))}
