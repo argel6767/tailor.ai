@@ -31,8 +31,8 @@ Tailor.AI is an innovative application designed to help users customize their re
 ## Current Status
 
 - Backend MVP is completed and hosted on Heroku.
-- Frontend MVP is in a working state and hosted on Netlify.
-- Go to [Tailor.ai here](https://tailor-ai.netlify.app/).
+- Frontend MVP is in a working state and hosted on Vercel.
+- Go to [Tailor.ai here](https://tailor-ai-one.vercel.app/).
 
 ## Future Ideas
 
