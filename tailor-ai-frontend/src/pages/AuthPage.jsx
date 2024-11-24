@@ -63,11 +63,12 @@ const AuthPage = () => {
 
     const login = async (authRequestValues) => {
         const response = await loginUser(authRequestValues);
-        if (response.status !== 200 || !response) {
-            handleLoading();
+        console.log(response)
+        if (!response) {
+            setIsLoading(false);
             handleFailedAuth();
             await sleep(3000);
-            handleFailedAuth()
+            setAuthFailed(false);
         }
         else {
             setCookie(response.data.token);
@@ -77,11 +78,11 @@ const AuthPage = () => {
 
     const register = async (authRequestValues) => {
         const response = await registerUser(authRequestValues);
-        if (response.status !== 200 || !response) {
-            handleLoading()
+        if (!response) {
+            setIsLoading(false);
             handleFailedAuth();
             await sleep(3000);
-            handleFailedAuth();
+            setAuthFailed(false);
         }
         else {
             goToVerify();
