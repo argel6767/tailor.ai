@@ -7,6 +7,7 @@ import {emailObjectRequest} from "../api/requests/emailObjectRequest.js";
 import {validateEmail} from "../utils/validateEmail.js";
 import Loading from "../components/Loading.jsx";
 import {setCookie} from "../config/cookieConfig.js";
+import {sleep} from "../utils/sleep.js";
 
 /**
  * The AuthPage (login or sign up)
@@ -26,10 +27,15 @@ const AuthPage = () => {
     const [password, setPassword] = useState("");
     const[isValidEmail, setValidEmail] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [authFailed, setAuthFailed] = useState(false);
 
 
     const handleAccountChange = () => {
         setHasAccount(!hasAccount);
+    }
+
+    const handleFailedAuth = () => {
+        setAuthFailed(!authFailed);
     }
 
     const authRequestValues = {
@@ -47,24 +53,40 @@ const AuthPage = () => {
      */
     const submitAuthRequestValues = async () => {
         handleLoading();
-        authRequestValues.username = email;
+        authRequestValues.username = null;
         authRequestValues.password = password;
         loginNavigationRequest.email = email;
         localStorage.setItem("email", email);
         console.log(authRequestValues);
         hasAccount?  await login(authRequestValues) : await register(authRequestValues);
-        handleLoading();
     }
 
     const login = async (authRequestValues) => {
-        const token = await loginUser(authRequestValues);
-        setCookie(token);
-        await handleLoginNavigation(navigate, email);
+        const response = await loginUser(authRequestValues);
+        if (response.status !== 200 || !response) {
+            handleLoading();
+            handleFailedAuth();
+            await sleep(3000);
+            handleFailedAuth()
+        }
+        else {
+            setCookie(response.data.token);
+            await handleLoginNavigation(navigate, email);
+        }
     }
 
     const register = async (authRequestValues) => {
-        await registerUser(authRequestValues);
-        goToVerify();
+        const response = await registerUser(authRequestValues);
+        if (response.status !== 200 || !response) {
+            handleLoading()
+            handleFailedAuth();
+            await sleep(3000);
+            handleFailedAuth();
+        }
+        else {
+            goToVerify();
+        }
+
     }
 
     return (
@@ -87,7 +109,7 @@ const AuthPage = () => {
                         </svg>
                         <input type="text" className="grow" placeholder="Email" id={"email-input"} value={email}
                                onChange={(e) => {
-                                   setEmail(e.target.value);
+                                   setEmail(e.target.value.toLowerCase());
                                    setValidEmail(validateEmail(email));
                                }}/>
                     </label>
@@ -106,11 +128,11 @@ const AuthPage = () => {
                                value={password}
                                onChange={(e) => setPassword(e.target.value)}/>
                     </label>
-
+                    {authFailed? <p className="text-center text-red-600">Auth request failed. Reload page and try again.</p> :
                     <button className={`btn btn-active btn-primary`}
                             onClick={submitAuthRequestValues} disabled={!email || !isValidEmail || !password}>
                         {hasAccount ? "Sign in" : "Sign up"}
-                    </button>
+                    </button>}
 
                     {hasAccount ?
                         <p>Not have an account? <button id={"switchToSignUp"} className="underline"

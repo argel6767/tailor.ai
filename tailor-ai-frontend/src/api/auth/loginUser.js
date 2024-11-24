@@ -7,8 +7,7 @@ import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
  */
 const loginUser = async (authRequestValues) => {
     try {
-        const response = await axios.post(`${API_ENDPOINT}/auth/login`, authRequestValues);
-        return response.data.token;
+        return await axios.post(`${API_ENDPOINT}/auth/login`, authRequestValues);
     }
     catch (error) {
         console.log(error.response? error.response.data : error);

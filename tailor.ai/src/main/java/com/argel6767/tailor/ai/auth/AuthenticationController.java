@@ -4,9 +4,12 @@ import com.argel6767.tailor.ai.auth.requests.AuthenticateUserDto;
 import com.argel6767.tailor.ai.auth.requests.ResendEmailDto;
 import com.argel6767.tailor.ai.auth.requests.VerifyUserDto;
 import com.argel6767.tailor.ai.auth.responses.LoginResponse;
+import com.argel6767.tailor.ai.email.EmailVerificationException;
 import com.argel6767.tailor.ai.jwt.JwtService;
 import com.argel6767.tailor.ai.user.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,8 +35,14 @@ public class AuthenticationController {
      */
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody AuthenticateUserDto request) {
-        User registeredUser = authenticationService.signUp(request);
-        return ResponseEntity.ok(registeredUser);
+        try {
+            User registeredUser = authenticationService.signUp(request);
+            return ResponseEntity.ok(registeredUser);
+        }
+        catch (AuthenticationException e) {
+            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+        }
+
     }
 
     /*
@@ -41,10 +50,19 @@ public class AuthenticationController {
      */
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody AuthenticateUserDto request) {
-        User user = authenticationService.authenticateUser(request);
-        String token = jwtService.generateToken(user);
-        LoginResponse response = new LoginResponse(token, jwtService.getExpirationTime());
-        return ResponseEntity.ok(response);
+        try {
+            User user = authenticationService.authenticateUser(request);
+            String token = jwtService.generateToken(user);
+            LoginResponse response = new LoginResponse(token, jwtService.getExpirationTime());
+            return ResponseEntity.ok(response);
+        }
+        catch (UsernameNotFoundException enfe) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        catch (EmailVerificationException eve) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+
     }
 
     /*
