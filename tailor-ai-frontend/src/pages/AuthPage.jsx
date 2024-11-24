@@ -6,6 +6,7 @@ import {handleLoginNavigation} from "../utils/handleLoginNavigation.js";
 import {emailObjectRequest} from "../api/requests/emailObjectRequest.js";
 import {validateEmail} from "../utils/validateEmail.js";
 import Loading from "../components/Loading.jsx";
+import {setCookie} from "../config/cookieConfig.js";
 
 /**
  * The AuthPage (login or sign up)
@@ -56,7 +57,8 @@ const AuthPage = () => {
     }
 
     const login = async (authRequestValues) => {
-        await loginUser(authRequestValues);
+        const token = await loginUser(authRequestValues);
+        setCookie(token);
         await handleLoginNavigation(navigate, email);
     }
 

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {setCookie} from "../../config/cookieConfig.js";
 import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 
 /**
@@ -9,7 +8,7 @@ import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 const loginUser = async (authRequestValues) => {
     try {
         const response = await axios.post(`${API_ENDPOINT}/auth/login`, authRequestValues);
-        setCookie(response.data.token);
+        return response.data.token;
     }
     catch (error) {
         console.log(error.response? error.response.data : error);
