@@ -1,5 +1,7 @@
 package com.argel6767.tailor.ai.linkedin;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -13,6 +15,7 @@ import java.util.Map;
 @Service
 public class LinkedInService {
 
+    private static final Logger log = LoggerFactory.getLogger(LinkedInService.class);
     @Value("${job.description.endpoint}")
     private String endpoint;
 
@@ -27,6 +30,7 @@ public class LinkedInService {
      */
     public String getJobDetails(String jobUrl) {
         try {
+            log.info("Getting job details for {}", jobUrl);
             Map response = restClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path(endpoint)
@@ -36,12 +40,15 @@ public class LinkedInService {
                             .build())
                     .retrieve()
                     .body(Map.class);
-            String jobDescription = (String) response.get("job_description");
-            List<Object> skills = (List<Object>) response.get("skills");
+            Map<String, Object> data = (Map<String, Object>) response.get("data"); //job info is an inner data object
+            String jobDescription = (String) data.get("job_description");
+            log.info("Job description: {}", jobDescription);
+            List<Object> skills = (List<Object>) data.get("skills");
+            log.info("Skills: {}", skills);
             return "Here is the job description and skills for the desired job:\n" + jobDescription + "\n" + skills;
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.info(e.getMessage(), e);
             return "";
         }
     }
