@@ -42,9 +42,7 @@ public class LinkedInService {
                     .body(Map.class);
             Map<String, Object> data = (Map<String, Object>) response.get("data"); //job info is an inner data object
             String jobDescription = (String) data.get("job_description");
-            log.info("Job description: {}", jobDescription);
             List<Object> skills = (List<Object>) data.get("skills");
-            log.info("Skills: {}", skills);
             return "Here is the job description and skills for the desired job:\n" + jobDescription + "\n" + skills;
         }
         catch (Exception e) {
