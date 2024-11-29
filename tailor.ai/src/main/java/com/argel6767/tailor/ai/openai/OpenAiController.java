@@ -26,12 +26,28 @@ public class OpenAiController {
         return openAiService.getAiResponse(request.getChatSessionId(), request.getUserMessage());
     }
 
+    /*
+     * endpoint for file reading to tailor resume with just the user's desired profession
+     */
     @PostMapping("/file/{id}")
     public ResponseEntity<AiResponse> submitFileToAi(@RequestParam("file") MultipartFile file, @RequestParam String profession, @PathVariable Long id)  {
         try {
             return openAiService.sendPDFForReading(file, profession, id);
         } catch (IOException e) {
             ResponseEntity.internalServerError().body(e.getMessage());
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    /*
+     * endpoint for file reading to tailor resume with the specific job specified by its url
+     */
+    @PostMapping("/file/{id}/job")
+    public ResponseEntity<AiResponse> submitFileToAiWithJob(@RequestParam("file") MultipartFile file, @RequestParam("jobUrl") String jobUrl, @PathVariable Long id)  {
+        try {
+            return openAiService.sendPDFForReadingWithJob(file, jobUrl, id);
+        } catch (Exception e) {
+           ResponseEntity.internalServerError().body(e.getMessage());
         }
         return ResponseEntity.badRequest().build();
     }
