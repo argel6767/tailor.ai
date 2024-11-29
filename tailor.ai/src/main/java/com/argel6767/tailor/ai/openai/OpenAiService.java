@@ -20,18 +20,16 @@ import java.util.logging.Logger;
 
 
 /**
- * Houses business logic for
+ * Houses business logic for handling interactions with AI
  */
 @Service
 public class OpenAiService {
-    private final String systemMessage = "You are a professional resume assistant AI specialized in tailoring resumes to match the requirements and expectations of specific professions. Your role is to analyze user-provided resumes, identify strengths, " +
+    private final String systemMessage = "You are a professional resume assistant AI specialized in tailoring resumes to match the requirements and expectations of specific professions and or specific jobs. Your role is to analyze user-provided resumes, identify strengths, " +
             "and suggest targeted improvements based on the desired job or profession. Focus on emphasizing relevant skills, experiences, and keywords that align with the job description or industry standards. Ensure your responses are concise, professional, " +
             "and tailored to enhance the user’s chances of standing out to recruiters and hiring managers. Make sure to be give suggestions and open the conversation for follow up questions.";
     private final ChatClient chatClient;
     private final MessageService messageService;
     private final PdfService pdfService;
-
-
 
     public OpenAiService(ChatClient chatClient, MessageService messageService, PdfService pdfService) {
         this.chatClient = chatClient;
@@ -40,8 +38,8 @@ public class OpenAiService {
     }
 
     /*
-     * sends a request to OpenAi and returns as a stream to allow for streaming effect on frontend
-     * then uses .reduce() to asynchronously creating a new message Entity in the db, that being the Ai response
+     * sends a request to OpenAi and returns on frontend
+     * then uses  creating a new message Entity in the db, that being the Ai response
      */
     public ResponseEntity<AiResponse> getAiResponse(Long id, String message) {
         List<Message> messageHistory = messageService.getAllChatSessionMessages(id).getBody();
