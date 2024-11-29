@@ -32,4 +32,20 @@ public class RestClientConfiguration {
                 })
                 .build();
     }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setRapidApiKey(String rapidApiKey) {
+        this.rapidApiKey = rapidApiKey;
+    }
+
+    public void setRapidApiHost(String rapidApiHost) {
+        this.rapidApiHost = rapidApiHost;
+    }
 }
