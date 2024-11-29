@@ -28,7 +28,12 @@ public class LinkedInService {
     public String getJobDetails(String jobUrl) {
         try {
             Map response = restClient.get()
-                    .uri(endpoint)
+                    .uri(uriBuilder -> uriBuilder
+                            .path(endpoint)
+                            .queryParam("job_url", jobUrl)
+                            .queryParam("include_skills", "true")
+                            .queryParam("include_hiring_team", "false")
+                            .build())
                     .retrieve()
                     .body(Map.class);
             String jobDescription = (String) response.get("job_description");
