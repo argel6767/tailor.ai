@@ -93,6 +93,6 @@ public class OpenAiService {
      */
     private void createFirstMessages(String response, Long id) {
         messageService.createMessage(new NewMessageRequest("System message", Author.SYSTEM), id);
-        messageService.createMessage(new NewMessageRequest(response, Author.USER), id);
+        messageService.createMessage(new NewMessageRequest(response, Author.ASSISTANT), id);
     }
 }
