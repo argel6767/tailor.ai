@@ -40,7 +40,7 @@ Tailor.AI is an innovative application designed to help users customize their re
   - allow user to change password
   - delete account
 - A job description scraping microservice to further tailor resumes to job-specific descriptions, utilizing Flask and Beautiful Soup.
-  - use a LinkedIn API from RapidAPI, in the meantime.
+  - use [Fresh LinkedIn Profile Data](https://rapidapi.com/freshdata-freshdata-default/api/fresh-linkedin-profile-data) from RapidAPI, in the meantime. 
 
 ## Note
 

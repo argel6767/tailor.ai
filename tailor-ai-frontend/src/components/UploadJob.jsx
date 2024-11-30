@@ -17,7 +17,6 @@ const UploadJob = ({sendUpUrl}) => {
         setIsPoppedUp(!isPoppedUp);
     }
 
-
     const handleSubmit = async () => {
         const urlInput = document.getElementById("url-input");
         const urlValue = urlInput.value;
