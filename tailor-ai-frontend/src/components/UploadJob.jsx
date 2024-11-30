@@ -1,5 +1,5 @@
 import {useState} from "react";
-import tutorial from "../../public/Get_Job_Url.mov"
+import tutorial from "../assets/Get_Job_Url.mov"
 import {sleep} from "../utils/sleep.js";
 
 /**

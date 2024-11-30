@@ -2,11 +2,17 @@ import {useEffect, useState} from "react";
 import Loading from "./Loading.jsx";
 import getUserChatSessions from "../api/chat_session/getUserChatSessions.js";
 import {Link} from "react-router-dom";
+import deleteButton from "../assets/delete_button.svg"
+import confirmButton from "../assets/confirm_button.svg"
+import cancelButton from "../assets/cancel_button.svg"
+import {DeleteChat} from "./DeleteChat.jsx";
 
 const Sidebar = () => {
 
     const [userChats, setChats] = useState([])
     const [loading, setLoading] = useState(true);
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [chatSessionIdDelete, setChatSessionIdDelete] = useState(null)
 
     useEffect( () => {
         const getChats = async () => {
@@ -19,7 +25,22 @@ const Sidebar = () => {
         getChats() //commented until real implementation
     }, [])
 
+    const deleteConfirmation = (chatSessionId) => {
+        handleChatSessionIdDelete(chatSessionId);
+        handleConfirmDelete();
+    }
 
+    const handleConfirmDelete = () => {
+        setConfirmDelete(!confirmDelete);
+    }
+
+    const handleChatSessionIdDelete = (chatSessionId) => {
+        setChatSessionIdDelete(chatSessionId);
+    }
+
+    const isDeleteConfirmationActive = (chatSessionId) => {
+        return confirmDelete && chatSessionIdDelete === chatSessionId;
+    }
 
     return (
         <div className="drawer lg:drawer-open">
@@ -44,7 +65,13 @@ const Sidebar = () => {
                     <ul className="menu bg-base-300 text-base-content min-h-full w-80 p-4 gap-2.5">
                         {userChats.map((chat, index) => (
                             <li key={index}>
-                                <Link to={`/chats/${chat.chatSessionId}`}>{chat.chatSessionName}</Link>
+                                <span className="flex justify-center items-center">
+                                    <Link className="flex-1 text-lg" to={`/chats/${chat.chatSessionId}`}>{chat.chatSessionName}</Link>
+                                    <DeleteChat chatSessionId={chat.chatSessionId} onDelete={() => {
+                                        // Update userChats here after deletion
+                                        setChats(prev => prev.filter(c => c.chatSessionId !== chat.chatSessionId));
+                                    }}/>
+                                </span>
                             </li>
                         ))}
                     </ul>}
