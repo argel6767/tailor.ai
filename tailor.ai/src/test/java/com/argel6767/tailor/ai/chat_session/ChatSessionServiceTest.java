@@ -248,4 +248,32 @@ class ChatSessionServiceTest {
         assertEquals("New Chat", chatSession.getChatSessionName());
         verify(chatSessionRepository).findById(chatSessionId);
     }
+
+    @Test
+    void testDeleteChatSessionWithValidId() {
+        //Arrange
+        when(chatSessionRepository.findById(chatSessionId)).thenReturn(Optional.of(chatSession));
+
+        //Act
+        ResponseEntity<?> response = chatSessionService.deleteChatSession(chatSessionId);
+
+        //Assert
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+        verify(chatSessionRepository).findById(chatSessionId);
+        verify(chatSessionRepository).deleteById(chatSessionId);
+    }
+
+    @Test
+    void testDeleteChatSessionWithInvalidId() {
+        //Arrange
+        when(chatSessionRepository.findById(chatSessionId)).thenReturn(Optional.empty());
+
+        //Act
+        ResponseEntity<?> response = chatSessionService.deleteChatSession(chatSessionId);
+
+        //Assert
+        assertTrue(response.getStatusCode().is4xxClientError());
+        verify(chatSessionRepository).findById(chatSessionId);
+    }
+
 }
