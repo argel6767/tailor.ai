@@ -56,7 +56,7 @@ const UploadJob = ({sendUpUrl}) => {
                     <div className="p-6 rounded shadow-lg flex flex-col gap-5 bg-background">
                         <h1 className="text-2xl">Paste the job URL below.</h1>
                         <div className="flex-1 flex justify-center items-center">
-                            <video className="flex-1 max-w-lg" autoPlay loop muted controls>
+                            <video data-testId="video-tutorial" className="flex-1 max-w-lg" autoPlay loop muted controls>
                                 <source src={tutorial}/>
                                 This will have a video tutorial
                             </video>
