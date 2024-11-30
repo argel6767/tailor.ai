@@ -3,9 +3,11 @@ import {useState} from "react";
 import {sleep} from "../utils/sleep.js";
 import createChatSession from "../api/chat_session/createChatSession.js";
 import sendResumeToAi from "../api/ai/sendResumeToAi.js";
+import sendResumeToAiWithJob from "../api/ai/sendResumeToAiWithJob.js";
 import getUser from "../api/user/getUser.js";
 import Loading from "../components/Loading.jsx";
 import {useNavigate} from "react-router-dom";
+import UploadJob from "../components/UploadJob.jsx";
 
 /**
  * Chat dashboard page that contains previous chats on the side and allows users to start a new one
@@ -15,10 +17,15 @@ const ChatDashboardPage = () => {
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [pdfReminder, setPdfReminder] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [urlValue, setUrlValue] = useState("");
     const navigate = useNavigate();
 
     const handleLoading = () => {
         setIsLoading(!isLoading);
+    }
+
+    const handleUrlValue = (url) => {
+        setUrlValue(url);
     }
 
     /**
@@ -52,7 +59,12 @@ const ChatDashboardPage = () => {
         handleLoading()
         const chatSessionDetails = await createChatSession(email, file);
         const user = await getUser(email);
-        await sendResumeToAi(chatSessionDetails.chatSessionId, user.profession, file);
+        if (urlValue !== "") {
+            await sendResumeToAiWithJob(chatSessionDetails.chatSessionId, urlValue, file);
+        }
+        else {
+            await sendResumeToAi(chatSessionDetails.chatSessionId, user.profession, file);
+        }
         navigate(`/chats/${chatSessionDetails.chatSessionId}`);
     }
 
@@ -66,6 +78,7 @@ const ChatDashboardPage = () => {
                 <div className="flex gap-8 justify-center pb-6">
                     <input type="file" onChange={handleFileSubmission}
                            className="file-input file-input-bordered w-full max-w-xs" id='file-input' data-testid="file-input" />
+                    <UploadJob sendUpUrl={handleUrlValue}/>
                     <button className={`btn btn-active ${hasSubmitted ? 'btn-primary' : 'btn-disable'}`}
                             disabled={!hasSubmitted} onClick={makeChatSession}>Begin chat
                     </button>
