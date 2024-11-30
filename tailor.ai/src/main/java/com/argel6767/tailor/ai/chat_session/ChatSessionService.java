@@ -69,13 +69,30 @@ public class ChatSessionService {
         return ResponseEntity.ok(user.getChatSessions());
     }
 
+    /*
+     * returns chat session
+     */
     public ChatSession getChatSession(Long id) {
         return chatSessionRepository.findById(id).orElse(null);
+    }
+
+    /*
+     * deletes chat session
+     */
+    public ResponseEntity<ChatSession> deleteChatSession(Long id) {
+        ChatSession chatSession = chatSessionRepository.findById(id).orElse(null);
+        if (chatSession != null) {
+            chatSessionRepository.deleteById(id);
+            return ResponseEntity.ok(chatSession);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     public ChatSession saveChatSession(ChatSession chatSession) {
         return chatSessionRepository.save(chatSession);
     }
+
+
 
     /*
      * allows user to update chatSessionName

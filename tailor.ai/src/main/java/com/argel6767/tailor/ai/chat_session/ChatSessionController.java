@@ -43,6 +43,11 @@ public class ChatSessionController {
         return ResponseEntity.ok(chatSession);
     }
 
+    @DeleteMapping("/${id}")
+    public ResponseEntity<ChatSession> deleteChatSession(@PathVariable Long id) {
+        return chatSessionService.deleteChatSession(id);
+    }
+
     @PutMapping("/{id}/name")
     public ResponseEntity<?> updateChatSessionName(@PathVariable Long id, @RequestBody String name) {
         return chatSessionService.updateChatSessionName(id, name);
