@@ -26,6 +26,10 @@ export const DeleteChat = ({chatSessionId, onDelete}) => {
         return confirmDelete && chatSessionIdDelete === chatSessionId;
     }
 
+    const handleChatDeletion = () => {
+
+    }
+
     return (
         <div className="flex justify-center items-end gap-3">
             {isDeleteConfirmationActive() && (

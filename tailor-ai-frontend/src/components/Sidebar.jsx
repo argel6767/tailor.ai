@@ -11,8 +11,6 @@ const Sidebar = () => {
 
     const [userChats, setChats] = useState([])
     const [loading, setLoading] = useState(true);
-    const [confirmDelete, setConfirmDelete] = useState(false);
-    const [chatSessionIdDelete, setChatSessionIdDelete] = useState(null)
 
     useEffect( () => {
         const getChats = async () => {
@@ -24,23 +22,6 @@ const Sidebar = () => {
         }
         getChats() //commented until real implementation
     }, [])
-
-    const deleteConfirmation = (chatSessionId) => {
-        handleChatSessionIdDelete(chatSessionId);
-        handleConfirmDelete();
-    }
-
-    const handleConfirmDelete = () => {
-        setConfirmDelete(!confirmDelete);
-    }
-
-    const handleChatSessionIdDelete = (chatSessionId) => {
-        setChatSessionIdDelete(chatSessionId);
-    }
-
-    const isDeleteConfirmationActive = (chatSessionId) => {
-        return confirmDelete && chatSessionIdDelete === chatSessionId;
-    }
 
     return (
         <div className="drawer lg:drawer-open">
