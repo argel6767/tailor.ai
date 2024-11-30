@@ -54,6 +54,7 @@ public class MessageService {
 
     /*
      * save both the message entity and parent chat session entity
+     * TODO Get rid of this, no longer needed, as ChatSession has cascading
      */
     private ResponseEntity<Message> createNewMessageAndAttachToParentChatSession(NewMessageRequest newMessageRequest, ChatSession chatSession) {
         Message message = new Message();

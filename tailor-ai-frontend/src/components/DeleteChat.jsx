@@ -34,7 +34,7 @@ export const DeleteChat = ({chatSessionId, onDelete}) => {
     return (
         <div className="flex justify-center items-end gap-3">
             {isDeleteConfirmationActive() && (
-                <button onClick={handleChatDeletion} className="btn btn-circle bg-secondary hover:bg-accent">
+                <button data-testid = {"confirm-button"} onClick={handleChatDeletion} className="btn btn-circle bg-secondary hover:bg-accent">
                     <img src={confirmButton} alt="Delete" className="w-6 h-6"/>
                 </button>
             )}

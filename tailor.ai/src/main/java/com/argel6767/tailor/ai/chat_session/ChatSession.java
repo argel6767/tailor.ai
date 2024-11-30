@@ -33,7 +33,7 @@ public class ChatSession {
     @JsonBackReference
     private User user;
 
-    @OneToMany(mappedBy = "chatSession")
+    @OneToMany(mappedBy = "chatSession", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Message> messages;
     
