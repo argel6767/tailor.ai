@@ -30,7 +30,7 @@ const Sidebar = () => {
                     Open drawer
                 </label>
             </div>
-            <div className="drawer-side bg-base-300 pl-2 pt-2.5">
+            <div className="drawer-side bg-base-300 pl-2 pt-4">
                 <Link className="text-xl text-center px-3 btn btn-primary" to={"/chats"}><h1>Go back to Chats Dashboard</h1></Link>
                 <h1 className="text-2xl text-center pt-2 px-3">View previous chats below.</h1>
                 <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
