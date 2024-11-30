@@ -12,6 +12,7 @@ const ChatSessionPage = () => {
     const {id} = useParams();
 
     useEffect(() => {
+        setMessageHistoryGrabbed(false);
         const fetchChatHistory = async () => {
             const chats = await getChatHistory(id);
             if (chats) {

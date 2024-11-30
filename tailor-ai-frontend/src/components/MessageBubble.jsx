@@ -1,4 +1,4 @@
-
+import Markdown from "react-markdown";
 const MessageBubble = ({message}) => {
     const isAuthorAssistant = (message) => {
         return message.author === "ASSISTANT";
@@ -6,7 +6,13 @@ const MessageBubble = ({message}) => {
 
     return (
         <div className={`chat ${isAuthorAssistant(message) ? "chat-start" : "chat-end"} flex-1`}>
-            <div className={`chat-bubble ${isAuthorAssistant(message) ? "chat-bubble-accent" : "chat-bubble-primary"}`}>{message.body}</div>
+            {
+                isAuthorAssistant(message) ?
+                    <div className="chat-bubble chat-bubble-accent"><Markdown>{message.body}</Markdown></div>
+                    :
+                    <div
+                        className={"chat-bubble chat-bubble-primary"}>{message.body}</div>
+            }
         </div>
     )
 }
