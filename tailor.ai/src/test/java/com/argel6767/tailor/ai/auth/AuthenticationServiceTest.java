@@ -1,6 +1,7 @@
 package com.argel6767.tailor.ai.auth;
 
 import com.argel6767.tailor.ai.auth.requests.AuthenticateUserDto;
+import com.argel6767.tailor.ai.auth.requests.ChangePasswordDto;
 import com.argel6767.tailor.ai.auth.requests.VerifyUserDto;
 import com.argel6767.tailor.ai.email.EmailService;
 import com.argel6767.tailor.ai.email.EmailVerificationException;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
@@ -221,5 +223,48 @@ class AuthenticationServiceTest {
         String code = result.getVerificationCode();
         assertNotNull(code);
         assertTrue(code.matches("\\d{6}")); // Verify it's a 6-digit number
+    }
+
+    @Test
+    void testChangePasswordWithCorrectDetails() {
+        String newPasswordHash = "hash";
+        //Arrange
+        ChangePasswordDto request = new ChangePasswordDto("test@example.com", "password123", "newPassword123");
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(successfulUser));
+        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
+        when(passwordEncoder.encode(anyString())).thenReturn(newPasswordHash);
+        when(userRepository.save(any(User.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        //Act
+        User user = authenticationService.changePassword(request);
+
+        //Assert
+        assertNotNull(user);
+        assertEquals(newPasswordHash, user.getPassword());
+    }
+
+    @Test
+    void testChangePasswordWithInvalidEmail() {
+        //Arrange
+        ChangePasswordDto request = new ChangePasswordDto("test@example.com", "password123", "newPassword123");
+        when(userRepository.findByEmail("test@example.com")).thenThrow(UsernameNotFoundException.class);
+
+        //Act and Assert
+        assertThrows(UsernameNotFoundException.class, () -> {
+            authenticationService.changePassword(request);
+        });
+    }
+
+    @Test
+    void testChangePasswordWithInvalidPassword() {
+        //Arrange
+        ChangePasswordDto request = new ChangePasswordDto("test@example.com", "password123", "newPassword123");
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(successfulUser));
+        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
+
+        //Act and Assert
+        assertThrows(RuntimeException.class, () -> {
+            authenticationService.changePassword(request);
+        });
     }
 }
