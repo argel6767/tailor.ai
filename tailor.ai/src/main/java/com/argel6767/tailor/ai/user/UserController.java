@@ -2,6 +2,7 @@ package com.argel6767.tailor.ai.user;
 
 import com.argel6767.tailor.ai.user.requests.AddProfessionRequest;
 import com.argel6767.tailor.ai.user.requests.EmailObjectRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,16 @@ public class UserController {
         }
         catch(UsernameNotFoundException unfe) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("{email}")
+    public ResponseEntity<String> deleteUser(@PathVariable String email) {
+        try {
+            return ResponseEntity.ok(userService.deleteUser(email));
+        }
+        catch(UsernameNotFoundException unfe) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }
     }
 

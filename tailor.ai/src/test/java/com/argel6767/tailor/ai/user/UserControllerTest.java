@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -43,5 +44,22 @@ class UserControllerTest {
         ResponseEntity<Boolean> response = userController.getProfessionStatus(EMAIL);
         assertNotNull(response);
         assertTrue(response.getBody());
+    }
+
+    @Test
+    void testDeleteUserWithValidEmail() {
+        when(userService.deleteUser(EMAIL)).thenReturn("User successfully deleted");
+        ResponseEntity<String> response = userController.deleteUser(EMAIL);
+        assertNotNull(response);
+        assertEquals("User successfully deleted", response.getBody());
+    }
+
+    @Test
+    void testDeleteUserWithInvalidEmail() {
+        when(userService.deleteUser(EMAIL)).thenThrow(new UsernameNotFoundException("User not found"));
+
+        ResponseEntity<String> response = userController.deleteUser(EMAIL);
+        assertNotNull(response);
+        assertEquals("User not found", response.getBody());
     }
 }
