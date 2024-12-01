@@ -1,6 +1,7 @@
 package com.argel6767.tailor.ai.auth;
 
 import com.argel6767.tailor.ai.auth.requests.AuthenticateUserDto;
+import com.argel6767.tailor.ai.auth.requests.ChangePasswordDto;
 import com.argel6767.tailor.ai.auth.requests.VerifyUserDto;
 import com.argel6767.tailor.ai.email.EmailService;
 import com.argel6767.tailor.ai.email.EmailVerificationException;
@@ -83,8 +84,7 @@ public class AuthenticationService {
      * and isEmailVerified to true
      */
     public void verifyUser(VerifyUserDto request) {
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException(request.getEmail()));
+        User user = getUser(request.getEmail());
         if (user.getCodeExpiry().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Verification code expired");
         }
@@ -99,6 +99,11 @@ public class AuthenticationService {
 
     }
 
+    private User getUser(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email));
+    }
+
     /*
      * resends verification email to user but with new code
      * can be used if their last code expired
@@ -111,6 +116,20 @@ public class AuthenticationService {
         }
         setVerificationCodeAndSendIt(user);
         userRepository.save(user);
+    }
+
+    /*
+     * changes user's password to new one, only if:
+     * they exist and if they send their correct current password
+     */
+    public User changePassword(ChangePasswordDto request) {
+        User user = getUser(request.getEmail());
+        String oldPasswordHash = user.getPasswordHash();
+        if (!passwordEncoder.matches(request.getOldPassword(), oldPasswordHash)) {
+            throw new RuntimeException("Invalid password");
+        }
+        user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
+        return userRepository.save(user);
     }
 
     /*
