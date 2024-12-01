@@ -53,8 +53,8 @@ public class MessageService {
 
 
     /*
-     * save both the message entity and parent chat session entity
-     * TODO Get rid of this, no longer needed, as ChatSession has cascading
+     * save to parent chat session entity
+     * as there is cascading now
      */
     private ResponseEntity<Message> createNewMessageAndAttachToParentChatSession(NewMessageRequest newMessageRequest, ChatSession chatSession) {
         Message message = new Message();
@@ -63,6 +63,6 @@ public class MessageService {
         message.setChatSession(chatSession);
         chatSession.getMessages().add(message);
         chatSessionService.saveChatSession(chatSession);
-        return ResponseEntity.ok(messageRepository.save(message));
+        return ResponseEntity.ok(message);
     }
 }
