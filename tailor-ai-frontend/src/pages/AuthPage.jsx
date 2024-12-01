@@ -57,13 +57,11 @@ const AuthPage = () => {
         authRequestValues.password = password;
         loginNavigationRequest.email = email;
         localStorage.setItem("email", email);
-        console.log(authRequestValues);
         hasAccount?  await login(authRequestValues) : await register(authRequestValues);
     }
 
     const login = async (authRequestValues) => {
         const response = await loginUser(authRequestValues);
-        console.log(response)
         if (!response) {
             setIsLoading(false);
             handleFailedAuth();
