@@ -3,6 +3,7 @@ package com.argel6767.tailor.ai.user;
 import com.argel6767.tailor.ai.user.requests.AddProfessionRequest;
 import com.argel6767.tailor.ai.user.requests.EmailObjectRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/user")
@@ -33,10 +34,11 @@ public class UserController {
             User user = userService.getUserByEmail(email);
             return ResponseEntity.ok(user);
         }
-        catch(RuntimeException e) {
+        catch(UsernameNotFoundException unfe) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    //TODO add change password, possibly log out?
+
+    //TODO possibly log out?
 }

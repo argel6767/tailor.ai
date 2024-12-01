@@ -1,5 +1,6 @@
 package com.argel6767.tailor.ai.user;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,6 +37,12 @@ public class UserService {
      * get a user by their email, aka unique/ identifier
      */
     public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found" + email));
+        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found" + email));
+    }
+
+    public String deleteUser(String email) {
+        User user = getUserByEmail(email);
+        userRepository.delete(user);
+        return "User successfully deleted";
     }
 }
