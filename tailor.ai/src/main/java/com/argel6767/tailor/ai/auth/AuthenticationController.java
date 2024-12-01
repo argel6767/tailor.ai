@@ -1,6 +1,7 @@
 package com.argel6767.tailor.ai.auth;
 
 import com.argel6767.tailor.ai.auth.requests.AuthenticateUserDto;
+import com.argel6767.tailor.ai.auth.requests.ChangePasswordDto;
 import com.argel6767.tailor.ai.auth.requests.ResendEmailDto;
 import com.argel6767.tailor.ai.auth.requests.VerifyUserDto;
 import com.argel6767.tailor.ai.auth.responses.LoginResponse;
@@ -10,10 +11,7 @@ import com.argel6767.tailor.ai.user.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * holds auth endpoints that can be accessed without a JWT token
@@ -90,6 +88,19 @@ public class AuthenticationController {
         }
         catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDto request) {
+        try {
+            return ResponseEntity.ok(authenticationService.changePassword(request));
+        }
+        catch (UsernameNotFoundException unfe) {
+            return ResponseEntity.notFound().build();
+        }
+        catch (RuntimeException re) {
+            return new ResponseEntity<>(re, HttpStatus.UNAUTHORIZED);
         }
     }
 
