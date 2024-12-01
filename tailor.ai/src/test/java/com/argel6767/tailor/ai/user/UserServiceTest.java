@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
@@ -59,6 +60,20 @@ class UserServiceTest {
         when(userRepository.save(any())).thenReturn(user);
         Boolean status = userService.hasSetProfession(EMAIL);
         assertTrue(status);
+    }
+
+    @Test
+    void testDeleteUserWithValidEmail() {
+        when(userRepository.findByEmail(EMAIL)).thenReturn(Optional.of(user));
+        String message = userService.deleteUser(EMAIL);
+        verify(userRepository, times(1)).delete(user);
+        assertEquals("User successfully deleted", message);
+    }
+
+    @Test
+    void testDeleteUserWithInvalidEmail() {
+        when(userRepository.findByEmail(EMAIL)).thenThrow(UsernameNotFoundException.class);
+        assertThrows(UsernameNotFoundException.class, () -> userService.deleteUser(EMAIL));
     }
 
 }

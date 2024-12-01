@@ -20,7 +20,7 @@ class UserControllerTest {
     private final String PROFESSION = "Software Engineer";
     private final AddProfessionRequest addProfessionRequest = new AddProfessionRequest(EMAIL, PROFESSION);
     private final EmailObjectRequest emailObjectRequest = new EmailObjectRequest(EMAIL);
-    private User user = new User();
+    private final User user = new User();
 
     @BeforeEach
     void setUp() {
