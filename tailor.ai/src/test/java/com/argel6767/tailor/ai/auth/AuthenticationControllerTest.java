@@ -1,6 +1,7 @@
 package com.argel6767.tailor.ai.auth;
 
 import com.argel6767.tailor.ai.auth.requests.AuthenticateUserDto;
+import com.argel6767.tailor.ai.auth.requests.ChangePasswordDto;
 import com.argel6767.tailor.ai.auth.requests.ResendEmailDto;
 import com.argel6767.tailor.ai.auth.requests.VerifyUserDto;
 import com.argel6767.tailor.ai.auth.responses.LoginResponse;
@@ -12,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -150,6 +152,62 @@ class AuthenticationControllerTest {
                 authenticationController.register(request)
         );
         verify(authenticationService).signUp(request);
+    }
+
+    @Test
+    void testSuccessfulPasswordChange() {
+        // Arrange
+        ChangePasswordDto request = new ChangePasswordDto();
+        request.setEmail("testuser@example.com");
+        request.setOldPassword("oldpass");
+        request.setNewPassword("newpass");
+
+        // Mock successful password change
+        when(authenticationService.changePassword(request))
+                .thenReturn(new User("testuser@example.com", "newpass"));
+
+        // Act
+        ResponseEntity<?> response = authenticationController.changePassword(request);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Password changed successfully", response.getBody());
+    }
+
+    @Test
+    void testUserNotFound() {
+        // Arrange
+        ChangePasswordDto request = new ChangePasswordDto();
+        request.setEmail("nonexistentuser@email.com");
+
+        // Mock UsernameNotFoundException
+        when(authenticationService.changePassword(request))
+                .thenThrow(new UsernameNotFoundException("User not found"));
+
+        // Act
+        ResponseEntity<?> response = authenticationController.changePassword(request);
+
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    void testUnauthorizedPasswordChange() {
+        // Arrange
+        ChangePasswordDto request = new ChangePasswordDto();
+        request.setEmail("testuse@example.com");
+        request.setOldPassword("wrongpassword");
+
+        // Mock RuntimeException (e.g., invalid old password)
+        when(authenticationService.changePassword(request))
+                .thenThrow(new RuntimeException("Unauthorized password change"));
+
+        // Act
+        ResponseEntity<?> response = authenticationController.changePassword(request);
+
+        // Assert
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals("Unauthorized password change", response.getBody());
     }
 
 }
