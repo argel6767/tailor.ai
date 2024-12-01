@@ -50,7 +50,7 @@ public class User implements UserDetails {
 
     private String authorities;
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<ChatSession> chatSessions = new ArrayList<>();
 
