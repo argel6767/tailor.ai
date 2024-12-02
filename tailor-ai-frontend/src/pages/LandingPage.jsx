@@ -8,7 +8,7 @@ import Loading from "../components/Loading.jsx";
 const LandingPage = () => {
 
     return (
-        <div className="h-screen pt-4 px-4">
+        <div className="h-full pt-4 px-4">
             <div className="hero bg-primary h-2/3 rounded-lg">
                 <div className="hero-content text-center">
                     <div className="max-w-md">
