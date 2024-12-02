@@ -13,7 +13,7 @@ import {sleep} from "../utils/sleep.js";
  * The AuthPage (login or sign up)
  * uses useState to handle whether or user has to log in or sign up
  */
-const AuthPage = () => {
+const AuthPage = ({refreshApp}) => {
 
     const navigate = useNavigate();
     const loginNavigationRequest = emailObjectRequest;
@@ -70,6 +70,7 @@ const AuthPage = () => {
         }
         else {
             setCookie(response.data.token);
+            refreshApp();
             await handleLoginNavigation(navigate, email);
         }
     }

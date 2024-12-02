@@ -9,9 +9,17 @@ import ChatDashboardPage from "./pages/ChatDashboardPage.jsx";
 import ChatSessionPage from "./pages/ChatSessionPage.jsx";
 import Footer from "./components/Footer.jsx";
 import useCheckCookie from "./utils/useCheckCookie.js";
+import {ProfilePage} from "./pages/ProfilePage.jsx";
+import {useState} from "react";
 
 function App() {
     useCheckCookie("/auth", ["/", "/auth", "", "verify"]);
+
+    const [appKey, setAppKey] = useState(0);
+
+    const refreshAppKey = () => {
+        setAppKey((prev) => prev + 1);
+    }
 
   return (
       <div className="flex flex-col h-screen">
@@ -19,11 +27,12 @@ function App() {
           <main className="flex-1 overflow-hidden">
               <Routes>
                   <Route path="/" element={<LandingPage/>}/>
-                  <Route path="/auth" element={<AuthPage/>}/>
+                  <Route path="/auth" element={<AuthPage refreshApp={refreshAppKey}/>}/>
                   <Route path="/verify" element={<VerifyPage/>}/>
                   <Route path="/profession" element={<AddingProfessionPage/>}/>
                   <Route path="/chats" element={<ChatDashboardPage/>}/>
                   <Route path="/chats/:id" element={<ChatSessionPage />} />
+                  <Route path="/user" element={<ProfilePage/>}/>
               </Routes>
           </main>
           <Footer/>
