@@ -1,6 +1,4 @@
 import {Link} from "react-router-dom";
-import {useState} from "react";
-import Loading from "../components/Loading.jsx";
 
 /**
  * Landing Page for Tailor.ai
