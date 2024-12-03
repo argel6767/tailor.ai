@@ -6,6 +6,7 @@ import * as cookieConfig from '../../src/config/cookieConfig.js';
 
 vi.mock('../../src/config/cookieConfig.js', () => ({
     isCookieExpired: vi.fn(),
+    removeJwtToken: vi.fn(),
 }));
 
 describe('UserAvatar Component', () => {
@@ -57,9 +58,8 @@ describe('UserAvatar Component', () => {
         const avatarButton = screen.getByRole('button');
         fireEvent.click(avatarButton); // Simulate clicking the avatar to trigger handleIsSignedIn
 
-        const signOutLink = await screen.findByText('Sign Out');
-        expect(signOutLink).toBeInTheDocument();
-        expect(signOutLink.closest('a')).toHaveAttribute('href', '/');
+        const signOutButton = await screen.findByText('Sign Out');
+        expect(signOutButton).toBeInTheDocument();
     });
 
     it('calls handleIsSignedIn when the avatar is clicked', () => {
@@ -76,4 +76,26 @@ describe('UserAvatar Component', () => {
         // No explicit mock for handleIsSignedIn in the component, but this test ensures interaction works
         expect(cookieConfig.isCookieExpired).toHaveBeenCalled();
     });
+
+    it("calls handleSignOut when Sign Out is pressed", async () => {
+        cookieConfig.isCookieExpired.mockReturnValue(false);
+        const refreshAppMock = vi.fn();
+
+        render(
+            <Router>
+                <UserAvatar refreshApp={refreshAppMock}/>
+            </Router>
+        );
+
+        const avatarButton = screen.getByRole('button');
+        fireEvent.click(avatarButton);
+
+        const signOutButton = await screen.getByText("Sign Out");
+        expect(signOutButton).toBeInTheDocument();
+        fireEvent.click(signOutButton);
+        expect(cookieConfig.removeJwtToken).toHaveBeenCalled();
+        expect(refreshAppMock).toHaveBeenCalled();
+        expect(window.location.pathname).toEqual("/")
+    });
+
 });
