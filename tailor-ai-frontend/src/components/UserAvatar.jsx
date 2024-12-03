@@ -17,6 +17,11 @@ export const UserAvatar = ({refreshApp}) => {
         }
     }
 
+    /*
+     * removesToken, to make user have to sign back in
+     * sets signed back to false
+     * and navigates back to landing page
+     */
     const handleSignOut = () => {
         removeJwtToken();
         refreshApp();
