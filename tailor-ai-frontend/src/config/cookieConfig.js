@@ -16,6 +16,13 @@ export const getJwtToken = () => {
     return Cookies.get("jwt");
 };
 
+/**
+ * removes token, from cookies, usually used for when signing out
+ */
+export const removeJwtToken = () => {
+    Cookies.remove("jwt");
+}
+
 
 /**
  * checks whether the jwt cookie is expired

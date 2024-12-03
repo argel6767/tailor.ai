@@ -1,6 +1,7 @@
 import {useState} from "react";
 import deleteUser from "../api/user/deleteUser.js";
 import {useNavigate} from "react-router-dom";
+import {removeJwtToken} from "../config/cookieConfig.js";
 
 export const DeleteAccount = ({startLoading}) => {
 
@@ -16,6 +17,7 @@ export const DeleteAccount = ({startLoading}) => {
         startLoading();
         const email = localStorage.getItem("email");
         await deleteUser(email);
+        removeJwtToken();
         navigate("/");
     }
 
