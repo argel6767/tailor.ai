@@ -10,7 +10,7 @@ import ChatSessionPage from "./pages/ChatSessionPage.jsx";
 import Footer from "./components/Footer.jsx";
 import useCheckCookie from "./utils/useCheckCookie.js";
 import {ProfilePage} from "./pages/ProfilePage.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 function App() {
 
@@ -20,6 +20,13 @@ function App() {
         setAppKey((prev) => prev + 1);
     }
     useCheckCookie("/auth", ["/", "/auth", "", "verify"], refreshAppKey);
+
+    useEffect(() => {
+        if (window.performance && performance.navigation.type === 1) {
+            // Force reload when navigating directly to the site
+            window.location.reload();
+        }
+    }, []); //TODO this is a temp solution to caching, FIX IT LATER!!!
 
 
   return (
