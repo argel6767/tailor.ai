@@ -140,12 +140,94 @@ public class AuthenticationService {
         String subject = "Verification Email";
         String code = user.getVerificationCode();
         String body = String.format("""
+            <!DOCTYPE html>
             <html>
-                <h1> Welcome to Tailor.ai!</h1>
-                <p> Enter the verification code below! </p>
-                <p> %s </p>
-                <a href="https://site.com"> Here! </a>
-            </<html>""", code);
+            <head>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        background-color: #f9f9f9;
+                        color: #333333;
+                        margin: 0;
+                        padding: 0;
+                    }
+
+                    .email-container {
+                        max-width: 600px;
+                        margin: 50px auto;
+                        background: #ffffff;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                        overflow: hidden;
+                    }
+
+                    .header {
+                        background-color: #0C7C59;
+                        padding: 20px;
+                        text-align: center;
+                        color: white;
+                    }
+
+                    .header h1 {
+                        margin: 0;
+                        font-size: 24px;
+                        font-weight: 600;
+                    }
+
+                    .content {
+                        padding: 30px;
+                        text-align: center;
+                    }
+
+                    .content p {
+                        margin: 20px 0;
+                        font-size: 16px;
+                        line-height: 1.6;
+                    }
+
+                    .verification-code {
+                        display: inline-block;
+                        background-color: #0C7C59;
+                        color: white;
+                        font-weight: bold;
+                        padding: 10px 20px;
+                        border-radius: 4px;
+                        font-size: 20px;
+                        letter-spacing: 1.5px;
+                        text-transform: uppercase;
+                    }
+
+                    .footer {
+                        background-color: #f1f1f1;
+                        padding: 10px;
+                        text-align: center;
+                        font-size: 12px;
+                        color: #666666;
+                    }
+
+                    .footer a {
+                        color: #4A90E2;
+                        text-decoration: none;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="email-container">
+                    <div class="header">
+                        <h1>Welcome to Tailor.AI!</h1>
+                    </div>
+                    <div class="content">
+                        <p>We’re excited to have you on board! Please use the verification code below to complete your sign-up process:</p>
+                        <p class="verification-code">%s</p>
+                        <p>If you didn’t request this code, please ignore this email or contact our support team.</p>
+                    </div>
+                    <div class="footer">
+                        <p>&copy; 2024 Tailor.AI. All rights reserved.</p>
+                        <p><a href="https://tailor-ai-one.vercel.app/">Visit our website</a> | <a href="mailto:tailor.ai.com@gmail.com">Contact Support</a></p>
+                    </div>
+                </div>
+            </body>
+            </html>""", code);
         sendEmail(to, subject, body);
     }
 
