@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {DeleteAccount} from "../components/DeleteAccount.jsx";
+import Loading from "../components/Loading.jsx";
 
 /**
  * Profile settings for users
@@ -18,14 +19,13 @@ export const ProfilePage = () => {
         setIsChangingPassword(!isChangingPassword);
     }
 
-
     return (
-        <main className="flex flex-col items-center justify-center w-full h-full">
-            <div className="flex-1 bg-accent p-4 w-1/2">
-                <h1 className="text-4xl pb-2">User Settings</h1>
-                <hr/>
-                <h2 className="text-xl pt-4 pb-2 italic">Account Details</h2>
-                <span className="flex flex-col  gap-3  p-2">
+        isLoading ? <Loading loadingMessage={"Deleting Account"}/> : (<main className="flex flex-col items-center justify-center w-full h-full">
+                <div className="flex-1 bg-accent p-4 w-1/2">
+                    <h1 className="text-4xl pb-2">User Settings</h1>
+                    <hr/>
+                    <h2 className="text-xl pt-4 pb-2 italic">Account Details</h2>
+                    <span className="flex flex-col  gap-3  p-2">
                     <p>Email: {localStorage.getItem("email")}</p>
                     <div className="flex justify-start">
                         <p>Password: <input type="password"
@@ -37,8 +37,10 @@ export const ProfilePage = () => {
                             <input type="password" placeholder="Enter new password"
                                    className="input input-sm"/>
                             <div className="flex justify-center items-center gap-3">
-                                <button className="btn btn-primary flex-1" onClick={handleIsChangingPassword}>Cancel</button>
-                                <button className="btn btn-primary w-6/12" onClick={handleIsChangingPassword}>Submit</button>
+                                <button className="btn btn-primary flex-1"
+                                        onClick={handleIsChangingPassword}>Cancel</button>
+                                <button className="btn btn-primary w-6/12"
+                                        onClick={handleIsChangingPassword}>Submit</button>
                             </div>
                         </div>
                     <div className="pt-4">
@@ -46,7 +48,8 @@ export const ProfilePage = () => {
                     </div>
 
                 </span>
-            </div>
-        </main>
+                </div>
+            </main>)
+
     )
 }
