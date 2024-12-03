@@ -9,7 +9,7 @@ import {AccountDetails} from "../components/AccountDetails.jsx";
  */
 export const ProfilePage = () => {
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleLoading = () => {
         setIsLoading((prevState) => !prevState);

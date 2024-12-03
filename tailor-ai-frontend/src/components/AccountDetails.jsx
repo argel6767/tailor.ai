@@ -9,7 +9,6 @@ export const AccountDetails = ({startLoading}) => {
         "newPassword":null,
     }
 
-
     const [isChangingPassword, setIsChangingPassword] = useState(false);
 
     const handleIsChangingPassword = () => {
@@ -20,12 +19,7 @@ export const AccountDetails = ({startLoading}) => {
         startLoading();
         const response = await changePassword(changePasswordRequest);
         startLoading();
-        if (response) {
-            alert("200");
-        }
-        else {
-            alert("Fail!!!")
-        }
+        //TODO complete grabbing logic of password and new password
     }
 
     return (
