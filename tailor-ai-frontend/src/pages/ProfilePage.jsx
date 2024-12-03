@@ -19,26 +19,26 @@ export const ProfilePage = () => {
                 <h1 className="text-4xl pb-2">User Settings</h1>
                 <hr/>
                 <h2 className="text-xl pt-4 pb-2 italic">Account Details</h2>
-                <span className="flex flex-col max-w-60  gap-3  p-2">
+                <span className="flex flex-col  gap-3  p-2">
                     <p>Email: {localStorage.getItem("email")}</p>
-                    <p>Password: <input type="password" placeholder={isChangingPassword? "Enter password" : "********"
-                    } className="input input-sm w-7/12" disabled={!isChangingPassword}/></p>
-                    {isChangingPassword ?
-                        <div className="flex flex-col w-10/12 gap-3">
+                    <div className="flex justify-start">
+                        <p>Password: <input type="password"
+                                            placeholder={isChangingPassword ? "Enter password" : "********"}
+                                            className="input input-sm w-7/12" disabled={!isChangingPassword}/> </p>
+                            <button className="btn-sm hover:underline" onClick={handleIsChangingPassword}>Change Password</button>
+                    </div>
+                        <div className={`flex flex-col w-3/12 gap-3 ${isChangingPassword ? "visible" : "invisible"}`}>
                             <input type="password" placeholder="Enter new password"
                                    className="input input-sm"/>
                             <div className="flex justify-center items-center gap-3">
                                 <button className="btn btn-primary flex-1" onClick={handleIsChangingPassword}>Cancel</button>
                                 <button className="btn btn-primary w-6/12" onClick={handleIsChangingPassword}>Submit</button>
                             </div>
+                        </div>
+                    <div className="pt-4">
+                        <DeleteAccount/>
+                    </div>
 
-                        </div>
-                        :
-                        <div className="flex justify-center items-center">
-                            <button className="btn btn-primary w-6/12" onClick={handleIsChangingPassword}>Change Password</button>
-                        </div>
-                    }
-                    <DeleteAccount/>
                 </span>
             </div>
         </main>
