@@ -1,11 +1,22 @@
 import {useState} from "react";
+import deleteUser from "../api/user/deleteUser.js";
+import {useNavigate} from "react-router-dom";
 
-export const DeleteAccount = () => {
+export const DeleteAccount = ({startLoading}) => {
 
     const [isConfirming, setIsConfirming] = useState(false);
 
+    const navigate = useNavigate();
+
     const handleIsConfirming = () => {
         setIsConfirming(!isConfirming);
+    }
+
+    const handleDelete = async () => {
+        startLoading();
+        const email = localStorage.getItem("email");
+        await deleteUser(email);
+        navigate("/");
     }
 
     return (
@@ -17,7 +28,7 @@ export const DeleteAccount = () => {
                         <p>Are you sure? This cannot be undone.</p>
                         <div className="flex justify-center items-center gap-6">
                             <button className="hover:underline" onClick={handleIsConfirming}>Cancel</button>
-                            <button className="hover:underline">Confirm</button>
+                            <button className="hover:underline" onClick={handleDelete}>Confirm</button>
                         </div>
                     </div>
 

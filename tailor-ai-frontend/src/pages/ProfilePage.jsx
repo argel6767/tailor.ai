@@ -8,10 +8,16 @@ import {DeleteAccount} from "../components/DeleteAccount.jsx";
 export const ProfilePage = () => {
 
     const [isChangingPassword, setIsChangingPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleLoading = () => {
+        setIsLoading((prevState) => !prevState);
+    }
 
     const handleIsChangingPassword = () => {
         setIsChangingPassword(!isChangingPassword);
     }
+
 
     return (
         <main className="flex flex-col items-center justify-center w-full h-full">
@@ -36,7 +42,7 @@ export const ProfilePage = () => {
                             </div>
                         </div>
                     <div className="pt-4">
-                        <DeleteAccount/>
+                        <DeleteAccount startLoading={handleLoading}/>
                     </div>
 
                 </span>

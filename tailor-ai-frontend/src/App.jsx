@@ -13,13 +13,14 @@ import {ProfilePage} from "./pages/ProfilePage.jsx";
 import {useState} from "react";
 
 function App() {
-    useCheckCookie("/auth", ["/", "/auth", "", "verify"]);
 
     const [appKey, setAppKey] = useState(0);
 
     const refreshAppKey = () => {
         setAppKey((prev) => prev + 1);
     }
+    useCheckCookie("/auth", ["/", "/auth", "", "verify"], refreshAppKey);
+
 
   return (
       <div className="flex flex-col h-screen">

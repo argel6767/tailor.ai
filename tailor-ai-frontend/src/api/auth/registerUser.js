@@ -7,9 +7,7 @@ import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 const registerUser = async (authRequestValues) => {
     try {
         const response =  await axios.post(`${API_ENDPOINT}/auth/register`, authRequestValues);
-        if (response.status !== 200) {
-            return null;
-        }
+        return response.data;
     }
     catch (error) {
         console.log(error);

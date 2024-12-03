@@ -76,8 +76,8 @@ const AuthPage = ({refreshApp}) => {
     }
 
     const register = async (authRequestValues) => {
-        const response = await registerUser(authRequestValues);
-        if (!response) {
+        const data = await registerUser(authRequestValues);
+        if (!data) {
             setIsLoading(false);
             handleFailedAuth();
             await sleep(3000);
