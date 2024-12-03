@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import {useNavigate} from "react-router-dom";
-import {isCookieExpired} from "../config/cookieConfig.js";
+import {isCookieExpired, removeJwtToken} from "../config/cookieConfig.js";
 
 /**
  * custom hook that checks whether cookie is expired, and does so every 15 minutes
@@ -14,6 +14,7 @@ const useCheckCookie = (redirectPath = "/auth", excludePaths = ["/"], refreshApp
             const currentPath = window.location.pathname;
             if (isCookieExpired() && !excludePaths.includes(currentPath)) {
                 navigate(redirectPath);
+                removeJwtToken();
                 refreshAppKey();
             }
         }
