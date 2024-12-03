@@ -3,8 +3,16 @@ import resendVerificationEmail from "../api/auth/resendVerificationEmail.js";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
+/**
+ * Verify page, where user puts in verification code
+ */
 const VerifyPage = () => {
 
+    /*
+     * TODO possible at state checking if localstorage has email
+     *  ie the user is either from sign up or is pressing the link from email to allow for inputting email too if necessary
+     *
+     */
     const navigate = useNavigate();
 
     const[sentToken, setSentToken] = useState(false);
