@@ -24,7 +24,7 @@ function App() {
 
   return (
       <div className="flex flex-col h-screen">
-          <Navbar />
+          <Navbar refreshApp={refreshAppKey} />
           <main className="flex-1 overflow-hidden">
               <Routes>
                   <Route path="/" element={<LandingPage/>}/>
