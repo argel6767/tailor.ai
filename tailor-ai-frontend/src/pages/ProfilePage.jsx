@@ -1,4 +1,5 @@
 import {useState} from "react";
+import {DeleteAccount} from "../components/DeleteAccount.jsx";
 
 /**
  * Profile settings for users
@@ -13,11 +14,11 @@ export const ProfilePage = () => {
     }
 
     return (
-        <main className="flex flex-col items-center justify-center w-full">
+        <main className="flex flex-col items-center justify-center w-full h-full">
             <div className="flex-1 bg-accent p-4 w-1/2">
                 <h1 className="text-4xl pb-2">User Settings</h1>
                 <hr/>
-                <h2 className="text-xl pt-4 pb-2">Account Details</h2>
+                <h2 className="text-xl pt-4 pb-2 italic">Account Details</h2>
                 <span className="flex flex-col max-w-60  gap-3  p-2">
                     <p>Email: {localStorage.getItem("email")}</p>
                     <p>Password: <input type="password" placeholder={isChangingPassword? "Enter password" : "********"
@@ -37,6 +38,7 @@ export const ProfilePage = () => {
                             <button className="btn btn-primary w-6/12" onClick={handleIsChangingPassword}>Change Password</button>
                         </div>
                     }
+                    <DeleteAccount/>
                 </span>
             </div>
         </main>
