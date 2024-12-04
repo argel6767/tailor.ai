@@ -19,7 +19,7 @@ function App() {
     const refreshAppKey = () => {
         setAppKey((prev) => prev + 1);
     }
-    useCheckCookie("/auth", ["/", "/auth", "", "verify"], refreshAppKey);
+    useCheckCookie("/auth", ["/", "/auth", "", "/verify"], refreshAppKey);
 
     /*
      *useEffect(() => {
