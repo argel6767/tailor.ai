@@ -6,7 +6,7 @@ import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
  */
 const resendVerificationEmail = async (resendEmailRequest) => {
     try {
-        const response = await axios.post(`${API_ENDPOINT}/auth/verify`, resendEmailRequest);
+        const response = await axios.post(`${API_ENDPOINT}/auth/resend`, resendEmailRequest);
         console.log(response);
     }
     catch (error) {
