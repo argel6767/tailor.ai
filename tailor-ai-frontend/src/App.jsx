@@ -21,11 +21,12 @@ function App() {
     }
     useCheckCookie("/auth", ["/", "/auth", "", "/verify"], refreshAppKey);
 
-    /*
-     *useEffect(() => {
-        window.location.reload();
-    }, []); //TODO this is a temp solution to caching, FIX IT LATER!!!
-     */
+    useEffect(() => {
+        if (!sessionStorage.getItem('firstLoad')) {
+            sessionStorage.setItem('firstLoad', 'true');
+            window.location.reload();
+        }
+    }, []); //TODO FIX THIS LATER, THIS IS JUST A TEMP FIX TO VERCEL CACHING TOKENS!!!!
 
 
 
