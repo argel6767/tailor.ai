@@ -58,7 +58,7 @@ public class SecurityConfiguration{
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173", "https://tailor-ai-one.vercel.app"));
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173", "https://tailor-ai-one.vercel.app", "https://tailor-66o7aksn4-argel-hernandez-amayas-projects.vercel.app"));
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.setAllowCredentials(true);
