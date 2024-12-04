@@ -21,9 +21,12 @@ function App() {
     }
     useCheckCookie("/auth", ["/", "/auth", "", "verify"], refreshAppKey);
 
-    useEffect(() => {
+    /*
+     *useEffect(() => {
         window.location.reload();
     }, []); //TODO this is a temp solution to caching, FIX IT LATER!!!
+     */
+
 
 
   return (
