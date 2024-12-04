@@ -223,7 +223,6 @@ public class AuthenticationService {
                     </div>
                     <div class="footer">
                         <p>&copy; 2024 Tailor.AI. All rights reserved.</p>
-                        <p><a href="https://tailor-ai-one.vercel.app/">Visit our website</a> | <a href="mailto:tailor.ai.com@gmail.com">Contact Support</a></p>
                     </div>
                 </div>
             </body>

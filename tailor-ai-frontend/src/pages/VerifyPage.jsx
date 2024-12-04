@@ -37,7 +37,7 @@ const VerifyPage = () => {
 
     const handleResendTokenRequest = async () => {
         handleSentToken();
-        await resendVerificationEmail(verifyRequest.email);
+        await resendVerificationEmail({"email":localStorage.getItem("email")});
         await sleep(2000)
         handleSentToken()
     }
