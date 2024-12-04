@@ -22,10 +22,7 @@ function App() {
     useCheckCookie("/auth", ["/", "/auth", "", "verify"], refreshAppKey);
 
     useEffect(() => {
-        if (window.performance && performance.navigation.type === 1) {
-            // Force reload when navigating directly to the site
-            window.location.reload();
-        }
+        window.location.reload();
     }, []); //TODO this is a temp solution to caching, FIX IT LATER!!!
 
 
