@@ -71,6 +71,7 @@ const AuthPage = ({refreshApp}) => {
         else {
             setCookie(response.data.token);
             refreshApp();
+            window.location.reload();
             await handleLoginNavigation(navigate, email);
         }
     }
