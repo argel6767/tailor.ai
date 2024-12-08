@@ -47,6 +47,10 @@ const AuthPage = ({refreshApp}) => {
         setIsLoading(!isLoading);
     }
 
+    const handleRefresh = (token) => {
+        refreshApp(token);
+    }
+
     /**
      * submits the values given by user to the endpoint for logging in or signing up
      * then routes user to appropriate page based on status
@@ -69,8 +73,7 @@ const AuthPage = ({refreshApp}) => {
             setAuthFailed(false);
         }
         else {
-            setCookie(response.data.token);
-            refreshApp();
+            refreshApp(response.data.token);
             await handleLoginNavigation(navigate, email);
         }
     }

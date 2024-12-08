@@ -11,14 +11,23 @@ import Footer from "./components/Footer.jsx";
 import useCheckCookie from "./utils/useCheckCookie.js";
 import {ProfilePage} from "./pages/ProfilePage.jsx";
 import {useEffect, useState} from "react";
+import {setCookie} from "./config/cookieConfig.js";
 
 function App() {
 
     const [appKey, setAppKey] = useState(0);
 
+    const [jwtToken, setToken] = useState("token")
+
     const refreshAppKey = () => {
         setAppKey((prev) => prev + 1);
     }
+
+    const handleToken = (token) => {
+        setCookie(token);
+        setToken(token);
+    }
+
     useCheckCookie("/auth", ["/", "/auth", "", "/verify"], refreshAppKey);
 
     useEffect(() => {
@@ -36,7 +45,7 @@ function App() {
           <main className="flex-1 overflow-hidden">
               <Routes>
                   <Route path="/" element={<LandingPage/>}/>
-                  <Route path="/auth" element={<AuthPage refreshApp={refreshAppKey}/>}/>
+                  <Route path="/auth" element={<AuthPage refreshApp={handleToken}/>}/>
                   <Route path="/verify" element={<VerifyPage/>}/>
                   <Route path="/profession" element={<AddingProfessionPage/>}/>
                   <Route path="/chats" element={<ChatDashboardPage/>}/>
