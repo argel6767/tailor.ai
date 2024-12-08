@@ -47,9 +47,6 @@ const AuthPage = ({refreshApp}) => {
         setIsLoading(!isLoading);
     }
 
-    const handleRefresh = (token) => {
-        refreshApp(token);
-    }
 
     /**
      * submits the values given by user to the endpoint for logging in or signing up
