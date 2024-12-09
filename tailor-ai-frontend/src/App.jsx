@@ -28,8 +28,14 @@ function App() {
         setToken(token);
     }
 
-    useCheckCookie("/auth", ["/", "/auth", "", "/verify"], refreshAppKey);
+    useEffect(() => {
+        if (!sessionStorage.getItem('firstLoad')) {
+            -sessionStorage.setItem('firstLoad', 'true');
+            -window.location.reload();
+        }
+    }, []); //TODO FIX THIS LATER, THIS IS JUST A TEMP FIX TO VERCEL CACHING TOKENS!!!!
 
+    useCheckCookie("/auth", ["/", "/auth", "", "/verify"], refreshAppKey);
 
   return (
       <div className="flex flex-col h-screen">
