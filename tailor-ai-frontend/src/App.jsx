@@ -45,7 +45,7 @@ function App() {
               <div className="flex-1 overflow-hidden">
                   <Routes>
                       <Route path="/" element={<LandingPage/>}/>
-                      <Route path="/auth" element={<AuthPage refreshApp={handleToken}/>}/>
+                      <Route path="/auth" element={<AuthPage/>}/>
                       <Route path="/verify" element={<VerifyPage/>}/>
                       <Route path="/profession" element={<AddingProfessionPage/>}/>
                       <Route path="/chats" element={<ChatDashboardPage/>}/>

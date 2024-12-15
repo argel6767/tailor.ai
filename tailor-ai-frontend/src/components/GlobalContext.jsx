@@ -4,13 +4,13 @@ const GlobalContext = createContext();
 
 export const GlobalProvider = ({children}) => {
 
-    const [token, setToken] = useState("");
+    const [token, setToken] = useState(null);
 
     return (
-        <GlobalContext.Provider value={[token, setToken]}>
+        <GlobalContext.Provider value={{token, setToken}}>
             {children}
         </GlobalContext.Provider>
     )
 }
 
-export const useGlobalContext = () => {useContext(GlobalContext)}
+export const useGlobalContext = () => useContext(GlobalContext);

@@ -8,15 +8,17 @@ import {validateEmail} from "../utils/validateEmail.js";
 import Loading from "../components/Loading.jsx";
 import {setCookie} from "../config/cookieConfig.js";
 import {sleep} from "../utils/sleep.js";
+import {useGlobalContext} from "../components/GlobalContext.jsx";
 
 /**
  * The AuthPage (login or sign up)
  * uses useState to handle whether or user has to log in or sign up
  */
-const AuthPage = ({refreshApp}) => {
+const AuthPage = () => {
 
     const navigate = useNavigate();
     const loginNavigationRequest = emailObjectRequest;
+    const {token, setToken} = useGlobalContext();
 
     const goToVerify = () => {
         navigate('/verify');
@@ -70,7 +72,7 @@ const AuthPage = ({refreshApp}) => {
             setAuthFailed(false);
         }
         else {
-            refreshApp(response.data.token);
+            setToken(response.data.token);
             await handleLoginNavigation(navigate, email);
         }
     }
