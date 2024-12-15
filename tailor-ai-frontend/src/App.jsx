@@ -12,6 +12,7 @@ import useCheckCookie from "./utils/useCheckCookie.js";
 import {ProfilePage} from "./pages/ProfilePage.jsx";
 import {useEffect, useState} from "react";
 import {setCookie} from "./config/cookieConfig.js";
+import {GlobalProvider} from "./components/GlobalContext.jsx";
 
 function App() {
 
@@ -38,21 +39,24 @@ function App() {
     useCheckCookie("/auth", ["/", "/auth", "", "/verify"], refreshAppKey);
 
   return (
-      <div className="flex flex-col h-screen">
-          <Navbar refreshApp={refreshAppKey} />
-          <main className="flex-1 overflow-hidden">
-              <Routes>
-                  <Route path="/" element={<LandingPage/>}/>
-                  <Route path="/auth" element={<AuthPage refreshApp={handleToken}/>}/>
-                  <Route path="/verify" element={<VerifyPage/>}/>
-                  <Route path="/profession" element={<AddingProfessionPage/>}/>
-                  <Route path="/chats" element={<ChatDashboardPage/>}/>
-                  <Route path="/chats/:id" element={<ChatSessionPage />} />
-                  <Route path="/user" element={<ProfilePage/>}/>
-              </Routes>
+      <GlobalProvider>
+          <main className="flex flex-col h-screen">
+              <Navbar refreshApp={refreshAppKey}/>
+              <div className="flex-1 overflow-hidden">
+                  <Routes>
+                      <Route path="/" element={<LandingPage/>}/>
+                      <Route path="/auth" element={<AuthPage refreshApp={handleToken}/>}/>
+                      <Route path="/verify" element={<VerifyPage/>}/>
+                      <Route path="/profession" element={<AddingProfessionPage/>}/>
+                      <Route path="/chats" element={<ChatDashboardPage/>}/>
+                      <Route path="/chats/:id" element={<ChatSessionPage/>}/>
+                      <Route path="/user" element={<ProfilePage/>}/>
+                  </Routes>
+              </div>
+              <Footer/>
           </main>
-          <Footer/>
-      </div>
+      </GlobalProvider>
+
   )
 }
 
