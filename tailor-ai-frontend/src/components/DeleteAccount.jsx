@@ -2,12 +2,13 @@ import {useState} from "react";
 import deleteUser from "../api/user/deleteUser.js";
 import {useNavigate} from "react-router-dom";
 import {removeJwtToken} from "../config/cookieConfig.js";
+import {useGlobalContext} from "./GlobalContext.jsx";
 
 export const DeleteAccount = ({startLoading}) => {
 
     const [isConfirming, setIsConfirming] = useState(false);
-
     const navigate = useNavigate();
+    const {token} = useGlobalContext();
 
     const handleIsConfirming = () => {
         setIsConfirming(!isConfirming);
@@ -16,7 +17,7 @@ export const DeleteAccount = ({startLoading}) => {
     const handleDelete = async () => {
         startLoading();
         const email = localStorage.getItem("email");
-        await deleteUser(email);
+        await deleteUser(email, token);
         removeJwtToken();
         navigate("/");
     }

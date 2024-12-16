@@ -5,6 +5,7 @@ import createMessage from "../api/message/createMessage.js";
 import requestAiResponse from "../api/ai/requestAiResponse.js";
 import getChatSession from "../api/chat_session/getChatSession.js";
 import changeChatSessionName from "../api/chat_session/changeChatSessionName.js";
+import {useGlobalContext} from "./GlobalContext.jsx";
 
 
 const ChattingContainer = ({initialMessageHistory}) => {
@@ -15,11 +16,12 @@ const ChattingContainer = ({initialMessageHistory}) => {
     const [chatName, setChatName] = useState("");
     const [hasClickedChatName, setClickedChatName] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const {token} = useGlobalContext();
 
 
     useEffect(() => {
         const getName = async () => {
-            const response = await getChatSession(id);
+            const response = await getChatSession(id, token);
             setChatName(response.chatSessionName);
         }
         getName()
@@ -29,7 +31,7 @@ const ChattingContainer = ({initialMessageHistory}) => {
         const chatSessionName = document.getElementById("chatSessionName").value;
         if (chatSessionName !== "") {
             setChatName(chatSessionName);
-            await changeChatSessionName(id, chatSessionName);
+            await changeChatSessionName(id, chatSessionName, token);
         }
         handleNameClick()
 
@@ -48,9 +50,9 @@ const ChattingContainer = ({initialMessageHistory}) => {
         setHasInput(true);
     }
 
-    const handleKeyPress = (e) => {
+    const handleKeyPress = async (e) => {
         if (e.key === "Enter") {
-            handleSubmit();
+            await handleSubmit();
         }
     }
 
@@ -62,7 +64,7 @@ const ChattingContainer = ({initialMessageHistory}) => {
         createMessageRequest.message = userMessage;
         clearInput()
         setIsLoading(true);
-        await createMessage(createMessageRequest, id);
+        await createMessage(createMessageRequest, id, token);
         const newMessage = {
             messageId: Math.random(),
             body: userMessage,
@@ -74,7 +76,7 @@ const ChattingContainer = ({initialMessageHistory}) => {
             chatSessionId: id,
             userMessage: userMessage,
         };
-        const response = await requestAiResponse(aiRequest);
+        const response = await requestAiResponse(aiRequest, token);
 
         const newResponse = {
             messageId : Math.random(),

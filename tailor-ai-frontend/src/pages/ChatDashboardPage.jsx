@@ -8,6 +8,7 @@ import getUser from "../api/user/getUser.js";
 import Loading from "../components/Loading.jsx";
 import {useNavigate} from "react-router-dom";
 import UploadJob from "../components/UploadJob.jsx";
+import {useGlobalContext} from "../components/GlobalContext.jsx";
 
 /**
  * Chat dashboard page that contains previous chats on the side and allows users to start a new one
@@ -19,6 +20,7 @@ const ChatDashboardPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [urlValue, setUrlValue] = useState("");
     const navigate = useNavigate();
+    const {token} = useGlobalContext();
 
     const handleLoading = () => {
         setIsLoading(!isLoading);
@@ -58,12 +60,12 @@ const ChatDashboardPage = () => {
         const email = localStorage.getItem("email");
         handleLoading()
         const chatSessionDetails = await createChatSession(email, file);
-        const user = await getUser(email);
         if (urlValue !== "") {
-            await sendResumeToAiWithJob(chatSessionDetails.chatSessionId, urlValue, file);
+            await sendResumeToAiWithJob(chatSessionDetails.chatSessionId, urlValue, file, token);
         }
         else {
-            await sendResumeToAi(chatSessionDetails.chatSessionId, user.profession, file);
+            const user = await getUser(email);
+            await sendResumeToAi(chatSessionDetails.chatSessionId, user.profession, file, token);
         }
         navigate(`/chats/${chatSessionDetails.chatSessionId}`);
     }

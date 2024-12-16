@@ -1,10 +1,12 @@
 import image from "../assets/pexels-jopwell-2422293.jpg"
 import addUserProfession from "../api/user/addUserProfession.js";
 import {useNavigate} from "react-router-dom";
+import {useGlobalContext} from "../components/GlobalContext.jsx";
 
 const AddingProfessionPage = () => {
 
     const navigate = useNavigate();
+    const {token} = useGlobalContext();
 
     const addProfessionRequest = {
         "email": localStorage.getItem("email"),
@@ -15,7 +17,7 @@ const AddingProfessionPage = () => {
         const profession = document.getElementById("profession-input").value;
         addProfessionRequest["profession"] = profession;
         console.log(addProfessionRequest);
-        await addUserProfession(addProfessionRequest);
+        await addUserProfession(addProfessionRequest, token);
         navigate("/chats");
     }
 

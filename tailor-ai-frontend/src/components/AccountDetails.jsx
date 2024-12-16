@@ -1,5 +1,6 @@
 import {useState} from "react";
 import changePassword from "../api/auth/changePassword.js";
+import {useGlobalContext} from "./GlobalContext.jsx";
 
 /**
  * holds the changing of password component/logic
@@ -8,6 +9,7 @@ export const AccountDetails = ({startLoading}) => {
 
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
+    const {token} = useGlobalContext();
 
     /*
      * request object
@@ -29,7 +31,7 @@ export const AccountDetails = ({startLoading}) => {
      */
     const handleChangePassword = async () => {
         startLoading();
-        const response = await changePassword(changePasswordRequest);
+        const response = await changePassword(changePasswordRequest, token);
         if (response) {
             alert("Successfully changed password");  //TODO change this later to better looking alerting
         }

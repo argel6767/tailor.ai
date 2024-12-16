@@ -1,4 +1,3 @@
-import {getJwtToken} from "./cookieConfig.js";
 
 
 export const jwtHeader = (token) =>  {
@@ -9,9 +8,11 @@ export const jwtHeader = (token) =>  {
     };
 };
 
-export const fileHeader = {
-    headers: {
-        'Content-Type': "multipart/form-data",
-        Authorization: `Bearer ${getJwtToken()}`
-    }
-}
+export const fileHeader = (token) => {
+    return {
+        headers: {
+            'Content-Type': "multipart/form-data",
+            'Authorization': `Bearer ${token}`
+        }
+    };
+};

@@ -2,12 +2,12 @@ import axios from 'axios';
 import {fileHeader} from "../../config/httpConfigs.js";
 import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 
-const sendResumeToAiWithJob = async (id, jobUrl, file) => {
+const sendResumeToAiWithJob = async (id, jobUrl, file, token) => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("jobUrl", jobUrl);
     try {
-        const response = await axios.post(`${API_ENDPOINT}/ai/file/${id}/job`, formData,fileHeader);
+        const response = await axios.post(`${API_ENDPOINT}/ai/file/${id}/job`, formData, fileHeader(token));
         return response.data;
     }
     catch (error) {

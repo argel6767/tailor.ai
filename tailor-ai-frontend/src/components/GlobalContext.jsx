@@ -1,4 +1,4 @@
-import {createContext, useContext, useState} from "react";
+import {createContext, useContext, useMemo, useState} from "react";
 
 const GlobalContext = createContext();
 
@@ -6,8 +6,11 @@ export const GlobalProvider = ({children}) => {
 
     const [token, setToken] = useState(null);
 
+    const contextValue = useMemo(() => ({ token, setToken }), [token]);
+
+
     return (
-        <GlobalContext.Provider value={{token, setToken}}>
+        <GlobalContext.Provider value={contextValue}>
             {children}
         </GlobalContext.Provider>
     )

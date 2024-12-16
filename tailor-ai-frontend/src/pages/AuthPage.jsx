@@ -17,7 +17,7 @@ const AuthPage = () => {
 
     const navigate = useNavigate();
     const loginNavigationRequest = emailObjectRequest;
-    const {token, setToken} = useGlobalContext();
+    const {setToken} = useGlobalContext();
 
     const goToVerify = () => {
         navigate('/verify');
