@@ -1,10 +1,12 @@
 import {getJwtToken} from "./cookieConfig.js";
 
 
-export const jwtToken = {
-    headers: {
-        'Authorization': `Bearer ${getJwtToken()}`
-    }
+export const jwtHeader = (token) =>  {
+    return  {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    };
 };
 
 export const fileHeader = {

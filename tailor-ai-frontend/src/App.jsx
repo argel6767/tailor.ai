@@ -36,7 +36,7 @@ function App() {
         }
     }, []); //TODO FIX THIS LATER, THIS IS JUST A TEMP FIX TO VERCEL CACHING TOKENS!!!!
 
-    useCheckCookie("/auth", ["/", "/auth", "", "/verify"], refreshAppKey);
+    //useCheckCookie("/auth", ["/", "/auth", "", "/verify"], refreshAppKey);
 
   return (
       <GlobalProvider>

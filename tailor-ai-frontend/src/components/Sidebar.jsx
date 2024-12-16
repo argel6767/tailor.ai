@@ -6,15 +6,17 @@ import deleteButton from "../assets/delete_button.svg"
 import confirmButton from "../assets/confirm_button.svg"
 import cancelButton from "../assets/cancel_button.svg"
 import {DeleteChat} from "./DeleteChat.jsx";
+import {useGlobalContext} from "./GlobalContext.jsx";
 
 const Sidebar = () => {
 
     const [userChats, setChats] = useState([])
     const [loading, setLoading] = useState(true);
+    const {token} = useGlobalContext();
 
     useEffect( () => {
         const getChats = async () => {
-            const grabbedChatSessions  = await getUserChatSessions(localStorage.getItem("email"));
+            const grabbedChatSessions  = await getUserChatSessions(localStorage.getItem("email"), token);
             if (grabbedChatSessions) {
                 setChats(grabbedChatSessions);
                 setLoading(false);

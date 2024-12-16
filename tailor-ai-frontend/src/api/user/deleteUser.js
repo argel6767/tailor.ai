@@ -1,10 +1,10 @@
 import axios from "axios";
-import {jwtToken} from "../../config/httpConfigs.js";
+import {jwtHeader} from "../../config/httpConfigs.js";
 import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 
-const deleteUser = async (email) => {
+const deleteUser = async (email, token) => {
     try {
-        const response = await axios.delete(`${API_ENDPOINT}/user/${email}`, jwtToken);
+        const response = await axios.delete(`${API_ENDPOINT}/user/${email}`, jwtHeader(token));
         return response.data;
     }
     catch (error) {

@@ -6,7 +6,6 @@ import {handleLoginNavigation} from "../utils/handleLoginNavigation.js";
 import {emailObjectRequest} from "../api/requests/emailObjectRequest.js";
 import {validateEmail} from "../utils/validateEmail.js";
 import Loading from "../components/Loading.jsx";
-import {setCookie} from "../config/cookieConfig.js";
 import {sleep} from "../utils/sleep.js";
 import {useGlobalContext} from "../components/GlobalContext.jsx";
 
@@ -73,7 +72,8 @@ const AuthPage = () => {
         }
         else {
             setToken(response.data.token);
-            await handleLoginNavigation(navigate, email);
+            const jwt = response.data.token;
+            await handleLoginNavigation(navigate, email, jwt);
         }
     }
 

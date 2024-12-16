@@ -1,10 +1,10 @@
 import axios from "axios";
-import {jwtToken} from "../../config/httpConfigs.js";
+import {jwtHeader} from "../../config/httpConfigs.js";
 import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 
-const getChatSession = async (id) => {
+const getChatSession = async (id, token) => {
     try {
-        const response = await axios.get(`${API_ENDPOINT}/chatsession/${id}`, jwtToken);
+        const response = await axios.get(`${API_ENDPOINT}/chatsession/${id}`, jwtHeader(token));
         return response.data;
     }
     catch (error) {

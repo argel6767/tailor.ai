@@ -1,11 +1,11 @@
 import axios  from "axios";
-import {jwtToken} from "../../config/httpConfigs.js";
+import {jwtHeader} from "../../config/httpConfigs.js";
 import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 
 
 const requestAiResponse = async (aiRequest) => {
     try {
-        const response = await axios.post(`${API_ENDPOINT}/ai/response`, aiRequest, jwtToken);
+        const response = await axios.post(`${API_ENDPOINT}/ai/response`, aiRequest, jwtHeader(token));
         return response.data;
     }
     catch (error) {
