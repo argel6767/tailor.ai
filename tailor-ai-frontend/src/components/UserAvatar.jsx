@@ -1,15 +1,16 @@
 import React, {useState} from 'react';
 import {Link} from "react-router-dom";
-import {isCookieExpired, removeJwtToken} from "../config/cookieConfig.js";
 import {useNavigate} from "react-router-dom";
+import {useGlobalContext} from "./GlobalContext.jsx";
 
 export const UserAvatar = ({refreshApp}) => {
 
     const [isSignedIn, setIsSignedIn] = useState(false);
     const navigate = useNavigate();
+    const {token, setToken} = useGlobalContext();
 
     const handleIsSignedIn = () => {
-        if (!isCookieExpired()) {
+        if (token) {
             setIsSignedIn(true);
         }
         else {
@@ -23,10 +24,19 @@ export const UserAvatar = ({refreshApp}) => {
      * and navigates back to landing page
      */
     const handleSignOut = () => {
-        removeJwtToken();
+        setToken(null);
         refreshApp();
         setIsSignedIn(false);
         navigate("/")
+    }
+
+    const goToProfile = () => {
+        if (!token) {
+            navigate("/auth");
+        }
+        else {
+            navigate("/user");
+        }
     }
 
     return (
@@ -42,7 +52,7 @@ export const UserAvatar = ({refreshApp}) => {
                 <ul
                     tabIndex={0}
                     className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                            <li><Link to={"/user"}>Profile</Link></li>
+                            <li><button onClick={goToProfile}>Profile</button></li>
                     {isSignedIn ? (<li><button onClick={handleSignOut}>Sign Out</button></li>) :
                         (<li><Link to={"/auth"}>Sign In</Link></li>)}
                 </ul>
