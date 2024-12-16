@@ -2,7 +2,6 @@ import { renderHook } from "@testing-library/react";
 import { MemoryRouter, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import useCheckTokenExpiration from "../../src/utils/useCheckTokenExpiration.js";
-import {isCookieExpired} from "../../src/config/cookieConfig.js";
 
 // Mock react-router-dom's useNavigate
 vi.mock("react-router-dom", async () => {
@@ -13,12 +12,6 @@ vi.mock("react-router-dom", async () => {
     };
 });
 
-// Mock js-cookie
-vi.mock("js-cookie", () => ({
-    default: {
-        get: vi.fn(),
-    },
-}));
 
 
 describe("useCheckCookie", () => {

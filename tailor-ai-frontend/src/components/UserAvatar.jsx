@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import {useNavigate} from "react-router-dom";
 import {useGlobalContext} from "./GlobalContext.jsx";
@@ -9,14 +9,12 @@ export const UserAvatar = ({refreshApp}) => {
     const navigate = useNavigate();
     const {token, setToken} = useGlobalContext();
 
-    const handleIsSignedIn = () => {
-        if (token) {
-            setIsSignedIn(true);
-        }
-        else {
-            setIsSignedIn(false);
-        }
-    }
+    /*
+     * updating ui to appropriate state when the state of token changes
+     */
+    useEffect(() => {
+        setIsSignedIn(!!token);
+    }, [token]);
 
     /*
      * removesToken, to make user have to sign back in
@@ -42,7 +40,7 @@ export const UserAvatar = ({refreshApp}) => {
     return (
         <main>
             <div className="dropdown dropdown-end">
-                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar" onClick={handleIsSignedIn}>
+                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                     <div className="w-10 rounded-full">
                         <img
                             alt="Profile Avatar"

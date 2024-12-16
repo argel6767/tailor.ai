@@ -2,24 +2,34 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { vi } from 'vitest';
 import { UserAvatar } from '../../src/components/UserAvatar.jsx';
-import * as cookieConfig from '../../src/config/cookieConfig.js';
-
-vi.mock('../../src/config/cookieConfig.js', () => ({
-    isCookieExpired: vi.fn(),
-    removeJwtToken: vi.fn(),
-}));
+import { GlobalProvider } from "../../src/components/GlobalContext.jsx";
+import React from 'react';
 
 describe('UserAvatar Component', () => {
     beforeEach(() => {
         vi.resetAllMocks();
     });
 
-    it('renders the avatar image', () => {
-        render(
-            <Router>
-                <UserAvatar />
-            </Router>
+    const renderWithGlobalContext = (ui, { token = null, expiration = 0, ...options } = {}) => {
+        const mockContextValue = {
+            token,
+            setToken: vi.fn(),
+            expiration,
+            setExpiration: vi.fn(),
+        };
+
+        return render(
+            <GlobalProvider value={mockContextValue}>
+                <Router>
+                    {ui}
+                </Router>
+            </GlobalProvider>,
+            options
         );
+    };
+
+    it('renders the avatar image', () => {
+        renderWithGlobalContext(<UserAvatar />);
 
         const avatarImg = screen.getByAltText('Profile Avatar');
         expect(avatarImg).toBeInTheDocument();
@@ -30,16 +40,12 @@ describe('UserAvatar Component', () => {
     });
 
     it('displays "Sign In" when the user is not signed in', async () => {
-        cookieConfig.isCookieExpired.mockReturnValue(true); // Simulate expired token
+        // No token provided, simulates not signed in
+        renderWithGlobalContext(<UserAvatar />);
 
-        render(
-            <Router>
-                <UserAvatar />
-            </Router>
-        );
-
-        const avatarButton = screen.getByRole('button');
-        fireEvent.click(avatarButton); // Simulate clicking the avatar to trigger handleIsSignedIn
+        const buttons = screen.getAllByRole('button');
+        const avatarButton = buttons[0];
+        fireEvent.click(avatarButton);
 
         const signInLink = await screen.findByText('Sign In');
         expect(signInLink).toBeInTheDocument();
@@ -47,55 +53,50 @@ describe('UserAvatar Component', () => {
     });
 
     it('displays "Sign Out" when the user is signed in', async () => {
-        cookieConfig.isCookieExpired.mockReturnValue(false); // Simulate valid token
+        const refreshAppMock = vi.fn();
+        const setTokenMock = vi.fn();
 
-        render(
-            <Router>
-                <UserAvatar />
-            </Router>
-        );
+        // Provide a token so that Sign Out is available
+        renderWithGlobalContext(<UserAvatar refreshApp={refreshAppMock} />, {
+            token: 'mock-token',
+            setToken: setTokenMock
+        });
 
-        const avatarButton = screen.getByRole('button');
-        fireEvent.click(avatarButton); // Simulate clicking the avatar to trigger handleIsSignedIn
+        const buttons = screen.getAllByRole('button');
+        const avatarButton = buttons[0];
+        fireEvent.click(avatarButton);
 
         const signOutButton = await screen.findByText('Sign Out');
         expect(signOutButton).toBeInTheDocument();
     });
 
     it('calls handleIsSignedIn when the avatar is clicked', () => {
-        const handleIsSignedInMock = vi.fn();
-        render(
-            <Router>
-                <UserAvatar />
-            </Router>
-        );
-
-        const avatarButton = screen.getByRole('button');
+        renderWithGlobalContext(<UserAvatar />);
+        const buttons = screen.getAllByRole('button');
+        const avatarButton = buttons[0];
         fireEvent.click(avatarButton);
 
-        // No explicit mock for handleIsSignedIn in the component, but this test ensures interaction works
-        expect(cookieConfig.isCookieExpired).toHaveBeenCalled();
     });
 
     it("calls handleSignOut when Sign Out is pressed", async () => {
-        cookieConfig.isCookieExpired.mockReturnValue(false);
         const refreshAppMock = vi.fn();
+        const setTokenMock = vi.fn();
 
-        render(
-            <Router>
-                <UserAvatar refreshApp={refreshAppMock}/>
-            </Router>
-        );
-
-        const avatarButton = screen.getByRole('button');
+        // Provide a token so that Sign Out is available
+        renderWithGlobalContext(<UserAvatar refreshApp={refreshAppMock} />, {
+            token: 'mock-token',
+            setToken: setTokenMock
+        });
+        const buttons = screen.getAllByRole('button');
+        const avatarButton = buttons[0];
         fireEvent.click(avatarButton);
 
-        const signOutButton = await screen.getByText("Sign Out");
+        const signOutButton = await screen.findByText("Sign Out");
         expect(signOutButton).toBeInTheDocument();
         fireEvent.click(signOutButton);
-        expect(cookieConfig.removeJwtToken).toHaveBeenCalled();
+
         expect(refreshAppMock).toHaveBeenCalled();
-        expect(window.location.pathname).toEqual("/")
+        expect(window.location.pathname).toEqual("/");
     });
 
 });

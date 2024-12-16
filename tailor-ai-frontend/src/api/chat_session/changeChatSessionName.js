@@ -1,6 +1,5 @@
 import axios from "axios";
 import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
-import {getJwtToken} from "../../config/cookieConfig.js";
 
 const changeChatSessionName = async (id, newName, token) => {
     try {
