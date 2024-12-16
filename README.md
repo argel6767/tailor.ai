@@ -29,10 +29,7 @@ Tailor.AI is an innovative application designed to help users customize their re
 - **Testing**: Vitest & JSDOM
 
 ## Current Status
-
-- Backend MVP is completed and hosted on Heroku.
-- Frontend MVP is completed and hosted on Netlify.
-- Go to [Tailor.ai here](https://tailor-ai.netlify.app/).
+- A web app is up and running! Go to [Tailor.ai here](https://tailor-ai.netlify.app/).
 
 ## Future Ideas
 
