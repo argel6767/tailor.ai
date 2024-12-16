@@ -14,13 +14,12 @@ import {useGlobalContext} from "../components/GlobalContext.jsx";
  * Chat dashboard page that contains previous chats on the side and allows users to start a new one
  */
 const ChatDashboardPage = () => {
-
+    const {token} = useGlobalContext();
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [pdfReminder, setPdfReminder] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [urlValue, setUrlValue] = useState("");
     const navigate = useNavigate();
-    const {token} = useGlobalContext();
 
     const handleLoading = () => {
         setIsLoading(!isLoading);
@@ -59,15 +58,21 @@ const ChatDashboardPage = () => {
         const file = document.getElementById("file-input").files[0];
         const email = localStorage.getItem("email");
         handleLoading()
-        const chatSessionDetails = await createChatSession(email, file);
-        if (urlValue !== "") {
-            await sendResumeToAiWithJob(chatSessionDetails.chatSessionId, urlValue, file, token);
+        try {
+            const chatSessionDetails = await createChatSession(email, file, token);
+            if (urlValue !== "") {
+                await sendResumeToAiWithJob(chatSessionDetails.chatSessionId, urlValue, file, token);
+            }
+            else {
+                const user = await getUser(email, token);
+                await sendResumeToAi(chatSessionDetails.chatSessionId, user.profession, file, token);
+            }
+            navigate(`/chats/${chatSessionDetails.chatSessionId}`);
         }
-        else {
-            const user = await getUser(email);
-            await sendResumeToAi(chatSessionDetails.chatSessionId, user.profession, file, token);
+        catch (error) {
+            console.log(error);
         }
-        navigate(`/chats/${chatSessionDetails.chatSessionId}`);
+
     }
 
     return (

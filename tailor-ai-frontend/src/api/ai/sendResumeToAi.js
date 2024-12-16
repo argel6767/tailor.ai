@@ -1,5 +1,5 @@
 import axios from "axios";
-import {jwtHeader} from "../../config/httpConfigs.js";
+import {fileHeader} from "../../config/httpConfigs.js";
 import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 
 const sendResumeToAi = async (id, profession, resumeFile, token) => {
@@ -7,7 +7,7 @@ const sendResumeToAi = async (id, profession, resumeFile, token) => {
     formData.append("file", resumeFile);
     formData.append("profession", profession);
     try {
-        const response = await axios.post(`${API_ENDPOINT}/ai/file/${id}`, formData, jwtHeader(token));
+        const response = await axios.post(`${API_ENDPOINT}/ai/file/${id}`, formData, fileHeader(token));
         return response.data
     }
     catch (error) {

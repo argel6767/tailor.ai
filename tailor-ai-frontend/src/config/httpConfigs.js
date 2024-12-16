@@ -11,7 +11,7 @@ export const jwtHeader = (token) =>  {
 export const fileHeader = (token) => {
     return {
         headers: {
-            'Content-Type': "multipart/form-data",
+            'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${token}`
         }
     };

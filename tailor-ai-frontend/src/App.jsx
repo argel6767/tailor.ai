@@ -8,38 +8,23 @@ import VerifyPage from "./pages/VerifyPage.jsx";
 import ChatDashboardPage from "./pages/ChatDashboardPage.jsx";
 import ChatSessionPage from "./pages/ChatSessionPage.jsx";
 import Footer from "./components/Footer.jsx";
-import useCheckCookie from "./utils/useCheckCookie.js";
+import useCheckTokenExpiration from "./utils/useCheckTokenExpiration.js";
 import {ProfilePage} from "./pages/ProfilePage.jsx";
-import {useEffect, useState} from "react";
-import {setCookie} from "./config/cookieConfig.js";
-import {GlobalProvider} from "./components/GlobalContext.jsx";
+import {useState} from "react";
+import {useGlobalContext} from "./components/GlobalContext.jsx";
 
 function App() {
 
     const [appKey, setAppKey] = useState(0);
-
-    const [jwtToken, setToken] = useState("token")
+    const {expiration} = useGlobalContext();
 
     const refreshAppKey = () => {
         setAppKey((prev) => prev + 1);
     }
 
-    const handleToken = (token) => {
-        setCookie(token);
-        setToken(token);
-    }
-
-    useEffect(() => {
-        if (!sessionStorage.getItem('firstLoad')) {
-            -sessionStorage.setItem('firstLoad', 'true');
-            -window.location.reload();
-        }
-    }, []); //TODO FIX THIS LATER, THIS IS JUST A TEMP FIX TO VERCEL CACHING TOKENS!!!!
-
-    //useCheckCookie("/auth", ["/", "/auth", "", "/verify"], refreshAppKey);
+    useCheckTokenExpiration("/auth", ["/", "/auth", "", "/verify"], refreshAppKey, expiration);
 
   return (
-      <GlobalProvider>
           <main className="flex flex-col h-screen">
               <Navbar refreshApp={refreshAppKey}/>
               <div className="flex-1 overflow-hidden">
@@ -55,9 +40,7 @@ function App() {
               </div>
               <Footer/>
           </main>
-      </GlobalProvider>
-
-  )
+  );
 }
 
 export default App

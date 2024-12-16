@@ -18,6 +18,7 @@ const AuthPage = () => {
     const navigate = useNavigate();
     const loginNavigationRequest = emailObjectRequest;
     const {setToken} = useGlobalContext();
+    const {setExpiration} = useGlobalContext();
 
     const goToVerify = () => {
         navigate('/verify');
@@ -73,6 +74,7 @@ const AuthPage = () => {
         else {
             setToken(response.data.token);
             const jwt = response.data.token;
+            setExpiration(Date.now() + response.data.expiresIn);
             await handleLoginNavigation(navigate, email, jwt);
         }
     }

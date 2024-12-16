@@ -3,11 +3,13 @@ import cancelButton from "../assets/cancel_button.svg";
 import deleteButton from "../assets/delete_button.svg";
 import deleteChatSession from "../api/chat_session/deleteChatSession.js";
 import {useState} from "react";
+import {useGlobalContext} from "./GlobalContext.jsx";
 
 export const DeleteChat = ({chatSessionId, onDelete}) => {
 
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [chatSessionIdDelete, setChatSessionIdDelete] = useState(null);
+    const {token} = useGlobalContext();
 
     const deleteConfirmation = () => {
         handleChatSessionIdDelete(chatSessionId);
@@ -26,9 +28,9 @@ export const DeleteChat = ({chatSessionId, onDelete}) => {
         return confirmDelete && chatSessionIdDelete === chatSessionId;
     }
 
-    const handleChatDeletion = () => {
+    const handleChatDeletion = async () => {
         onDelete();
-        deleteChatSession(chatSessionId);
+        await deleteChatSession(chatSessionId, token);
     }
 
     return (

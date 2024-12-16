@@ -6,7 +6,6 @@ import {jwtHeader} from "../../config/httpConfigs.js";
  * returns an object that holds a boolean value, whether a user has already set their profession
  */
 const getHasSetProfession = async (email, token) => {
-    console.log("token", token);
     try {
         const response = await axios.get(`${API_ENDPOINT}/user/profession/${email}`, jwtHeader(token));
         return response.data;

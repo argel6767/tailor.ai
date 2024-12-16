@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react";
 import { MemoryRouter, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import useCheckCookie from "../../src/utils/useCheckCookie.js";
+import useCheckTokenExpiration from "../../src/utils/useCheckTokenExpiration.js";
 import {isCookieExpired} from "../../src/config/cookieConfig.js";
 
 // Mock react-router-dom's useNavigate
@@ -28,7 +28,7 @@ describe("useCheckCookie", () => {
         const navigate = vi.fn();
         useNavigate.mockReturnValue(navigate);
 
-        renderHook(() => useCheckCookie(), {
+        renderHook(() => useCheckTokenExpiration(), {
             wrapper: MemoryRouter, // Needed for React Router context
         });
 
@@ -42,7 +42,7 @@ describe("useCheckCookie", () => {
         const navigate = vi.fn();
         useNavigate.mockReturnValue(navigate);
 
-        renderHook(() => useCheckCookie(), {
+        renderHook(() => useCheckTokenExpiration(), {
             wrapper: MemoryRouter,
         });
 
@@ -59,7 +59,7 @@ describe("useCheckCookie", () => {
         const navigate = vi.fn();
         useNavigate.mockReturnValue(navigate);
 
-        renderHook(() => useCheckCookie(), {
+        renderHook(() => useCheckTokenExpiration(), {
             wrapper: MemoryRouter,
         });
 
