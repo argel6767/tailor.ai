@@ -56,7 +56,7 @@ const ChatDashboardPage = () => {
      */
     const makeChatSession = async () => {
         const file = document.getElementById("file-input").files[0];
-        const email = localStorage.getItem("email");
+        const email = sessionStorage.getItem("email");
         handleLoading()
         try {
             const chatSessionDetails = await createChatSession(email, file, token);

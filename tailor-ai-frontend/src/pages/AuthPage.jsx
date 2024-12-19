@@ -59,7 +59,7 @@ const AuthPage = () => {
         authRequestValues.username = email;
         authRequestValues.password = password;
         loginNavigationRequest.email = email;
-        localStorage.setItem("email", email);
+        sessionStorage.setItem("email", email);
         hasAccount?  await login(authRequestValues) : await register(authRequestValues);
     }
 

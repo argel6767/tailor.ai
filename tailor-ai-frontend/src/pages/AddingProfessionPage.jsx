@@ -9,7 +9,7 @@ const AddingProfessionPage = () => {
     const {token} = useGlobalContext();
 
     const addProfessionRequest = {
-        "email": localStorage.getItem("email"),
+        "email": sessionStorage.getItem("email"),
         "profession": null
     }
 
