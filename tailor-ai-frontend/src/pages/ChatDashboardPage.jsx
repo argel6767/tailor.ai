@@ -65,6 +65,7 @@ const ChatDashboardPage = () => {
             }
             else {
                 const user = await getUser(email, token);
+                sessionStorage.setItem("user", JSON.stringify(user));
                 await sendResumeToAi(chatSessionDetails.chatSessionId, user.profession, file, token);
             }
             navigate(`/chats/${chatSessionDetails.chatSessionId}`);
