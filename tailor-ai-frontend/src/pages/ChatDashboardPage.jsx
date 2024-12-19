@@ -15,6 +15,7 @@ import {useGlobalContext} from "../components/GlobalContext.jsx";
  */
 const ChatDashboardPage = () => {
     const {token} = useGlobalContext();
+    const {user, setUser} = useGlobalContext();
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [pdfReminder, setPdfReminder] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -64,9 +65,15 @@ const ChatDashboardPage = () => {
                 await sendResumeToAiWithJob(chatSessionDetails.chatSessionId, urlValue, file, token);
             }
             else {
-                const user = await getUser(email, token);
-                sessionStorage.setItem("user", JSON.stringify(user));
-                await sendResumeToAi(chatSessionDetails.chatSessionId, user.profession, file, token);
+                let response = null;
+                if (!user) {
+                    response = await getUser(email, token);
+                    setUser(response);
+                    await sendResumeToAi(chatSessionDetails.chatSessionId, response.profession, file, token);
+                }
+                else {
+                    await sendResumeToAi(chatSessionDetails.chatSessionId, user.profession, file, token);
+                }
             }
             navigate(`/chats/${chatSessionDetails.chatSessionId}`);
         }

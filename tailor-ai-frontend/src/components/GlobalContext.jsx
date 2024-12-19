@@ -6,11 +6,14 @@ export const GlobalProvider = ({children}) => {
 
     const [token, setToken] = useState(null);
     const [expiration, setExpiration] = useState(0);
+    const [user, setUser] = useState(null);
 
     const contextValue = useMemo(() => ({ token,
         setToken,
         expiration,
-        setExpiration }), [token, expiration]);
+        setExpiration,
+        user,
+        setUser}), [token, expiration, user]);
 
 
     return (
