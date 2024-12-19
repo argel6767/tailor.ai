@@ -6,6 +6,7 @@ import requestAiResponse from "../api/ai/requestAiResponse.js";
 import getChatSession from "../api/chat_session/getChatSession.js";
 import changeChatSessionName from "../api/chat_session/changeChatSessionName.js";
 import {useGlobalContext} from "./GlobalContext.jsx";
+import {RenderFile} from "./RenderFile.jsx";
 
 
 const ChattingContainer = ({initialMessageHistory}) => {
@@ -25,7 +26,7 @@ const ChattingContainer = ({initialMessageHistory}) => {
             setChatName(response.chatSessionName);
         }
         getName()
-    }, [id]);
+    }, [id, token]);
 
     const updateChatName = async () => {
         const chatSessionName = document.getElementById("chatSessionName").value;
@@ -125,10 +126,9 @@ const ChattingContainer = ({initialMessageHistory}) => {
                 </div> : null}
             </div>
             <div className="flex justify-center items-center gap-4 w-full pt-4">
-                <input type="text" placeholder="Message AI" className="input input-bordered w-full max-w-xl"
-                       onChange={handleInputChange} onKeyDown={handleKeyPress} id="input"/>
-                    <button onClick={handleSubmit}  className={`btn ${hasInput ? "btn-primary" : "btn-disabled"}`}>Send
-                    </button>
+                <RenderFile chatSessionId={id} token={token} />
+                <input type="text" placeholder="Message AI" className="input input-bordered w-full max-w-xl" onChange={handleInputChange} onKeyDown={handleKeyPress} id="input" />
+                    <button onClick={handleSubmit}  className={`btn ${hasInput ? "btn-primary" : "btn-disabled"}`}>Send</button>
                 </div>
         </main>
     )

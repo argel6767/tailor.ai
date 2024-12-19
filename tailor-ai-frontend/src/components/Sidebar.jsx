@@ -2,9 +2,6 @@ import {useEffect, useState} from "react";
 import Loading from "./Loading.jsx";
 import getUserChatSessions from "../api/chat_session/getUserChatSessions.js";
 import {Link} from "react-router-dom";
-import deleteButton from "../assets/delete_button.svg"
-import confirmButton from "../assets/confirm_button.svg"
-import cancelButton from "../assets/cancel_button.svg"
 import {DeleteChat} from "./DeleteChat.jsx";
 import {useGlobalContext} from "./GlobalContext.jsx";
 
@@ -23,7 +20,7 @@ const Sidebar = () => {
             }
         }
         getChats() //commented until real implementation
-    }, [])
+    }, [token])
 
     return (
         <div className="drawer lg:drawer-open">

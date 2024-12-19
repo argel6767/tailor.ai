@@ -16,3 +16,12 @@ export const fileHeader = (token) => {
         }
     };
 };
+
+export const blobHeader = (token) => {
+    return {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        responseType: 'blob'
+    }
+}
