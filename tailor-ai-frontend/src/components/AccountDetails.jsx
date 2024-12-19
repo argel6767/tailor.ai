@@ -1,6 +1,7 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import changePassword from "../api/auth/changePassword.js";
 import {useGlobalContext} from "./GlobalContext.jsx";
+import getUser from "../api/user/getUser.js";
 
 /**
  * holds the changing of password component/logic
@@ -10,12 +11,27 @@ export const AccountDetails = ({startLoading}) => {
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const {token} = useGlobalContext();
+    const {user, setUser} = useGlobalContext();
+    const email = sessionStorage.getItem("email");
+
+    /*
+     * useEffect in case no user was already grabbed
+     */
+    useEffect(() => {
+       const handleNoUserState = async () => {
+           if (!user) {
+               const response = await getUser(email, token);
+               setUser(response);
+           }
+       };
+       handleNoUserState();
+    }, [user, setUser, email, token]);
 
     /*
      * request object
      */
     const changePasswordRequest = {
-        "email":localStorage.getItem("email"),
+        "email":email,
         "oldPassword":oldPassword,
         "newPassword":newPassword,
     }
@@ -44,7 +60,7 @@ export const AccountDetails = ({startLoading}) => {
 
     return (
         <>
-            <p>Email: {localStorage.getItem("email")}</p>
+            <p>Email: {email}</p>
             <div className="flex justify-start">
                 <p>Password: <input type="password" placeholder={isChangingPassword ? "Enter password" : "********"}
                         className="input input-sm w-7/12" disabled={!isChangingPassword} value={oldPassword} onChange={(e) => setOldPassword(e.target.value)}/></p>
@@ -62,6 +78,8 @@ export const AccountDetails = ({startLoading}) => {
                     </button>
                 </div>
             </div>
+            <p>Profession: {user.profession}</p>
+            <p>Account Created: {new Date(user.createdAt).toLocaleDateString()}</p>
         </>
     )
 }
