@@ -9,6 +9,7 @@ import Loading from "../components/Loading.jsx";
 import {useNavigate} from "react-router-dom";
 import UploadJob from "../components/UploadJob.jsx";
 import {useGlobalContext} from "../components/GlobalContext.jsx";
+import uploadPdfFile from "../api/s3/uploadPdfFile.js";
 
 /**
  * Chat dashboard page that contains previous chats on the side and allows users to start a new one
@@ -60,7 +61,8 @@ const ChatDashboardPage = () => {
         const email = sessionStorage.getItem("email");
         handleLoading()
         try {
-            const chatSessionDetails = await createChatSession(email, file, token);
+            const chatSessionDetails = await createChatSession(email, token);
+            await uploadPdfFile(chatSessionDetails.chatSessionId, file, token);
             if (urlValue !== "") {
                 await sendResumeToAiWithJob(chatSessionDetails.chatSessionId, urlValue, file, token);
             }
