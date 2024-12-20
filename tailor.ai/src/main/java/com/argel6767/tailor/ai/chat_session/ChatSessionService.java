@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -21,13 +20,13 @@ public class ChatSessionService {
 
     private final ChatSessionRepository chatSessionRepository;
     private final UserService userService;
-    private final S3Service s3Service;
+    //private final S3Service s3Service;
     private final UserRepository userRepository;
 
-    public ChatSessionService(ChatSessionRepository chatSessionRepository, UserService userService, S3Service s3Service, UserRepository userRepository) {
+    public ChatSessionService(ChatSessionRepository chatSessionRepository, UserService userService,  UserRepository userRepository) {
         this.chatSessionRepository = chatSessionRepository;
         this.userService = userService;
-        this.s3Service = s3Service;
+        //this.s3Service = s3Service;
         this.userRepository = userRepository;
     }
 
@@ -39,7 +38,7 @@ public class ChatSessionService {
     /*
      * creates new ChatSession while uploading file that is attached to the chatSession to the S3 bucket
      * the user's email is also grabbed to allow for being able to link the user in the db, handling the relationship
-     */
+
     public ChatSession createChatSession(MultipartFile pdfFileMulti, String email) {
         File pdfFile = FileConverter.convertMultipartFileToFile(pdfFileMulti);
         ChatSession chatSession = new ChatSession();
@@ -48,10 +47,21 @@ public class ChatSessionService {
         chatSession.setS3FileKey(key);
         return chatSessionRepository.save(chatSession);
     }
+    */
+
+    /*
+     * creates new ChatSession
+     * the user's email is also grabbed to allow for being able to link the user in the db, handling the relationship
+     */
+    public ChatSession createChatSession(String email) {
+        ChatSession chatSession = new ChatSession();
+        linkUserToChatSession(email, chatSession);
+        return chatSessionRepository.save(chatSession);
+    }
 
     /*
      * grabs pdf file attached to chat session given by the chatSession id
-     */
+
     public ResponseEntity<?> getChatSessionPDF(Long chatSessionId) {
         ChatSession chatSession = chatSessionRepository.findById(chatSessionId).orElse(null);
         if (chatSession != null) {
@@ -60,6 +70,7 @@ public class ChatSessionService {
         }
         return ResponseEntity.notFound().build();
     }
+     */
 
     /*
      * returns all chat sessions of a user
