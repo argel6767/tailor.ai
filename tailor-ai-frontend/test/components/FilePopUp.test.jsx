@@ -18,7 +18,7 @@ vi.mock('../../src/api/chat_session/getPdfFile.js', () => ({
 
 import {useParams} from 'react-router-dom';
 import {useGlobalContext} from '../../src/components/GlobalContext.jsx';
-import getPDFFile from '../../src/api/chat_session/getPDFFile.js';
+import getPdfFile from '../../src/api/s3/getPdfFile.js';
 
 
 
@@ -64,7 +64,7 @@ describe('FilePopUp Component', () => {
         expect(iframe).toBeInTheDocument();
 
         // Check that getPdfFile was called correctly with the right arguments
-        expect(getPDFFile).toHaveBeenCalledWith('123', 'test-token');
+        expect(getPdfFile).toHaveBeenCalledWith('123', 'test-token');
     });
 
     it('calls closePopUp when the "Close" button is clicked', async () => {
@@ -84,13 +84,13 @@ describe('FilePopUp Component', () => {
         await screen.findByTitle(/Resume for chat 123/i);
 
         // Reset mock calls to see if fetch is called again
-        getPDFFile.mockClear();
+        getPdfFile.mockClear();
 
         // Rerender with same ID should not refetch
         rerender(<FilePopUp closePopUp={closePopUp} />);
         await screen.findByTitle(/Resume for chat 123/i);
 
-        expect(getPDFFile).not.toHaveBeenCalled();
+        expect(getPdfFile).not.toHaveBeenCalled();
     });
 
     it('fetches again if the ID changes', async () => {
@@ -100,11 +100,11 @@ describe('FilePopUp Component', () => {
         // Change the ID
         useParams.mockReturnValue({id: '456'});
         const mockBlob2 = new Blob(['PDF content 2'], {type: 'application/pdf'});
-        getPDFFile.mockResolvedValueOnce(mockBlob2);
+        getPdfFile.mockResolvedValueOnce(mockBlob2);
 
         rerender(<FilePopUp closePopUp={closePopUp} />);
 
         await screen.findByTitle(/Resume for chat 123/i);
-        expect(getPDFFile).toHaveBeenCalledWith('456', 'test-token');
+        expect(getPdfFile).toHaveBeenCalledWith('456', 'test-token');
     });
 });

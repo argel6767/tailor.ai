@@ -1,8 +1,8 @@
 import {useParams} from "react-router-dom";
 import {useGlobalContext} from "./GlobalContext.jsx";
-import getPDFFile from "../api/chat_session/getPDFFile.js";
 import Loading from "./Loading.jsx";
 import {useEffect, useState} from "react";
+import getPdfFile from "../api/s3/getPdfFile.js";
 
 // Cache object to store PDF URLs by chat ID
 const pdfCache = new Map();
@@ -28,7 +28,7 @@ export const FilePopUp = ({closePopUp}) => {
         const grabFile = async () => {
             try {
                 console.log('Fetching PDF for chat ID:', id); // Debug log
-                const response = await getPDFFile(id, token);
+                const response = await getPdfFile(id, token);
                 const url = URL.createObjectURL(response);
                 pdfCache.set(id, url);
                 setFileUrl(url);
