@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {fileHeader} from "../../config/httpConfigs.js";
+import {jwtHeader} from "../../config/httpConfigs.js";
 import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 
 /**
@@ -10,7 +10,7 @@ const createChatSession = async (email, resumeFile, token) => {
     const formData = new FormData();
     formData.append('file', resumeFile);
     try {
-        const response = await axios.post(`${API_ENDPOINT}/chatsession/${email}`, formData, fileHeader(token));
+        const response = await axios.post(`${API_ENDPOINT}/chatsession/${email}`, jwtHeader(token));
         return response.data
     }
     catch (error) {
