@@ -1,0 +1,11 @@
+### GET to get file
+GET {{endpoint}}/s3/pdf/4
+Authorization: Bearer {{auth_token}}
+
+### DELETE Mapping to delete a chat session file
+DELETE {{endpoint}}/s3/pdf/3
+Authorization: Bearer {{auth_token}}
+
+### DELETE Mapping for deleting all files attached to user
+DELETE {{endpoint}}/s3/argel6767@gmail.com
+Authorization: Bearer {{auth_token}}
