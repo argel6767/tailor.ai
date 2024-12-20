@@ -1,5 +1,5 @@
 import axios from "axios";
-import {blobHeader, jwtHeader} from "../../config/httpConfigs.js";
+import {blobHeader} from "../../config/httpConfigs.js";
 import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 
 const getPDFFile = async (id, token) => {
