@@ -13,7 +13,7 @@ const Sidebar = () => {
 
     useEffect( () => {
         const getChats = async () => {
-            const grabbedChatSessions  = await getUserChatSessions(localStorage.getItem("email"), token);
+            const grabbedChatSessions  = await getUserChatSessions(sessionStorage.getItem("email"), token);
             if (grabbedChatSessions) {
                 setChats(grabbedChatSessions);
                 setLoading(false);

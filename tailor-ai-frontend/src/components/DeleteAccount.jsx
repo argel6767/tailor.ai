@@ -2,6 +2,7 @@ import {useState} from "react";
 import deleteUser from "../api/user/deleteUser.js";
 import {useNavigate} from "react-router-dom";
 import {useGlobalContext} from "./GlobalContext.jsx";
+import deleteAllUserFiles from "../api/s3/deleteAllUserFiles.js";
 
 export const DeleteAccount = ({startLoading}) => {
 
@@ -15,8 +16,9 @@ export const DeleteAccount = ({startLoading}) => {
 
     const handleDelete = async () => {
         startLoading();
-        const email = localStorage.getItem("email");
+        const email = sessionStorage.getItem("email");
         await deleteUser(email, token);
+        await deleteAllUserFiles(email, token);
         setToken(null);
         navigate("/");
     }
