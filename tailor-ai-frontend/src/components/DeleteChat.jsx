@@ -4,6 +4,7 @@ import deleteButton from "../assets/delete_button.svg";
 import deleteChatSession from "../api/chat_session/deleteChatSession.js";
 import {useState} from "react";
 import {useGlobalContext} from "./GlobalContext.jsx";
+import deletePdfFile from "../api/s3/deletePdfFile.js";
 
 export const DeleteChat = ({chatSessionId, onDelete}) => {
 
@@ -31,6 +32,7 @@ export const DeleteChat = ({chatSessionId, onDelete}) => {
     const handleChatDeletion = async () => {
         onDelete();
         await deleteChatSession(chatSessionId, token);
+        await deletePdfFile(chatSessionId, token);
     }
 
     return (
