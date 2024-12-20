@@ -2,7 +2,7 @@ import axios from "axios";
 import {blobHeader} from "../../config/httpConfigs.js";
 import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 
-const getPDFFile = async (id, token) => {
+const getPdfFile = async (id, token) => {
     try {
         const response = await axios.get(`${API_ENDPOINT}/s3/pdf/${id}`, blobHeader(token));
         console.log(response.data);
@@ -14,4 +14,4 @@ const getPDFFile = async (id, token) => {
     }
 }
 
-export default getPDFFile;
+export default getPdfFile;

@@ -11,7 +11,7 @@ vi.mock('../../src/components/GlobalContext.jsx', () => ({
     useGlobalContext: vi.fn(),
 }));
 
-vi.mock('../../src/api/chat_session/getPDFFile.js', () => ({
+vi.mock('../../src/api/chat_session/getPdfFile.js', () => ({
     __esModule: true,
     default: vi.fn(),
 }));
@@ -63,7 +63,7 @@ describe('FilePopUp Component', () => {
         const iframe = await screen.findByTitle(/Resume for chat 123/i);
         expect(iframe).toBeInTheDocument();
 
-        // Check that getPDFFile was called correctly with the right arguments
+        // Check that getPdfFile was called correctly with the right arguments
         expect(getPDFFile).toHaveBeenCalledWith('123', 'test-token');
     });
 
