@@ -7,7 +7,6 @@ import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
  * while also saving the user's pdf
  */
 const createChatSession = async (email, resumeFile, token) => {
-    console.log("token submitted: ", token);
     const formData = new FormData();
     formData.append('file', resumeFile);
     try {
