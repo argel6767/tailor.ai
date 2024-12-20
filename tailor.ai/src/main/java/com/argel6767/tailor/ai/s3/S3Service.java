@@ -46,15 +46,6 @@ public class S3Service {
         this.chatSessionService = chatSessionService;
     }
 
-    /*
-    * uploads given file to the s3 bucket
-     */
-    public String uploadFile(Long chatSessionId, File userPdf) {
-        String key = generateKey(chatSessionId);
-        s3client.putObject(PutObjectRequest.builder().bucket(bucket).key(key).build(), RequestBody.fromFile(userPdf));
-        return key;
-    }
-
     public ResponseEntity<?> uploadFile(MultipartFile file, Long chatSessionId) {
         File pdfFile = FileConverter.convertMultipartFileToFile(file);
         ChatSession chatSession = chatSessionService.getChatSession(chatSessionId);

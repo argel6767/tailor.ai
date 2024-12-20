@@ -20,34 +20,17 @@ public class ChatSessionService {
 
     private final ChatSessionRepository chatSessionRepository;
     private final UserService userService;
-    //private final S3Service s3Service;
     private final UserRepository userRepository;
 
     public ChatSessionService(ChatSessionRepository chatSessionRepository, UserService userService,  UserRepository userRepository) {
         this.chatSessionRepository = chatSessionRepository;
         this.userService = userService;
-        //this.s3Service = s3Service;
         this.userRepository = userRepository;
     }
-
 
     public ChatSession addChatSession(ChatSession chatSession) {
         return chatSessionRepository.save(chatSession);
     }
-
-    /*
-     * creates new ChatSession while uploading file that is attached to the chatSession to the S3 bucket
-     * the user's email is also grabbed to allow for being able to link the user in the db, handling the relationship
-
-    public ChatSession createChatSession(MultipartFile pdfFileMulti, String email) {
-        File pdfFile = FileConverter.convertMultipartFileToFile(pdfFileMulti);
-        ChatSession chatSession = new ChatSession();
-        linkUserToChatSession(email, chatSession);
-        String key = s3Service.uploadFile(chatSession.getChatSessionId(), pdfFile);
-        chatSession.setS3FileKey(key);
-        return chatSessionRepository.save(chatSession);
-    }
-    */
 
     /*
      * creates new ChatSession
@@ -59,18 +42,6 @@ public class ChatSessionService {
         return chatSessionRepository.save(chatSession);
     }
 
-    /*
-     * grabs pdf file attached to chat session given by the chatSession id
-
-    public ResponseEntity<?> getChatSessionPDF(Long chatSessionId) {
-        ChatSession chatSession = chatSessionRepository.findById(chatSessionId).orElse(null);
-        if (chatSession != null) {
-            String key = chatSession.getS3FileKey();
-            return s3Service.downloadFile(key);
-        }
-        return ResponseEntity.notFound().build();
-    }
-     */
 
     /*
      * returns all chat sessions of a user
