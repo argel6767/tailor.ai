@@ -101,7 +101,7 @@ public class AuthenticationController {
             return ResponseEntity.notFound().build();
         }
         catch (RuntimeException re) {
-            return new ResponseEntity<>(re, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(re.getMessage(), HttpStatus.UNAUTHORIZED);
         }
     }
 
