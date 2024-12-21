@@ -17,8 +17,8 @@ export const DeleteAccount = ({startLoading}) => {
     const handleDelete = async () => {
         startLoading();
         const email = sessionStorage.getItem("email");
-        await deleteUser(email, token);
         await deleteAllUserFiles(email, token);
+        await deleteUser(email, token);
         setToken(null);
         navigate("/");
     }

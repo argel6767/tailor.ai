@@ -9,7 +9,7 @@ const uploadPdfFile = async (chatSessionId, resumeFile, token) => {
     const formData = new FormData();
     formData.append('file', resumeFile);
     try {
-        const response = await axios.post(`${API_ENDPOINT}/pdf/${chatSessionId}`, formData, fileHeader(token));
+        const response = await axios.post(`${API_ENDPOINT}/s3/pdf/${chatSessionId}`, formData, fileHeader(token));
         return response.data;
     }
     catch (error) {

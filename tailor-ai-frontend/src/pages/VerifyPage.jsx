@@ -22,7 +22,7 @@ const VerifyPage = () => {
     }
 
     const verifyRequest = {
-        "email":localStorage.getItem("email"),
+        "email":sessionStorage.getItem("email"),
         "verificationToken":null,
     }
 
@@ -31,13 +31,13 @@ const VerifyPage = () => {
         verifyRequest.verificationToken = verificationToken;
         console.log(verifyRequest);
         await verifyUser(verifyRequest)
-        localStorage.clear()
+        sessionStorage.clear();
         navigate("/auth")
     }
 
     const handleResendTokenRequest = async () => {
         handleSentToken();
-        await resendVerificationEmail({"email":localStorage.getItem("email")});
+        await resendVerificationEmail({"email":sessionStorage.getItem("email")});
         await sleep(2000)
         handleSentToken()
     }

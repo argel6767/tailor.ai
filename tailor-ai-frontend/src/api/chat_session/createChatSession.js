@@ -8,7 +8,7 @@ import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
  */
 const createChatSession = async (email, token) => {
     try {
-        const response = await axios.post(`${API_ENDPOINT}/chatsession/${email}`, jwtHeader(token));
+        const response = await axios.post(`${API_ENDPOINT}/chatsession/${email}`, {}, jwtHeader(token));
         return response.data
     }
     catch (error) {
