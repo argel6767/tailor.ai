@@ -1,1 +1,1 @@
-export const API_ENDPOINT = import.meta.env.VITE_BACKEND_ENDPOINT_TEST;
+export const API_ENDPOINT = import.meta.env.VITE_BACKEND_ENDPOINT;
