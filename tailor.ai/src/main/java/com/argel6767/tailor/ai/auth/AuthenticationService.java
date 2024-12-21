@@ -1,5 +1,7 @@
 package com.argel6767.tailor.ai.auth;
 
+import com.argel6767.tailor.ai.auth.exceptions.AuthenticationException;
+import com.argel6767.tailor.ai.auth.exceptions.ExpiredVerificationCodeException;
 import com.argel6767.tailor.ai.auth.requests.AuthenticateUserDto;
 import com.argel6767.tailor.ai.auth.requests.ChangePasswordDto;
 import com.argel6767.tailor.ai.auth.requests.ForgotPasswordDto;
@@ -10,7 +12,6 @@ import com.argel6767.tailor.ai.user.User;
 import com.argel6767.tailor.ai.user.UserRepository;
 import jakarta.mail.MessagingException;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -144,7 +145,7 @@ public class AuthenticationService {
     public User resetPassword(ForgotPasswordDto request) {
         User user = getUser(request.getEmail());
         if (user.getCodeExpiry().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Verification code expired, request another one");
+            throw new ExpiredVerificationCodeException("Verification code expired, request another one");
         }
         if (!user.getVerificationCode().equals(request.getVerificationCode())) {
             throw new AuthenticationException("Invalid verification code");

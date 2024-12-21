@@ -1,5 +1,7 @@
 package com.argel6767.tailor.ai.auth;
 
+import com.argel6767.tailor.ai.auth.exceptions.AuthenticationException;
+import com.argel6767.tailor.ai.auth.exceptions.ExpiredVerificationCodeException;
 import com.argel6767.tailor.ai.auth.requests.AuthenticateUserDto;
 import com.argel6767.tailor.ai.auth.requests.ChangePasswordDto;
 import com.argel6767.tailor.ai.auth.requests.ForgotPasswordDto;
@@ -14,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -326,7 +327,7 @@ class AuthenticationServiceTest {
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(successfulUser));
 
         //Act and Assert
-        assertThrows(RuntimeException.class, () -> {authenticationService.resetPassword(request);});
+        assertThrows(ExpiredVerificationCodeException.class, () -> {authenticationService.resetPassword(request);});
     }
 
     @Test
