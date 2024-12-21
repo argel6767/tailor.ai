@@ -2,6 +2,7 @@ package com.argel6767.tailor.ai.auth;
 
 import com.argel6767.tailor.ai.auth.requests.AuthenticateUserDto;
 import com.argel6767.tailor.ai.auth.requests.ChangePasswordDto;
+import com.argel6767.tailor.ai.auth.requests.ForgotPasswordDto;
 import com.argel6767.tailor.ai.auth.requests.VerifyUserDto;
 import com.argel6767.tailor.ai.email.EmailService;
 import com.argel6767.tailor.ai.email.EmailVerificationException;
@@ -267,4 +268,77 @@ class AuthenticationServiceTest {
             authenticationService.changePassword(request);
         });
     }
+
+    @Test
+    void testSendForgottenPasswordVerificationCodeWithValidEmail() throws MessagingException {
+        //Arrange
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(successfulUser));
+
+        //Act
+        authenticationService.sendForgottenPasswordVerificationCode("test@example.com");
+
+        //Assert
+        verify(userRepository).save(any(User.class));
+        verify(emailService).sendEmail(anyString(), anyString(), anyString());
+    }
+
+    @Test
+    void testSendForgottenPasswordVerificationCodeWithInvalidEmail() throws MessagingException {
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
+
+        //Act and Assert
+        assertThrows(UsernameNotFoundException.class,
+                () -> {authenticationService.sendForgottenPasswordVerificationCode("test@example.com");});
+    }
+
+    @Test
+    void testResetPasswordWithValidRequest() {
+        //Arrange
+        ForgotPasswordDto request = new ForgotPasswordDto("test@example.com", "newPassword", "123456");
+        successfulUser.setCodeExpiry(LocalDateTime.now().plusMinutes(10));
+        successfulUser.setVerificationCode("123456");
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(successfulUser));
+        when(passwordEncoder.encode("newPassword")).thenReturn("encodedPassword"); // Mock password encoding
+
+        //Act
+        authenticationService.resetPassword(request);
+
+        //Assert
+        verify(userRepository).save(any(User.class));
+        verify(passwordEncoder).encode(anyString());
+    }
+
+    @Test
+    void testResetPasswordWithInvalidEmail() {
+        //Arrange
+        ForgotPasswordDto request = new ForgotPasswordDto("test@example.com", "newPassword", "123456");
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
+
+        //Act and Assert
+        assertThrows(UsernameNotFoundException.class, () -> {authenticationService.resetPassword(request);});
+    }
+
+    @Test
+    void testResetPasswordWithExpiredCode() {
+        //Arrange
+        ForgotPasswordDto request = new ForgotPasswordDto("test@example.com", "newPassword", "123456");
+        successfulUser.setCodeExpiry(LocalDateTime.now().minusMinutes(10));
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(successfulUser));
+
+        //Act and Assert
+        assertThrows(RuntimeException.class, () -> {authenticationService.resetPassword(request);});
+    }
+
+    @Test
+    void testResetPasswordWithInvalidCode() {
+        //Arrange
+        ForgotPasswordDto request = new ForgotPasswordDto("test@example.com", "newPassword", "123456");
+        successfulUser.setCodeExpiry(LocalDateTime.now().plusMinutes(10));
+        successfulUser.setVerificationCode("000000"); //simulated different code
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(successfulUser));
+
+        //Act and Assert
+        assertThrows(AuthenticationException.class, () -> {authenticationService.resetPassword(request);});
+    }
+
 }

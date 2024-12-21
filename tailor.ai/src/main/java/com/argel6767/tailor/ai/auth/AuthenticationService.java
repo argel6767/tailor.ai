@@ -42,16 +42,11 @@ public class AuthenticationService {
      * signs up user to app, will fail if the email is taken as they need to be unique
      */
     public User signUp(AuthenticateUserDto request) {
-        User user = new User();
-        user.setEmail(request.getUsername());
-        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
-        try {
-            user = userRepository.save(user);
-            setVerificationCodeAndSendIt(user, this::sendVerificationEmail);
+        if (userRepository.findByEmail(request.getUsername()).isPresent()) {
+            throw new AuthenticationException("Email is already in use");
         }
-        catch (Exception e) {
-            throw new AuthenticationServiceException("User already exists", e);
-        }
+        User user = new User(request.getUsername(), passwordEncoder.encode(request.getPassword()));
+        setVerificationCodeAndSendIt(user, this::sendVerificationEmail);
         return userRepository.save(user);
     }
 
@@ -110,8 +105,7 @@ public class AuthenticationService {
      * can be used if their last code expired
      */
     public void resendVerificationEmail(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(email));
+        User user = getUser(email);
         if (user.isEnabled()) {
             throw new EmailVerificationException("Email is already verified");
         }
@@ -144,11 +138,11 @@ public class AuthenticationService {
 
     public User resetPassword(ForgotPasswordDto request) {
         User user = getUser(request.getEmail());
-        if (!user.getCodeExpiry().isBefore(LocalDateTime.now())) {
+        if (user.getCodeExpiry().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Verification code expired, request another one");
         }
         if (!user.getVerificationCode().equals(request.getVerificationCode())) {
-            throw new RuntimeException("Invalid verification code");
+            throw new AuthenticationException("Invalid verification code");
         }
         user.setCodeExpiry(null);
         user.setVerificationCode(null);
