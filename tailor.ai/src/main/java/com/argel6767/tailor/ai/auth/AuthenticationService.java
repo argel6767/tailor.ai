@@ -136,6 +136,11 @@ public class AuthenticationService {
         userRepository.save(user);
     }
 
+    /*
+     * resets a user's password, only if:
+     * code is not expired
+     * and verification code is correct one in db
+     */
     public User resetPassword(ForgotPasswordDto request) {
         User user = getUser(request.getEmail());
         if (user.getCodeExpiry().isBefore(LocalDateTime.now())) {
@@ -361,6 +366,5 @@ public class AuthenticationService {
         Random random = new Random();
         return String.valueOf(random.nextInt(900000) + 100000); //guaranteed 6-digit number
     }
-
 
 }
