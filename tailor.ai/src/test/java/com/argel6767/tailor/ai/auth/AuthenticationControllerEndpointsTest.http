@@ -61,3 +61,17 @@ Content-Type: application/json
   "oldPassword": {{oldPassword}},
   "newPassword": {{newPassword}}
 }
+
+### POST request for request a verification token for forgotten password request
+POST {{endpoint}}/auth/forgot/argel6767@gmail.com
+
+
+### PUT request to reset password when a user forgets their original password
+PUT {{endpoint}}/auth/reset
+Content-Type: application/json
+
+{
+  "email": {{email}},
+  "password": {{password}},
+  "verificationCode": {{code}}
+}
