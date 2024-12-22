@@ -49,7 +49,6 @@ const AuthPage = () => {
         setIsLoading(!isLoading);
     }
 
-
     /**
      * submits the values given by user to the endpoint for logging in or signing up
      * then routes user to appropriate page based on status
@@ -139,8 +138,10 @@ const AuthPage = () => {
                     </button>}
 
                     {hasAccount ?
-                        <p>Not have an account? <button id={"switchToSignUp"} className="underline"
-                                                        onClick={handleAccountChange}>Sign Up</button></p> :
+                        <div className="flex flex-col justify-center items-center gap-2">
+                            <p>Forgot you're password? <button className="underline">Reset your password</button></p>
+                            <p>Not have an account? <button id={"switchToSignUp"} className="underline" onClick={handleAccountChange}>Sign Up</button></p>
+                        </div> :
                         <p>Already have an account? <button id={"switchToSignIn"} className="underline"
                                                             onClick={handleAccountChange}>Sign In</button></p>}
                 </>)}
