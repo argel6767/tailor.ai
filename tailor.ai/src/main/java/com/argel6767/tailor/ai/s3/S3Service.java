@@ -121,6 +121,9 @@ public class S3Service {
         try {
             User user = userService.getUserByEmail(userEmail);
             List<ChatSession> chatSessions = user.getChatSessions();
+            if (chatSessions.isEmpty()) { //no files to delete
+                return ResponseEntity.ok().build();
+            }
             List<ObjectIdentifier> fileKeys = new ArrayList<>();
             chatSessions.forEach(chatSession -> {
                 ObjectIdentifier objectKey = ObjectIdentifier.builder().key(chatSession.getS3FileKey()).build();
