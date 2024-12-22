@@ -31,7 +31,7 @@ function App() {
                   <Routes>
                       <Route path="/" element={<LandingPage/>}/>
                       <Route path="/auth" element={<AuthPage/>}/>
-                      <Route path="/verify" element={<VerifyPage/>}/>
+                      <Route path="/verify" element={<VerifyPage title={"Enter your verification code below."} button={"Verify Account"} renderResentComponent={true}/>}/>
                       <Route path="/profession" element={<AddingProfessionPage/>}/>
                       <Route path="/chats" element={<ChatDashboardPage/>}/>
                       <Route path="/chats/:id" element={<ChatSessionPage/>}/>
