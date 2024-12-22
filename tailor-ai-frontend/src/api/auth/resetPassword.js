@@ -6,9 +6,9 @@ import axios from "axios";
  * resets password for user
  * THIS ENDPOINT IS USED FOR FORGOTTEN PASSWORDS
  */
-const resetPassword = async (token) => {
+const resetPassword = async (token, resetPasswordRequest) => {
     try {
-        const response = await axios.post(`${API_ENDPOINT}/auth/reset`, jwtHeader(token))
+        const response = await axios.post(`${API_ENDPOINT}/auth/reset`, resetPasswordRequest, jwtHeader(token))
         return response.data;
     }
     catch (error) {
