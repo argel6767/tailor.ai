@@ -1,9 +1,8 @@
 package com.argel6767.tailor.ai.auth;
 
-import com.argel6767.tailor.ai.auth.requests.AuthenticateUserDto;
-import com.argel6767.tailor.ai.auth.requests.ChangePasswordDto;
-import com.argel6767.tailor.ai.auth.requests.ResendEmailDto;
-import com.argel6767.tailor.ai.auth.requests.VerifyUserDto;
+import com.argel6767.tailor.ai.auth.exceptions.AuthenticationException;
+import com.argel6767.tailor.ai.auth.exceptions.ExpiredVerificationCodeException;
+import com.argel6767.tailor.ai.auth.requests.*;
 import com.argel6767.tailor.ai.auth.responses.LoginResponse;
 import com.argel6767.tailor.ai.jwt.JwtService;
 import com.argel6767.tailor.ai.user.User;
@@ -161,17 +160,18 @@ class AuthenticationControllerTest {
         request.setEmail("testuser@example.com");
         request.setOldPassword("oldpass");
         request.setNewPassword("newpass");
+        User user = new User("testuser@example.com", "encodedPassword123");
 
         // Mock successful password change
         when(authenticationService.changePassword(request))
-                .thenReturn(new User("testuser@example.com", "newpass"));
+                .thenReturn(user);
 
         // Act
         ResponseEntity<?> response = authenticationController.changePassword(request);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Password changed successfully", response.getBody());
+        assertEquals(user, response.getBody());
     }
 
     @Test
@@ -200,14 +200,66 @@ class AuthenticationControllerTest {
 
         // Mock RuntimeException (e.g., invalid old password)
         when(authenticationService.changePassword(request))
-                .thenThrow(new RuntimeException("Unauthorized password change"));
+                .thenThrow(new RuntimeException("Invalid password"));
 
         // Act
         ResponseEntity<?> response = authenticationController.changePassword(request);
 
         // Assert
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        assertEquals("Unauthorized password change", response.getBody());
+        assertEquals("Invalid password", response.getBody());
+    }
+
+    @Test
+    void testResetPasswordWithValidRequest() {
+        //Arrange
+        User user = new User("testuser@example.com", "password123");
+        ForgotPasswordDto request = new ForgotPasswordDto();
+        request.setEmail("test@example.com");
+        request.setPassword("password123");
+        request.setVerificationCode("123456");
+        when(authenticationService.resetPassword(request)).thenReturn(user);
+
+        //Act
+        ResponseEntity<User> response = (ResponseEntity<User>) authenticationController.resetPassword(request);
+
+        //Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(user, response.getBody());
+    }
+
+    @Test
+    void testResetPasswordWithExpiredToken() {
+        //Arrange
+        ForgotPasswordDto request = new ForgotPasswordDto();
+        request.setEmail("test@example.com");
+        request.setPassword("password123");
+        request.setVerificationCode("123456");
+        when(authenticationService.resetPassword(request)).thenThrow(new ExpiredVerificationCodeException("Verification code expired, request another one"));
+
+        //Act
+        ResponseEntity<String> response = (ResponseEntity<String>) authenticationController.resetPassword(request);
+
+        //Assert
+        assertEquals(HttpStatus.GONE, response.getStatusCode());
+        assertEquals("Verification code expired, request another one", response.getBody());
+    }
+
+    @Test
+    void testResetPasswordWithInvalidToken() {
+        //Arrange
+        ForgotPasswordDto request = new ForgotPasswordDto();
+        request.setEmail("test@example.com");
+        request.setPassword("password123");
+        request.setVerificationCode("123456");
+        when(authenticationService.resetPassword(request)).thenThrow(new AuthenticationException("Invalid verification code"));
+
+        //Act
+        ResponseEntity<String> response = (ResponseEntity<String>) authenticationController.resetPassword(request);
+
+        //Assert
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        assertEquals("Invalid verification code", response.getBody());
     }
 
 }

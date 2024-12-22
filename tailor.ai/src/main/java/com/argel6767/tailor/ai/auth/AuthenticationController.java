@@ -1,9 +1,8 @@
 package com.argel6767.tailor.ai.auth;
 
-import com.argel6767.tailor.ai.auth.requests.AuthenticateUserDto;
-import com.argel6767.tailor.ai.auth.requests.ChangePasswordDto;
-import com.argel6767.tailor.ai.auth.requests.ResendEmailDto;
-import com.argel6767.tailor.ai.auth.requests.VerifyUserDto;
+import com.argel6767.tailor.ai.auth.exceptions.AuthenticationException;
+import com.argel6767.tailor.ai.auth.exceptions.ExpiredVerificationCodeException;
+import com.argel6767.tailor.ai.auth.requests.*;
 import com.argel6767.tailor.ai.auth.responses.LoginResponse;
 import com.argel6767.tailor.ai.email.EmailVerificationException;
 import com.argel6767.tailor.ai.jwt.JwtService;
@@ -40,7 +39,6 @@ public class AuthenticationController {
         catch (AuthenticationException e) {
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         }
-
     }
 
     /*
@@ -60,7 +58,6 @@ public class AuthenticationController {
         catch (EmailVerificationException eve) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
-
     }
 
     /*
@@ -91,6 +88,10 @@ public class AuthenticationController {
         }
     }
 
+    /*
+     * changes passwords for user
+     * THIS IS USED ONLY FOR WHEN A USER WANTS TO UPDATE PASSWORD
+     */
     @PutMapping("/password")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDto request) {
         try {
@@ -100,7 +101,36 @@ public class AuthenticationController {
             return ResponseEntity.notFound().build();
         }
         catch (RuntimeException re) {
-            return new ResponseEntity<>(re, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(re.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @PostMapping("/forgot/{email}")
+    public ResponseEntity<?> forgotPassword(@PathVariable String email) {
+        try {
+            authenticationService.sendForgottenPasswordVerificationCode(email);
+            return ResponseEntity.ok("Forgot password verification code sent!");
+        }
+        catch (UsernameNotFoundException unfe) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /*
+     * resets password
+     * ONLY TO BE USED FOR WHEN USER FORGETS PASSWORD
+     */
+    @PutMapping("/reset")
+    public ResponseEntity<?> resetPassword(@RequestBody ForgotPasswordDto request) {
+        try {
+            User user = authenticationService.resetPassword(request);
+            return ResponseEntity.ok(user);
+        }
+        catch (ExpiredVerificationCodeException re) {
+            return new ResponseEntity<>(re.getMessage(), HttpStatus.GONE);
+        }
+        catch (AuthenticationException ae) {
+            return new ResponseEntity<>(ae.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
 
