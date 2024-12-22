@@ -11,6 +11,8 @@ import com.argel6767.tailor.ai.email.EmailVerificationException;
 import com.argel6767.tailor.ai.user.User;
 import com.argel6767.tailor.ai.user.UserRepository;
 import jakarta.mail.MessagingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,6 +28,7 @@ import java.util.function.Consumer;
  */
 @Service
 public class AuthenticationService {
+    private static final Logger log = LoggerFactory.getLogger(AuthenticationService.class);
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
@@ -46,6 +49,7 @@ public class AuthenticationService {
         if (userRepository.findByEmail(request.getUsername()).isPresent()) {
             throw new AuthenticationException("Email is already in use");
         }
+        log.info("Creating new user {}", request.getUsername());
         User user = new User(request.getUsername(), passwordEncoder.encode(request.getPassword()));
         setVerificationCodeAndSendIt(user, this::sendVerificationEmail);
         return userRepository.save(user);
@@ -241,9 +245,9 @@ public class AuthenticationService {
                         <h1>Welcome to Tailor.AI!</h1>
                     </div>
                     <div class="content">
-                        <p>We’re excited to have you on board! Please use the verification code below to complete your sign-up process:</p>
+                        <p>We're excited to have you on board! Please use the verification code below to complete your sign-up process:</p>
                         <p class="verification-code">%s</p>
-                        <p>If you didn’t request this code, please ignore this email or contact our support team.</p>
+                        <p>If you didn't request this code, please ignore this email or contact our support team.</p>
                     </div>
                     <div class="footer">
                         <p>&copy; 2024 Tailor.AI. All rights reserved.</p>
@@ -256,7 +260,7 @@ public class AuthenticationService {
 
     private void sendResetPasswordEmail(User user) {
         String to = user.getUsername();
-        String subject = "Reset Password Email";
+        String subject = "Reset Password";
         String code = user.getVerificationCode();
         String body = String.format("""
             <!DOCTYPE html>
@@ -338,7 +342,7 @@ public class AuthenticationService {
                     <div class="content">
                         <p>Reset your password with the verification code below:</p>
                         <p class="verification-code">%s</p>
-                        <p>If you didn’t request this code, please ignore this email or contact our support team.</p>
+                        <p>If you didn't request this code, please ignore this email or contact our support team.</p>
                     </div>
                     <div class="footer">
                         <p>&copy; 2024 Tailor.AI. All rights reserved.</p>

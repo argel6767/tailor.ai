@@ -121,7 +121,7 @@ public class AuthenticationController {
      * ONLY TO BE USED FOR WHEN USER FORGETS PASSWORD
      */
     @PutMapping("/reset")
-    public ResponseEntity<?> resetPassword(ForgotPasswordDto request) {
+    public ResponseEntity<?> resetPassword(@RequestBody ForgotPasswordDto request) {
         try {
             User user = authenticationService.resetPassword(request);
             return ResponseEntity.ok(user);

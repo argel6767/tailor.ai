@@ -56,7 +56,10 @@ public class User implements UserDetails {
 
     public User() {}
 
-    public User(String email, String passwordHash) {}
+    public User(String email, String passwordHash) {
+        this.email = email;
+        this.passwordHash = passwordHash;
+    }
 
     public void setId(Long id) {
         this.userId = id;
