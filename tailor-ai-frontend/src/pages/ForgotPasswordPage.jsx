@@ -4,25 +4,36 @@ import {InputEmailRequest} from "../components/InputEmailRequest.jsx";
 import sendForgetPasswordVerificationEmail from "../api/auth/sendForgetPasswordVerificationEmail.js";
 import {sleep} from "../utils/sleep.js";
 import {useNavigate} from "react-router-dom";
+import Loading from "../components/Loading.jsx";
 
 export const ForgotPasswordPage = () => {
 
     const [email, setEmail] = useState("");
     const [failedRequest, setFailedRequest] = useState(false);
-    const [successfulRequest, setSuccessfulRequest] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     const submitResetPasswordVerification = async () => {
         try {
+            setIsLoading(true);
             await sendForgetPasswordVerificationEmail(email);
             sessionStorage.setItem("email", email);
             navigate("/reset-password")
         }
         catch (error) {
+            setIsLoading(false);
+            console.log(error);
             setFailedRequest(true);
             await sleep(3000);
             setFailedRequest(false);
         }
+    }
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center pt-10">
+            <div className="w-1/2"><Loading loadingMessage={"Submitting request..."} /></div>
+            </div>);
     }
 
     return (
