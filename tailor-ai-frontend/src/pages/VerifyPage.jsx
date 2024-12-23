@@ -24,13 +24,11 @@ const VerifyPage = ({title, button, renderResentComponent, children, request}) =
             "email":sessionStorage.getItem("email"),
             "verificationToken":code,
         }
-        console.log(verifyRequest);
         await verifyUser(verifyRequest)
         sessionStorage.clear();
         navigate("/auth")
     }
 
-    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 
     return (<div className="flex justify-center items-center pt-20">
