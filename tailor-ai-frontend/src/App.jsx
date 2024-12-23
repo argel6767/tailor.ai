@@ -7,11 +7,13 @@ import Navbar from "./components/Navbar.jsx";
 import VerifyPage from "./pages/VerifyPage.jsx";
 import ChatDashboardPage from "./pages/ChatDashboardPage.jsx";
 import ChatSessionPage from "./pages/ChatSessionPage.jsx";
+import {ForgotPasswordPage} from "./pages/ForgotPasswordPage.jsx";
 import Footer from "./components/Footer.jsx";
 import useCheckTokenExpiration from "./utils/useCheckTokenExpiration.js";
 import {ProfilePage} from "./pages/ProfilePage.jsx";
 import {useState} from "react";
 import {useGlobalContext} from "./components/GlobalContext.jsx";
+import {ResetPasswordPage} from "./pages/ResetPasswordPage.jsx";
 
 function App() {
 
@@ -22,7 +24,7 @@ function App() {
         setAppKey((prev) => prev + 1);
     }
 
-    useCheckTokenExpiration("/auth", ["/", "/auth", "", "/verify"], refreshAppKey, expiration);
+    useCheckTokenExpiration("/auth", ["/", "/auth", "", "/verify", "/forgot", "/reset-password"], refreshAppKey, expiration);
 
   return (
           <main className="flex flex-col h-screen">
@@ -32,6 +34,8 @@ function App() {
                       <Route path="/" element={<LandingPage/>}/>
                       <Route path="/auth" element={<AuthPage/>}/>
                       <Route path="/verify" element={<VerifyPage title={"Enter your verification code below."} button={"Verify Account"} renderResentComponent={true}/>}/>
+                      <Route path="/forgot" element={<ForgotPasswordPage/>}/>
+                      <Route path="/reset-password" element={<ResetPasswordPage/>}/>
                       <Route path="/profession" element={<AddingProfessionPage/>}/>
                       <Route path="/chats" element={<ChatDashboardPage/>}/>
                       <Route path="/chats/:id" element={<ChatSessionPage/>}/>

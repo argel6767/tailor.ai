@@ -7,7 +7,7 @@ import {ResendVerificationEmail} from "../components/ResendVerificationEmail.jsx
 /**
  * Verify page, where user puts in verification code
  */
-const VerifyPage = ({title, button, renderResentComponent}) => {
+const VerifyPage = ({title, button, renderResentComponent, children, request}) => {
 
     /*
      * TODO possible at state checking if localstorage has email
@@ -18,18 +18,12 @@ const VerifyPage = ({title, button, renderResentComponent}) => {
 
     const [code, setCode] = useState("");
 
-    const handleSentToken = () => {
-        setSentToken(!sentToken);
-    }
-
-    const verifyRequest = {
-        "email":sessionStorage.getItem("email"),
-        "verificationToken":null,
-    }
 
     const submitVerificationRequest = async () => {
-        const verificationToken = document.getElementById("verify-input").value;
-        verifyRequest.verificationToken = verificationToken;
+        const verifyRequest = {
+            "email":sessionStorage.getItem("email"),
+            "verificationToken":code,
+        }
         console.log(verifyRequest);
         await verifyUser(verifyRequest)
         sessionStorage.clear();
@@ -41,9 +35,9 @@ const VerifyPage = ({title, button, renderResentComponent}) => {
 
     return (<div className="flex justify-center items-center pt-20">
         <div className="flex flex-col  justify-center items-center p-2 space-y-7 w-2/5  ">
-            <h1 className="text-3xl font-bold">Enter your verification code below.</h1>
-            <VerificationCode setCode={setCode} />
-            <button className="btn btn-active btn-primary" onClick={submitVerificationRequest}>Verify Account</button>
+            <h1 className="text-3xl font-bold text-center">{title}</h1>
+            {children? children : <VerificationCode setCode={setCode}/>}
+            <button className="btn btn-active btn-primary" onClick={request? request : submitVerificationRequest}>{button}</button>
             {renderResentComponent && <ResendVerificationEmail/>}
         </div>
     </div>)

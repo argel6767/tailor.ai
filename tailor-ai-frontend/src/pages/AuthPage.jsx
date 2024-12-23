@@ -89,7 +89,6 @@ const AuthPage = () => {
         else {
             goToVerify();
         }
-
     }
 
     return (
@@ -139,7 +138,7 @@ const AuthPage = () => {
 
                     {hasAccount ?
                         <div className="flex flex-col justify-center items-center gap-2">
-                            <p>Forgot you're password? <button className="underline">Reset your password</button></p>
+                            <p>Forgot you're password? <button className="underline" onClick={() => {navigate("/forgot")}}>Reset your password</button></p>
                             <p>Not have an account? <button id={"switchToSignUp"} className="underline" onClick={handleAccountChange}>Sign Up</button></p>
                         </div> :
                         <p>Already have an account? <button id={"switchToSignIn"} className="underline"

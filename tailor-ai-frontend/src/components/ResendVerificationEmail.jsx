@@ -2,7 +2,7 @@ import resendVerificationEmail from "../api/auth/resendVerificationEmail.js";
 import {sleep} from "../utils/sleep.js";
 import {useState} from "react";
 
-export const ResendVerificationEmail = () => {
+export const ResendVerificationEmail = ({sendEmail}) => {
 
     const[sentResendRequest, setSentResentRequest] = useState(false);
 

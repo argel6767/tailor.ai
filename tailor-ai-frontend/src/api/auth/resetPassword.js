@@ -1,14 +1,14 @@
 import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
-import {jwtHeader} from "../../config/httpConfigs.js";
 import axios from "axios";
 
 /**
  * resets password for user
  * THIS ENDPOINT IS USED FOR FORGOTTEN PASSWORDS
  */
-const resetPassword = async (token, resetPasswordRequest) => {
+const resetPassword = async (resetPasswordRequest) => {
     try {
-        const response = await axios.post(`${API_ENDPOINT}/auth/reset`, resetPasswordRequest, jwtHeader(token))
+        console.log(resetPasswordRequest);
+        const response = await axios.put(`${API_ENDPOINT}/auth/reset`, resetPasswordRequest)
         return response.data;
     }
     catch (error) {
