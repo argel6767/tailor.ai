@@ -8,7 +8,7 @@ The backend of Tailor.AI is a Spring Boot 3 application serving as the core of t
 - **JWT Authentication**: Secure stateless authentication using JSON Web Tokens.
 - **JavaMailSender**: Enables sending emails directly from the application.
 - **Java 17**: Built with the latest long-term support version of Java.
-- **AWS RDS PostgreSQL**: Managed database service for reliable and scalable storage.
+- **Heroku PostgreSQL**: Managed database service for reliable and scalable storage.
 - **AWS S3**: Object storage for managing resumes and related files, integrated via the AWS Java SDK.
 
 ## Future Enhancements
