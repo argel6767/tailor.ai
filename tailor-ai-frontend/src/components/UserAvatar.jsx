@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {useGlobalContext} from "./GlobalContext.jsx";
 import logoutUser from "../api/auth/logoutUser.js";
 
-export const UserAvatar = ({refreshApp}) => {
+export const UserAvatar = () => {
 
     const navigate = useNavigate();
     const {isSignedIn, setIsSignedIn} = useGlobalContext();
@@ -16,8 +16,6 @@ export const UserAvatar = ({refreshApp}) => {
      * and navigates back to landing page
      */
     const handleSignOut = async () => {
-
-        refreshApp();
         await logoutUser()
         setIsSignedIn(false);
         navigate("/")

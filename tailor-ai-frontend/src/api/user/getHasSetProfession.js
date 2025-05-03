@@ -6,7 +6,7 @@ import {apiClient} from "../apiConfig.js";
  */
 const getHasSetProfession = async () => {
     try {
-        const response = await apiClient.get(`/user/profession/`);
+        const response = await apiClient.get(`/user/profession`);
         return response.data;
     }
     catch (error) {

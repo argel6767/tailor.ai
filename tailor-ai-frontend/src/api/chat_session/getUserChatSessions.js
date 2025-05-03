@@ -3,7 +3,7 @@ import {apiClient} from "../apiConfig.js";
 
 const getUserChatSessions = async () => {
     try {
-        const response = await apiClient.get(`chatsession/all`);
+        const response = await apiClient.get(`/chatsession`);
         return response.data;
     }
     catch (error) {

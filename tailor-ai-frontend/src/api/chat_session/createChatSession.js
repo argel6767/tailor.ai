@@ -7,7 +7,7 @@ import {apiClient} from "../apiConfig.js";
  */
 const createChatSession = async () => {
     try {
-        const response = await apiClient.post(`/chatsession/`);
+        const response = await apiClient.post(`/chatsession`);
         return response.data
     }
     catch (error) {

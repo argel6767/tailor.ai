@@ -1,5 +1,6 @@
 package com.argel6767.tailor.ai.s3;
 
+import com.argel6767.tailor.ai.jwt.JwtUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,8 +33,9 @@ public class S3Controller {
         return s3Service.deleteFile(chatSessionId);
     }
 
-    @DeleteMapping("/{userEmail}")
-    public ResponseEntity<?> deleteAllUserFiles(@PathVariable String userEmail) {
+    @DeleteMapping()
+    public ResponseEntity<?> deleteAllUserFiles() {
+        String userEmail = JwtUtils.getCurrentUserEmail();
         return s3Service.deleteAllFiles(userEmail);
     }
 }

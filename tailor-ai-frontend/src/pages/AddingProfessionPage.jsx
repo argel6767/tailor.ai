@@ -8,14 +8,13 @@ const AddingProfessionPage = () => {
 
     const [profession, setProfession] = useState("");
     const navigate = useNavigate();
-    const {token} = useGlobalContext();
 
     const handleProfessionRequest = async () => {
         const addProfessionRequest = {
             "profession": profession
         }
         addProfessionRequest.profession = profession;
-        await addUserProfession(addProfessionRequest, token);
+        await addUserProfession(addProfessionRequest);
         navigate("/chats");
     }
 

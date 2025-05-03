@@ -125,7 +125,7 @@ const ChattingContainer = ({initialMessageHistory}) => {
                 </div> : null}
             </div>
             <div className="flex justify-center items-center gap-4 w-full pt-4">
-                <RenderFile chatSessionId={id} ={} />
+                <RenderFile chatSessionId={id} />
                 <input type="text" placeholder="Message AI" className="input input-bordered w-full max-w-xl" onChange={handleInputChange} onKeyDown={handleKeyPress} id="input" />
                     <button onClick={handleSubmit}  className={`btn ${hasInput ? "btn-primary" : "btn-disabled"}`}>Send</button>
                 </div>

@@ -41,7 +41,7 @@ class UserControllerTest {
     @Test
     void testGetProfessionStatus() {
         when(userService.hasSetProfession(EMAIL)).thenReturn(true);
-        ResponseEntity<Boolean> response = userController.getProfessionStatus(EMAIL);
+        ResponseEntity<Boolean> response = userController.getProfessionStatus();
         assertNotNull(response);
         assertTrue(response.getBody());
     }
@@ -49,7 +49,7 @@ class UserControllerTest {
     @Test
     void testDeleteUserWithValidEmail() {
         when(userService.deleteUser(EMAIL)).thenReturn("User successfully deleted");
-        ResponseEntity<String> response = userController.deleteUser(EMAIL);
+        ResponseEntity<String> response = userController.deleteUser();
         assertNotNull(response);
         assertEquals("User successfully deleted", response.getBody());
     }
@@ -58,7 +58,7 @@ class UserControllerTest {
     void testDeleteUserWithInvalidEmail() {
         when(userService.deleteUser(EMAIL)).thenThrow(new UsernameNotFoundException("User not found"));
 
-        ResponseEntity<String> response = userController.deleteUser(EMAIL);
+        ResponseEntity<String> response = userController.deleteUser();
         assertNotNull(response);
         assertEquals("User not found", response.getBody());
     }

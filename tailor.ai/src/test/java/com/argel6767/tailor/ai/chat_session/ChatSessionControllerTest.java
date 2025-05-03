@@ -37,7 +37,7 @@ class ChatSessionControllerTest {
         when(chatSessionService.createChatSession(TEST_EMAIL)).thenReturn(chatSession);
 
         // Act
-        ResponseEntity<ChatSession> response = chatSessionController.createChatSession(TEST_EMAIL);
+        ResponseEntity<ChatSession> response = chatSessionController.createChatSession();
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -55,7 +55,7 @@ class ChatSessionControllerTest {
         when(chatSessionService.getAllUserChatSessions(TEST_EMAIL)).thenReturn(expectedResponse);
 
         // Act
-        ResponseEntity<List<ChatSession>> response = chatSessionController.getUserChatSessions(TEST_EMAIL);
+        ResponseEntity<List<ChatSession>> response = chatSessionController.getUserChatSessions();
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());

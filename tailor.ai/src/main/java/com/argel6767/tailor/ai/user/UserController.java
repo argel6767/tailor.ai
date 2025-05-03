@@ -1,7 +1,7 @@
 package com.argel6767.tailor.ai.user;
 
+import com.argel6767.tailor.ai.jwt.JwtUtils;
 import com.argel6767.tailor.ai.user.requests.AddProfessionRequest;
-import com.argel6767.tailor.ai.user.requests.EmailObjectRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,19 +19,22 @@ public class UserController {
 
     @PutMapping("/profession")
     public ResponseEntity<User> updateProfession(@RequestBody AddProfessionRequest addProfessionRequest) {
-        User user = userService.addProfession(addProfessionRequest.getEmail(), addProfessionRequest.getProfession());
+        String email = JwtUtils.getCurrentUserEmail();
+        User user = userService.addProfession(email, addProfessionRequest.getProfession());
         return ResponseEntity.ok(user);
     }
 
-    @GetMapping("/profession/{email}")
-    public ResponseEntity<Boolean> getProfessionStatus(@PathVariable String email) {
+    @GetMapping("/profession")
+    public ResponseEntity<Boolean> getProfessionStatus() {
+        String email = JwtUtils.getCurrentUserEmail();
         Boolean status = userService.hasSetProfession(email);
         return ResponseEntity.ok(status);
     }
 
-    @GetMapping("/{email}")
-    public ResponseEntity<User> getUser(@PathVariable String email) {
+    @GetMapping()
+    public ResponseEntity<User> getUser() {
         try {
+            String email = JwtUtils.getCurrentUserEmail();
             User user = userService.getUserByEmail(email);
             return ResponseEntity.ok(user);
         }
@@ -40,9 +43,10 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("{email}")
-    public ResponseEntity<String> deleteUser(@PathVariable String email) {
+    @DeleteMapping()
+    public ResponseEntity<String> deleteUser() {
         try {
+            String email = JwtUtils.getCurrentUserEmail();
             return ResponseEntity.ok(userService.deleteUser(email));
         }
         catch(UsernameNotFoundException unfe) {

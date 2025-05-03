@@ -1,5 +1,6 @@
 package com.argel6767.tailor.ai.chat_session;
 
+import com.argel6767.tailor.ai.jwt.JwtUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -17,13 +18,15 @@ public class ChatSessionController {
         this.chatSessionService = chatSessionService;
     }
 
-    @PostMapping("/{email}")
-    public ResponseEntity<ChatSession> createChatSession(@PathVariable String email) {
+    @PostMapping()
+    public ResponseEntity<ChatSession> createChatSession() {
+        String email = JwtUtils.getCurrentUserEmail();
         return ResponseEntity.ok(chatSessionService.createChatSession(email));
     }
 
-    @GetMapping("/all/{email}")
-    public ResponseEntity<List<ChatSession>> getUserChatSessions(@PathVariable String email) {
+    @GetMapping("")
+    public ResponseEntity<List<ChatSession>> getUserChatSessions() {
+        String email = JwtUtils.getCurrentUserEmail();
         return chatSessionService.getAllUserChatSessions(email);
     }
 

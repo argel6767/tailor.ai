@@ -9,26 +9,14 @@ import ChatDashboardPage from "./pages/ChatDashboardPage.jsx";
 import ChatSessionPage from "./pages/ChatSessionPage.jsx";
 import {ForgotPasswordPage} from "./pages/ForgotPasswordPage.jsx";
 import Footer from "./components/Footer.jsx";
-import useCheckTokenExpiration from "./utils/useCheckTokenExpiration.js";
 import {ProfilePage} from "./pages/ProfilePage.jsx";
-import {useState} from "react";
-import {useGlobalContext} from "./components/GlobalContext.jsx";
 import {ResetPasswordPage} from "./pages/ResetPasswordPage.jsx";
 
 function App() {
 
-    const [appKey, setAppKey] = useState(0);
-    const {expiration} = useGlobalContext();
-
-    const refreshAppKey = () => {
-        setAppKey((prev) => prev + 1);
-    }
-
-    useCheckTokenExpiration("/auth", ["/", "/auth", "", "/verify", "/forgot", "/reset-password"], refreshAppKey, expiration);
-
   return (
           <main className="flex flex-col h-screen">
-              <Navbar refreshApp={refreshAppKey}/>
+              <Navbar/>
               <div className="flex-1 overflow-hidden">
                   <Routes>
                       <Route path="/" element={<LandingPage/>}/>

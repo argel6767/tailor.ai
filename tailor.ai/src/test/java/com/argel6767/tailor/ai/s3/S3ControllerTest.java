@@ -118,7 +118,7 @@ class S3ControllerTest {
         when(s3Service.deleteAllFiles(TEST_USER_EMAIL)).thenReturn(ResponseEntity.ok().build());
 
         // Act
-        ResponseEntity<?> response = s3Controller.deleteAllUserFiles(TEST_USER_EMAIL);
+        ResponseEntity<?> response = s3Controller.deleteAllUserFiles();
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -131,7 +131,7 @@ class S3ControllerTest {
         when(s3Service.deleteAllFiles(TEST_USER_EMAIL)).thenReturn(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 
         // Act
-        ResponseEntity<?> response = s3Controller.deleteAllUserFiles(TEST_USER_EMAIL);
+        ResponseEntity<?> response = s3Controller.deleteAllUserFiles();
 
         // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
