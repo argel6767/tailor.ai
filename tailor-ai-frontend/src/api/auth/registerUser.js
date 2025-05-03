@@ -1,12 +1,11 @@
-import axios from 'axios';
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
+import {apiClient} from "../apiConfig.js";
 
 /**
  * registers users and also sends a verification email to them in the backend
  */
 const registerUser = async (authRequestValues) => {
     try {
-        const response =  await axios.post(`${API_ENDPOINT}/auth/register`, authRequestValues);
+        const response =  await apiClient.post(`/auth/register`, authRequestValues);
         return response.data;
     }
     catch (error) {

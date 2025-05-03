@@ -1,12 +1,11 @@
-import axios from "axios";
 import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
+import {apiClient} from "../apiConfig.js";
 
-const changeChatSessionName = async (id, newName, token) => {
+const changeChatSessionName = async (id, newName) => {
     try {
-        const response = await axios.put(`${API_ENDPOINT}/chatsession/${id}/name`, newName, {
+        const response = await apiClient.put(`${API_ENDPOINT}/chatsession/${id}/name`, newName, {
             headers: {
-                "Content-Type": "text/plain",
-                Authorization: `Bearer ${token}`
+                "Content-Type": "text/plain"
             }
         });
         return response.data;

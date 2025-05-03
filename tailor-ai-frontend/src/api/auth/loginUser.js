@@ -1,5 +1,5 @@
-import axios from 'axios';
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
+
+import {apiClient} from "../apiConfig.js";
 
 /**
  * logs in user then saves the jwt token response in cookie to allow for security and to use across
@@ -7,7 +7,7 @@ import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
  */
 const loginUser = async (authRequestValues) => {
     try {
-        const response =  await axios.post(`${API_ENDPOINT}/auth/login`, authRequestValues);
+        const response =  await apiClient.post(`/auth/login`, authRequestValues);
         if (response.status !== 200) {
             return null;
         }

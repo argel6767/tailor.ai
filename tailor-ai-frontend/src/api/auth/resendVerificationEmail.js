@@ -1,12 +1,12 @@
-import axios from "axios";
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
+
+import {apiClient} from "../apiConfig.js";
 
 /**
  * used if the user needs the verification email to be resent for whatever reason
  */
 const resendVerificationEmail = async (resendEmailRequest) => {
     try {
-        const response = await axios.post(`${API_ENDPOINT}/auth/resend`, resendEmailRequest);
+        const response = await apiClient.post(`/auth/resend`, resendEmailRequest);
         console.log(response);
     }
     catch (error) {

@@ -1,15 +1,14 @@
-import axios from "axios";
-import {jwtHeader} from "../../config/httpConfigs.js";
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
+
+import {apiClient} from "../apiConfig.js";
 
 /**
  * API request for changing user's password
  * takes an object that has
  * email, old password, and new password
  */
-const changePassword = async (changePasswordRequest, token) => {
+const changePassword = async (changePasswordRequest) => {
     try {
-        const response = await axios.put(`${API_ENDPOINT}/auth/password`, changePasswordRequest, jwtHeader(token) );
+        const response = await apiClient.put(`/auth/password`, changePasswordRequest );
         return response.data;
     }
     catch (error) {

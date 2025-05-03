@@ -1,12 +1,13 @@
 import axios from "axios";
 import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
+import {apiClient} from "../apiConfig.js";
 
 /**
  * sends verification code for a forgotten password via email
  */
 const sendForgetPasswordVerificationEmail = async (email) => {
     try {
-        const response = await axios.post(`${API_ENDPOINT}/auth/forgot/${email}`)
+        const response = await apiClient.post(`${API_ENDPOINT}/auth/forgot/${email}`)
         return response.data;
     }
     catch (error) {
