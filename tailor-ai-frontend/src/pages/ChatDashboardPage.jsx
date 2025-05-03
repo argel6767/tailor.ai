@@ -15,7 +15,6 @@ import uploadPdfFile from "../api/s3/uploadPdfFile.js";
  * Chat dashboard page that contains previous chats on the side and allows users to start a new one
  */
 const ChatDashboardPage = () => {
-    const {token} = useGlobalContext();
     const {user, setUser} = useGlobalContext();
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [pdfReminder, setPdfReminder] = useState(false);
@@ -58,23 +57,22 @@ const ChatDashboardPage = () => {
      */
     const makeChatSession = async () => {
         const file = document.getElementById("file-input").files[0];
-        const email = sessionStorage.getItem("email");
         handleLoading()
         try {
-            const chatSessionDetails = await createChatSession(email, token);
-            await uploadPdfFile(chatSessionDetails.chatSessionId, file, token);
+            const chatSessionDetails = await createChatSession();
+            await uploadPdfFile(chatSessionDetails.chatSessionId, file);
             if (urlValue !== "") {
-                await sendResumeToAiWithJob(chatSessionDetails.chatSessionId, urlValue, file, token);
+                await sendResumeToAiWithJob(chatSessionDetails.chatSessionId, urlValue, file);
             }
             else {
                 let response = null;
                 if (!user) {
-                    response = await getUser(email, token);
+                    response = await getUser();
                     setUser(response);
-                    await sendResumeToAi(chatSessionDetails.chatSessionId, response.profession, file, token);
+                    await sendResumeToAi(chatSessionDetails.chatSessionId, response.profession, file);
                 }
                 else {
-                    await sendResumeToAi(chatSessionDetails.chatSessionId, user.profession, file, token);
+                    await sendResumeToAi(chatSessionDetails.chatSessionId, user.profession, file);
                 }
             }
             navigate(`/chats/${chatSessionDetails.chatSessionId}`);

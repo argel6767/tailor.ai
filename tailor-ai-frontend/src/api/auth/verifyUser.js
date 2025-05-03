@@ -1,5 +1,4 @@
-import axios from 'axios';
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
+
 import {apiClient} from "../apiConfig.js";
 
 /**
@@ -7,7 +6,7 @@ import {apiClient} from "../apiConfig.js";
  */
 const verifyUser = async (verifyRequest) => {
     try {
-        const response = await apiClient.post(`${API_ENDPOINT}/auth/verify`, verifyRequest)
+        const response = await apiClient.post(`/auth/verify`, verifyRequest)
         return response.status === 200;
     }
     catch (error) {

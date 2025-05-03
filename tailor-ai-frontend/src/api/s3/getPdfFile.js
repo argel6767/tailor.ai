@@ -1,10 +1,11 @@
-import axios from "axios";
-import {blobHeader} from "../../config/httpConfigs.js";
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 
-const getPdfFile = async (id, token) => {
+import {apiClient} from "../apiConfig.js";
+
+const getPdfFile = async (id) => {
     try {
-        const response = await axios.get(`${API_ENDPOINT}/s3/pdf/${id}`, blobHeader(token));
+        const response = await apiClient.get(`/s3/pdf/${id}`, {
+            responseType: 'blob'
+        });
         console.log(response.data);
         return response.data;
     }

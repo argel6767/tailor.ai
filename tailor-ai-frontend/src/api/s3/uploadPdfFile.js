@@ -1,15 +1,17 @@
 /**
  * makes the POST request for uploading pdf file (resume) to the s3 buckt
  */
-import axios from "axios";
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
-import {fileHeader} from "../../config/httpConfigs.js";
+import {apiClient} from "../apiConfig.js";
 
-const uploadPdfFile = async (chatSessionId, resumeFile, token) => {
+const uploadPdfFile = async (chatSessionId, resumeFile) => {
     const formData = new FormData();
     formData.append('file', resumeFile);
     try {
-        const response = await axios.post(`${API_ENDPOINT}/s3/pdf/${chatSessionId}`, formData, fileHeader(token));
+        const response = await apiClient.post(`/s3/pdf/${chatSessionId}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
         return response.data;
     }
     catch (error) {

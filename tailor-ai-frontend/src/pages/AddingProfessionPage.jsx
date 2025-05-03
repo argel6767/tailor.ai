@@ -12,7 +12,6 @@ const AddingProfessionPage = () => {
 
     const handleProfessionRequest = async () => {
         const addProfessionRequest = {
-            "email": sessionStorage.getItem("email"),
             "profession": profession
         }
         addProfessionRequest.profession = profession;

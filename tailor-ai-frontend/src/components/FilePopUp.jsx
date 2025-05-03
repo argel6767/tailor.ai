@@ -1,5 +1,4 @@
 import {useParams} from "react-router-dom";
-import {useGlobalContext} from "./GlobalContext.jsx";
 import Loading from "./Loading.jsx";
 import {useEffect, useState} from "react";
 import getPdfFile from "../api/s3/getPdfFile.js";
@@ -9,7 +8,6 @@ const pdfCache = new Map();
 
 export const FilePopUp = ({closePopUp}) => {
     const {id} = useParams();
-    const {token} = useGlobalContext();
     const [fileUrl, setFileUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -28,7 +26,7 @@ export const FilePopUp = ({closePopUp}) => {
         const grabFile = async () => {
             try {
                 console.log('Fetching PDF for chat ID:', id); // Debug log
-                const response = await getPdfFile(id, token);
+                const response = await getPdfFile(id, );
                 const url = URL.createObjectURL(response);
                 pdfCache.set(id, url);
                 setFileUrl(url);
@@ -40,7 +38,7 @@ export const FilePopUp = ({closePopUp}) => {
         };
 
         grabFile();
-    }, [id, token]); // Dependencies include id to react to chat changes
+    }, [id, ]); // Dependencies include id to react to chat changes
 
 
     return (

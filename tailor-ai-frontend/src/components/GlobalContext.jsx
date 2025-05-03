@@ -4,16 +4,17 @@ const GlobalContext = createContext();
 
 export const GlobalProvider = ({children}) => {
 
-    const [token, setToken] = useState(null);
     const [expiration, setExpiration] = useState(0);
     const [user, setUser] = useState(null);
+    const [isSignedIn, setIsSignedIn] = useState(false);
 
-    const contextValue = useMemo(() => ({ token,
-        setToken,
+    const contextValue = useMemo(() => ({
         expiration,
         setExpiration,
         user,
-        setUser}), [token, expiration, user]);
+        setUser,
+        isSignedIn,
+        setIsSignedIn}), [ expiration, setExpiration, user, setUser, isSignedIn, setIsSignedIn]);
 
 
     return (

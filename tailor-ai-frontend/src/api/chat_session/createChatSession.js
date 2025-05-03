@@ -1,15 +1,13 @@
-import axios from 'axios';
-import {jwtHeader} from "../../config/httpConfigs.js";
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
+
 import {apiClient} from "../apiConfig.js";
 
 /**
  * makes the POST request for creating a new chat session in the by the user email
  * while also saving the user's pdf
  */
-const createChatSession = async (email) => {
+const createChatSession = async () => {
     try {
-        const response = await apiClient(`/chatsession/${email}`, {},);
+        const response = await apiClient.post(`/chatsession/`);
         return response.data
     }
     catch (error) {

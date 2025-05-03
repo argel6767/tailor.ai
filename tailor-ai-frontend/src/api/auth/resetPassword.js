@@ -1,5 +1,4 @@
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
-import axios from "axios";
+
 import {apiClient} from "../apiConfig.js";
 
 /**
@@ -9,7 +8,7 @@ import {apiClient} from "../apiConfig.js";
 const resetPassword = async (resetPasswordRequest) => {
     try {
         console.log(resetPasswordRequest);
-        const response = await apiClient.put(`${API_ENDPOINT}/auth/reset`, resetPasswordRequest)
+        const response = await apiClient.put(`auth/reset`, resetPasswordRequest)
         return response.data;
     }
     catch (error) {

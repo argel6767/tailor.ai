@@ -38,7 +38,9 @@ export const ForgotPasswordPage = () => {
 
     return (
         <main>
-            <VerifyPage title={"Forgot your password? Enter your email below."} renderResentComponent={false} button={"Send Email"} children={<InputEmailRequest setEmail={setEmail}/>} request={submitResetPasswordVerification}/>
+            <VerifyPage title={"Forgot your password? Enter your email below."} renderResentComponent={false} button={"Send Email"}  request={submitResetPasswordVerification}>
+                <InputEmailRequest setEmail={setEmail}/>
+            </VerifyPage>
             {failedRequest && <p className="text-center text-red-600">Request failed. Likely no account is tied to the email submitted. Try again</p>}
         </main>
     )

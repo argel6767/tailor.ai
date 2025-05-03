@@ -1,40 +1,30 @@
-import React, {useEffect, useState} from 'react';
+
 import {Link} from "react-router-dom";
 import {useNavigate} from "react-router-dom";
 import {useGlobalContext} from "./GlobalContext.jsx";
+import logoutUser from "../api/auth/logoutUser.js";
 
 export const UserAvatar = ({refreshApp}) => {
 
-    const [isSignedIn, setIsSignedIn] = useState(false);
     const navigate = useNavigate();
-    const {token, setToken} = useGlobalContext();
+    const {isSignedIn, setIsSignedIn} = useGlobalContext();
+
 
     /*
-     * updating ui to appropriate state when the state of token changes
-     */
-    useEffect(() => {
-        setIsSignedIn(!!token);
-    }, [token]);
-
-    /*
-     * removesToken, to make user have to sign back in
+     * removes, to make user have to sign back in
      * sets signed back to false
      * and navigates back to landing page
      */
-    const handleSignOut = () => {
-        setToken(null);
+    const handleSignOut = async () => {
+
         refreshApp();
+        await logoutUser()
         setIsSignedIn(false);
         navigate("/")
     }
 
     const goToProfile = () => {
-        if (!token) {
-            navigate("/auth");
-        }
-        else {
-            navigate("/user");
-        }
+      navigate('/user')
     }
 
     return (

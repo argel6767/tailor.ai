@@ -8,12 +8,10 @@ export const ChangeProfession = ({profession}) => {
 
     const [currentProfession, setCurrentProfession] = useState(profession);
     const [isChangingProfession, setIsChangingProfession] = useState(false);
-    const {token} = useGlobalContext();
     const {setUser} = useGlobalContext();
 
 
     const request = {
-        "email": sessionStorage.getItem("email"),
         "profession": null,
     }
 
@@ -31,7 +29,7 @@ export const ChangeProfession = ({profession}) => {
                 profession: professionValue, // Update the profession field
             }));
             setIsChangingProfession(false);
-            addUserProfession(request, token);
+            addUserProfession(request);
         }
     }
 

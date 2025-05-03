@@ -1,10 +1,9 @@
-import axios from "axios";
-import {jwtHeader} from "../../config/httpConfigs.js";
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 
-const createMessage = async (createMessageRequest, id, token) => {
+import {apiClient} from "../apiConfig.js";
+
+const createMessage = async (createMessageRequest, id) => {
     try {
-        const response = await axios.post(`${API_ENDPOINT}/message/create/${id}`, createMessageRequest, jwtHeader(token));
+        const response = await apiClient.post(`/message/create/${id}`, createMessageRequest);
     }
     catch (error) {
         console.log(error.response? error.response.data : error);

@@ -11,12 +11,11 @@ const ChatSessionPage = () => {
     const [messages, setMessages] = useState([]);
     const [messageHistoryGrabbed, setMessageHistoryGrabbed] = useState(false);
     const {id} = useParams();
-    const {token} = useGlobalContext();
 
     useEffect(() => {
         setMessageHistoryGrabbed(false);
         const fetchChatHistory = async () => {
-            const chats = await getChatHistory(id, token);
+            const chats = await getChatHistory(id);
             if (chats) {
                 setMessages(chats);
                 setMessageHistoryGrabbed(true);

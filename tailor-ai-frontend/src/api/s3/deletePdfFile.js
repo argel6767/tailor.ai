@@ -1,10 +1,9 @@
-import axios from "axios";
-import {jwtHeader} from "../../config/httpConfigs.js";
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 
-const deletePdfFile = async (id, token) => {
+import {apiClient} from "../apiConfig.js";
+
+const deletePdfFile = async (id) => {
     try {
-        const response = await axios.delete(`${API_ENDPOINT}/s3/pdf/${id}`, jwtHeader(token));
+        const response = await apiClient.delete(`/s3/pdf/${id}`);
         console.log(response.data);
         return response.data;
     }

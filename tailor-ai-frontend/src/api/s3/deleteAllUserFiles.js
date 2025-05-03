@@ -1,13 +1,12 @@
-import axios from "axios";
-import {jwtHeader} from "../../config/httpConfigs.js";
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
+
+import {apiClient} from "../apiConfig.js";
 
 /**
  * api call for deleting pdf file from s3 bucket
  */
-const deleteAllUserFiles = async (email, token) => {
+const deleteAllUserFiles = async () => {
     try {
-        const response = await axios.delete(`${API_ENDPOINT}/s3/${email}`, jwtHeader(token));
+        const response = await apiClient.delete(`/s3}`);
         console.log(response.data);
         return response.data;
     }

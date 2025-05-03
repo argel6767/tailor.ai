@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import registerUser from "../api/auth/registerUser.js";
 import loginUser from "../api/auth/loginUser.js";
@@ -17,8 +17,7 @@ const AuthPage = () => {
 
     const navigate = useNavigate();
     const loginNavigationRequest = emailObjectRequest;
-    const {setToken} = useGlobalContext();
-    const {setExpiration} = useGlobalContext();
+    const {setIsSignedIn} = useGlobalContext();
 
     const goToVerify = () => {
         navigate('/verify');
@@ -71,10 +70,8 @@ const AuthPage = () => {
             setAuthFailed(false);
         }
         else {
-            setToken(response.data.token);
-            const jwt = response.data.token;
-            setExpiration(Date.now() + response.data.expiresIn);
-            await handleLoginNavigation(navigate, email, jwt);
+            setIsSignedIn(true);
+            await handleLoginNavigation(navigate, email);
         }
     }
 

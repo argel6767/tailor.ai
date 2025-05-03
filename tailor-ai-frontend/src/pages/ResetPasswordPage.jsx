@@ -3,13 +3,13 @@ import {InputEmailRequest} from "../components/InputEmailRequest.jsx";
 import {VerificationCode} from "../components/VerificationCode.jsx";
 import {PasswordInput} from "../components/PasswordInput.jsx";
 import Loading from "../components/Loading.jsx";
-import {sleep} from "../utils/sleep.js";
+
 import resetPassword from "../api/auth/resetPassword.js";
 import {useNavigate} from "react-router-dom";
 
 export const ResetPasswordPage = () => {
 
-    const [email, setEmail] = useState("");
+
     const [newPassword, setNewPassword] = useState("");
     const [verificationCode, setVerificationCode] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +18,6 @@ export const ResetPasswordPage = () => {
     const handleResetPassword = async () => {
         setIsLoading(true);
         const request = {
-            "email": email,
             "password": newPassword,
             "verificationCode": verificationCode,
         }

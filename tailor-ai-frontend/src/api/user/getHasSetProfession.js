@@ -1,13 +1,12 @@
-import axios from "axios";
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
-import {jwtHeader} from "../../config/httpConfigs.js";
+
+import {apiClient} from "../apiConfig.js";
 
 /**
  * returns an object that holds a boolean value, whether a user has already set their profession
  */
-const getHasSetProfession = async (email, token) => {
+const getHasSetProfession = async () => {
     try {
-        const response = await axios.get(`${API_ENDPOINT}/user/profession/${email}`, jwtHeader(token));
+        const response = await apiClient.get(`/user/profession/`);
         return response.data;
     }
     catch (error) {

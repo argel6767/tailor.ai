@@ -1,13 +1,12 @@
-import axios from 'axios';
-import {jwtHeader} from "../../config/httpConfigs.js";
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
+
+import {apiClient} from "../apiConfig.js";
 
 /**
  * PUT request that is made to backend to add a users profession
  */
 const addUserProfession = async (addProfessionRequest, token) => {
     try {
-        const response = await axios.put(`${API_ENDPOINT}/user/profession`, addProfessionRequest, jwtHeader(token));
+        const response = await apiClient.put(`/user/profession`, addProfessionRequest);
     }
     catch (error) {
         console.log(error.response? error.response.data : error);

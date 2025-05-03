@@ -1,13 +1,16 @@
-import axios from "axios";
-import {fileHeader} from "../../config/httpConfigs.js";
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 
-const sendResumeToAi = async (id, profession, resumeFile, token) => {
+import  {apiClient} from "../apiConfig.js";
+
+const sendResumeToAi = async (id, profession, resumeFile) => {
     const formData = new FormData();
     formData.append("file", resumeFile);
     formData.append("profession", profession);
     try {
-        const response = await axios.post(`${API_ENDPOINT}/ai/file/${id}`, formData, fileHeader(token));
+        const response = await apiClient.post(`/ai/file/${id}`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            }
+        });
         return response.data
     }
     catch (error) {

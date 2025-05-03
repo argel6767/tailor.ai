@@ -1,10 +1,10 @@
-import axios from "axios";
-import {jwtHeader} from "../../config/httpConfigs.js";
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 
-const deleteChatSession = async (id, token) => {
+
+import {apiClient} from "../apiConfig.js";
+
+const deleteChatSession = async (id) => {
     try {
-        const response = await axios.delete(`${API_ENDPOINT}/chatsession/${id}`, jwtHeader(token));
+        const response = await apiClient.delete(`/chatsession/${id}`);
         console.log(response.data)
     }
     catch (error) {

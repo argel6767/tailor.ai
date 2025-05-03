@@ -3,24 +3,22 @@ import Loading from "./Loading.jsx";
 import getUserChatSessions from "../api/chat_session/getUserChatSessions.js";
 import {Link} from "react-router-dom";
 import {DeleteChat} from "./DeleteChat.jsx";
-import {useGlobalContext} from "./GlobalContext.jsx";
 
 const Sidebar = () => {
 
     const [userChats, setChats] = useState([])
     const [loading, setLoading] = useState(true);
-    const {token} = useGlobalContext();
 
     useEffect( () => {
         const getChats = async () => {
-            const grabbedChatSessions  = await getUserChatSessions(sessionStorage.getItem("email"), token);
+            const grabbedChatSessions  = await getUserChatSessions();
             if (grabbedChatSessions) {
                 setChats(grabbedChatSessions);
                 setLoading(false);
             }
         }
         getChats() //commented until real implementation
-    }, [token])
+    }, [])
 
     return (
         <div className="drawer lg:drawer-open">

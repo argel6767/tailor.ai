@@ -1,10 +1,10 @@
-import axios from "axios";
-import {jwtHeader} from "../../config/httpConfigs.js";
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
 
-const getUser = async (email,token) => {
+
+import {apiClient} from "../apiConfig.js";
+
+const getUser = async () => {
     try {
-        const response = await axios(`${API_ENDPOINT}/user/${email}`, jwtHeader(token))
+        const response = await apiClient.get(`/user/`)
         return response.data;
     }
     catch (error) {

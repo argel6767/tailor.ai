@@ -8,7 +8,6 @@ export const DeleteAccount = ({startLoading}) => {
 
     const [isConfirming, setIsConfirming] = useState(false);
     const navigate = useNavigate();
-    const {token, setToken} = useGlobalContext();
 
     const handleIsConfirming = () => {
         setIsConfirming(!isConfirming);
@@ -16,9 +15,8 @@ export const DeleteAccount = ({startLoading}) => {
 
     const handleDelete = async () => {
         startLoading();
-        const email = sessionStorage.getItem("email");
-        await deleteAllUserFiles(email, token);
-        await deleteUser(email, token);
+        await deleteAllUserFiles();
+        await deleteUser();
         setToken(null);
         navigate("/");
     }

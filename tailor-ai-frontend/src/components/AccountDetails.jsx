@@ -8,12 +8,11 @@ import {ChangeProfession} from "./ChangeProfession.jsx";
  * holds the changing of password component/logic
  */
 export const AccountDetails = ({startLoading}) => {
-
+    const [email, setEmail] = useState("");
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
-    const {token} = useGlobalContext();
     const {user, setUser} = useGlobalContext();
-    const email = sessionStorage.getItem("email");
+
 
     /*
      * useEffect in case no user was already grabbed
@@ -21,12 +20,13 @@ export const AccountDetails = ({startLoading}) => {
     useEffect(() => {
        const handleNoUserState = async () => {
            if (!user) {
-               const response = await getUser(email, token);
+               const response = await getUser();
                setUser(response);
+               setEmail(user.email);
            }
        };
        handleNoUserState();
-    }, [user, setUser, email, token]);
+    }, [user, setUser]);
 
     /*
      * request object
@@ -48,7 +48,7 @@ export const AccountDetails = ({startLoading}) => {
      */
     const handleChangePassword = async () => {
         startLoading();
-        const response = await changePassword(changePasswordRequest, token);
+        const response = await changePassword(changePasswordRequest);
         if (response) {
             alert("Successfully changed password");  //TODO change this later to better looking alerting
         }

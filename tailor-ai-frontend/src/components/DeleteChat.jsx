@@ -10,7 +10,6 @@ export const DeleteChat = ({chatSessionId, onDelete}) => {
 
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [chatSessionIdDelete, setChatSessionIdDelete] = useState(null);
-    const {token} = useGlobalContext();
 
     const deleteConfirmation = () => {
         handleChatSessionIdDelete(chatSessionId);
@@ -31,8 +30,8 @@ export const DeleteChat = ({chatSessionId, onDelete}) => {
 
     const handleChatDeletion = async () => {
         onDelete();
-        await deleteChatSession(chatSessionId, token);
-        await deletePdfFile(chatSessionId, token);
+        await deleteChatSession(chatSessionId, );
+        await deletePdfFile(chatSessionId, );
     }
 
     return (

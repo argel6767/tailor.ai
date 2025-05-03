@@ -1,5 +1,4 @@
-import axios from "axios";
-import {API_ENDPOINT} from "../../config/apiEndpointConfig.js";
+
 import {apiClient} from "../apiConfig.js";
 
 /**
@@ -7,7 +6,7 @@ import {apiClient} from "../apiConfig.js";
  */
 const sendForgetPasswordVerificationEmail = async (email) => {
     try {
-        const response = await apiClient.post(`${API_ENDPOINT}/auth/forgot/${email}`)
+        const response = await apiClient.post(`/auth/forgot/${email}`)
         return response.data;
     }
     catch (error) {

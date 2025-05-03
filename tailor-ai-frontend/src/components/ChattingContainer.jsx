@@ -17,22 +17,21 @@ const ChattingContainer = ({initialMessageHistory}) => {
     const [chatName, setChatName] = useState("");
     const [hasClickedChatName, setClickedChatName] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const {token} = useGlobalContext();
 
 
     useEffect(() => {
         const getName = async () => {
-            const response = await getChatSession(id, token);
+            const response = await getChatSession(id);
             setChatName(response.chatSessionName);
         }
         getName()
-    }, [id, token]);
+    }, [id]);
 
     const updateChatName = async () => {
         const chatSessionName = document.getElementById("chatSessionName").value;
         if (chatSessionName !== "") {
             setChatName(chatSessionName);
-            await changeChatSessionName(id, chatSessionName, token);
+            await changeChatSessionName(id, chatSessionName);
         }
         handleNameClick()
 
@@ -65,7 +64,7 @@ const ChattingContainer = ({initialMessageHistory}) => {
         createMessageRequest.message = userMessage;
         clearInput()
         setIsLoading(true);
-        await createMessage(createMessageRequest, id, token);
+        await createMessage(createMessageRequest, id, );
         const newMessage = {
             messageId: Math.random(),
             body: userMessage,
@@ -77,7 +76,7 @@ const ChattingContainer = ({initialMessageHistory}) => {
             chatSessionId: id,
             userMessage: userMessage,
         };
-        const response = await requestAiResponse(aiRequest, token);
+        const response = await requestAiResponse(aiRequest, );
 
         const newResponse = {
             messageId : Math.random(),
@@ -126,7 +125,7 @@ const ChattingContainer = ({initialMessageHistory}) => {
                 </div> : null}
             </div>
             <div className="flex justify-center items-center gap-4 w-full pt-4">
-                <RenderFile chatSessionId={id} token={token} />
+                <RenderFile chatSessionId={id} ={} />
                 <input type="text" placeholder="Message AI" className="input input-bordered w-full max-w-xl" onChange={handleInputChange} onKeyDown={handleKeyPress} id="input" />
                     <button onClick={handleSubmit}  className={`btn ${hasInput ? "btn-primary" : "btn-disabled"}`}>Send</button>
                 </div>
