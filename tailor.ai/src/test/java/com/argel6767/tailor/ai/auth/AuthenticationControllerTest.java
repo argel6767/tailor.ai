@@ -60,7 +60,7 @@ class AuthenticationControllerTest {
         when(jwtService.generateToken(user)).thenReturn(token);
         when(jwtService.getExpirationTime()).thenReturn(expirationTime);
         // Act
-        ResponseEntity<LoginResponse> response = authenticationController.login(request);
+        ResponseEntity<LoginResponse> response = (ResponseEntity<LoginResponse>) authenticationController.login(request, null);
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -134,7 +134,7 @@ class AuthenticationControllerTest {
                 .thenThrow(new RuntimeException("Invalid credentials"));
         // Act & Assert
         assertThrows(RuntimeException.class, () ->
-                authenticationController.login(request)
+                authenticationController.login(request, null)
         );
         verify(authenticationService).authenticateUser(request);
         verify(jwtService, never()).generateToken(any());

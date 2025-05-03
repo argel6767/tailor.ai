@@ -11,6 +11,7 @@ import com.argel6767.tailor.ai.email.EmailVerificationException;
 import com.argel6767.tailor.ai.user.User;
 import com.argel6767.tailor.ai.user.UserRepository;
 import jakarta.mail.MessagingException;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -62,6 +63,11 @@ public class AuthenticationService {
         user.setVerificationCode(generateVerificationCode());
         user.setCodeExpiry(LocalDateTime.now().plusMinutes(30));
         sendEmail.accept(user);
+    }
+
+    private boolean isValidEmail(String email) {
+        EmailValidator validator = EmailValidator.getInstance();
+        return validator.isValid(email);
     }
 
     /*

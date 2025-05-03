@@ -2,15 +2,18 @@ package com.argel6767.tailor.ai.auth;
 
 import com.argel6767.tailor.ai.auth.exceptions.AuthenticationException;
 import com.argel6767.tailor.ai.auth.exceptions.ExpiredVerificationCodeException;
+import com.argel6767.tailor.ai.auth.exceptions.InvalidEmailException;
 import com.argel6767.tailor.ai.auth.requests.*;
-import com.argel6767.tailor.ai.auth.responses.LoginResponse;
 import com.argel6767.tailor.ai.email.EmailVerificationException;
 import com.argel6767.tailor.ai.jwt.JwtService;
 import com.argel6767.tailor.ai.user.User;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 /**
  * holds auth endpoints that can be accessed without a JWT token
@@ -45,20 +48,31 @@ public class AuthenticationController {
      * login user endpoint
      */
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody AuthenticateUserDto request) {
+    public ResponseEntity<?> login(@RequestBody AuthenticateUserDto request, HttpServletResponse response) {
         try {
             User user = authenticationService.authenticateUser(request);
             String token = jwtService.generateToken(user);
-            LoginResponse response = new LoginResponse(token, jwtService.getExpirationTime());
-            return ResponseEntity.ok(response);
-        }
-        catch (UsernameNotFoundException enfe) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-        catch (EmailVerificationException eve) {
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            String cookieHeader = jwtService.generateCookie(token, Optional.empty());
+            response.setHeader("Set-Cookie", cookieHeader);
+            // Return user info without token in body
+            return ResponseEntity.ok(user);
+        } catch (UsernameNotFoundException unfe) {
+            return new ResponseEntity<>(unfe.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (EmailVerificationException eve) {
+            return new ResponseEntity<>(eve.getMessage(), HttpStatus.UNAUTHORIZED);
+        } catch (InvalidEmailException ive) {
+            return new ResponseEntity<>(ive.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        // Set cookie header with SameSite
+        String cookieHeader = jwtService.generateCookie("", Optional.of(0L));
+        response.setHeader("Set-Cookie", cookieHeader);
+        return ResponseEntity.ok("Logged out successfully");
+    }
+
 
     /*
      * verify user endpoint via the code they input

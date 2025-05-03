@@ -2,6 +2,7 @@ package com.argel6767.tailor.ai.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,38 +31,44 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
 
+
     /**
      * filter requests to check if API requests are valid/contain the JWT Token
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String authorizationHeader = request.getHeader("Authorization");
-        //invalid request (either no auth header at all or wrong header type)
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-        }
-        else {
-            try {
-                //grab jwt token and user email from the request
-                final String jwt = authorizationHeader.substring(7);
+        try {
+            // Extract JWT token from cookie instead of Authorization header
+            Cookie[] cookies = request.getCookies();
+            String jwt = null;
+
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("jwt".equals(cookie.getName())) {
+                        jwt = cookie.getValue();
+                        break;
+                    }
+                }
+            }
+
+            // If token exists, validate it
+            if (jwt != null) {
                 final String userEmail = jwtService.extractUsername(jwt);
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
                 if (userEmail != null && authentication == null) {
                     UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
                     if (jwtService.isTokenValid(jwt, userDetails)) {
-                        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities());
                         token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                         SecurityContextHolder.getContext().setAuthentication(token);
                     }
                 }
-                filterChain.doFilter(request, response);
-
             }
-            catch (NullPointerException npe) {
-                handlerExceptionResolver.resolveException(request, response, null, npe);
-            }
+            filterChain.doFilter(request, response);
+        } catch (NullPointerException npe) {
+            handlerExceptionResolver.resolveException(request, response, null, npe);
         }
     }
 }
-
