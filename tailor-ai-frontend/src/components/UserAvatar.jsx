@@ -16,13 +16,16 @@ export const UserAvatar = () => {
      * and navigates back to landing page
      */
     const handleSignOut = async () => {
-        await logoutUser()
+        await logoutUser();
         setIsSignedIn(false);
-        navigate("/")
+        navigate("/");
     }
 
     const goToProfile = () => {
-      navigate('/user')
+        if (!isSignedIn) {
+            return '/auth'
+        }
+        return '/user'
     }
 
     return (
@@ -38,7 +41,7 @@ export const UserAvatar = () => {
                 <ul
                     tabIndex={0}
                     className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                            <li><button onClick={goToProfile}>Profile</button></li>
+                            <li><Link to={goToProfile()}>Profile</Link></li>
                     {isSignedIn ? (<li><button onClick={handleSignOut}>Sign Out</button></li>) :
                         (<li><Link to={"/auth"}>Sign In</Link></li>)}
                 </ul>
