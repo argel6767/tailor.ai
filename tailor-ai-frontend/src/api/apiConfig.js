@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 export const apiClient = axios.create({
-    baseURL: '/api',
-    // Add this line to ensure cookies are sent with cross-origin requests
+    baseURL: import.meta.env.VITE_BACKEND_ENDPOINT,
     withCredentials: true
 });
 
