@@ -19,7 +19,7 @@ class UserControllerTest {
     private UserController userController;
     private final String EMAIL = "test@test.com";
     private final String PROFESSION = "Software Engineer";
-    private final AddProfessionRequest addProfessionRequest = new AddProfessionRequest(EMAIL, PROFESSION);
+    private final AddProfessionRequest addProfessionRequest = new AddProfessionRequest(PROFESSION);
     private final EmailObjectRequest emailObjectRequest = new EmailObjectRequest(EMAIL);
     private final User user = new User();
 

@@ -3,7 +3,7 @@ package com.argel6767.tailor.ai.user.requests;
 public class AddProfessionRequest {
     private String profession;
 
-    public AddProfessionRequest(String email, String profession) {
+    public AddProfessionRequest(String profession) {
         this.profession = profession;
     }
 

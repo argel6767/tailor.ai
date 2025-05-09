@@ -20,7 +20,7 @@ class UserServiceTest {
     private UserService userService;
     private final String EMAIL = "test@test.com";
     private final String PROFESSION = "Software Engineer";
-    private final AddProfessionRequest addProfessionRequest = new AddProfessionRequest(EMAIL, PROFESSION);
+    private final AddProfessionRequest addProfessionRequest = new AddProfessionRequest(PROFESSION);
     private User user = new User();
 
     @BeforeEach
@@ -35,9 +35,8 @@ class UserServiceTest {
     void testAddProfession() {
         when(userRepository.findByEmail(EMAIL)).thenReturn(Optional.of(user));
         when(userRepository.save(any())).thenReturn(user);
-        User professionUser = userService.addProfession(addProfessionRequest.getEmail(), addProfessionRequest.getProfession());
+        User professionUser = userService.addProfession(EMAIL, addProfessionRequest.getProfession());
         assertNotNull(professionUser);
-        assertEquals(EMAIL, professionUser.getEmail());
         assertEquals(PROFESSION, professionUser.getProfession());
         verify(userRepository, times(1)).findByEmail(EMAIL);
         verify(userRepository, times(1)).save(user);
